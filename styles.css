@@ -111,6 +111,11 @@ h1 {
   user-select: none;
 }
 
+/* Bigger font when a slot is filled */
+.slot[data-filled="true"] {
+  font-size: calc(var(--slot-size) * 0.48);
+}
+
 .letter {
   display: inline-flex;
   align-items: center;
@@ -132,6 +137,11 @@ h1 {
   color: transparent;
   cursor: default;
   border: none;
+}
+
+/* Larger font for active scramble tiles (blue) */
+.letter:not(.empty) {
+  font-size: calc(var(--slot-size) * 0.48);
 }
 
 .letter.disabled {
