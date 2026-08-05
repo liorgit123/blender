@@ -222,3 +222,22 @@ button:disabled {
 .message:not(:empty) {
   margin-top: 12px;
 }
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+  .app {
+    width: calc(100% - 16px);
+    padding: 12px;
+  }
+
+  .slot, .letter {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    font-size: 1.25rem;
+  }
+
+  .slot-line, .scramble-row {
+    gap: 6px;
+  }
+}
