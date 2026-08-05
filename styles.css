@@ -13,6 +13,7 @@ body {
   width: min(600px, calc(100% - 32px));
   margin: 20px auto;
   background: #ffffff;
+  --slot-size: 44px;
   border-radius: 16px;
   padding: 16px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.08);
@@ -94,17 +95,17 @@ h1 {
 
 .slot {
   box-sizing: border-box;
-  width: 44px;
-  height: 44px;
+  width: var(--slot-size);
+  height: var(--slot-size);
   border: 2px solid #999;
   border-radius: 12px;
   margin: 4px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.4rem;
+  font-size: calc(var(--slot-size) * 0.32);
   font-weight: 700;
-  min-width: 44px;
+  min-width: var(--slot-size);
   text-align: center;
   cursor: pointer;
   user-select: none;
@@ -114,13 +115,13 @@ h1 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: var(--slot-size);
+  height: var(--slot-size);
   margin: 4px;
   background: #007aff;
   color: white;
   border-radius: 12px;
-  font-size: 1.2rem;
+  font-size: calc(var(--slot-size) * 0.35);
   font-weight: 700;
   cursor: grab;
   user-select: none;

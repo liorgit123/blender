@@ -59,6 +59,22 @@ function renderQuestion(question) {
   // hint 1: תיבות ריקות מופיעות כבר בהתחלה
   createSlots(question.answer, pattern);
 
+  // Auto-fit: compute the longest line and set --slot-size so slots scale to pattern width
+  (function autoFitSlots() {
+    const lines = Array.from(pattern.querySelectorAll('.slot-line'));
+    if (lines.length === 0) return;
+    let maxSlots = 0;
+    lines.forEach(l => { maxSlots = Math.max(maxSlots, l.children.length); });
+    const containerWidth = pattern.clientWidth || pattern.offsetWidth || 300;
+    // rough padding/margin buffer
+    const bufferPerSlot = 8; // margins and gaps
+    let computed = Math.floor(containerWidth / Math.max(1, maxSlots)) - bufferPerSlot;
+    const minSize = 32;
+    const maxSize = 92;
+    computed = Math.max(minSize, Math.min(maxSize, computed));
+    pattern.style.setProperty('--slot-size', computed + 'px');
+  })();
+
   // אותיות מעורבבות ללחיצה
   const shuffled = shuffleArray(letters.slice());
   const rows = splitIntoRows(shuffled, 6);
