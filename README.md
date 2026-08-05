@@ -1,2 +1,2 @@
-# mixer
-Mixer Word Game
+# blender
+Blender Word Game
