@@ -63,13 +63,19 @@ function renderQuestion(question) {
   (function autoFitSlots() {
     const lines = Array.from(pattern.querySelectorAll('.slot-line'));
     if (lines.length === 0) return;
+
     let maxSlots = 0;
     lines.forEach(l => { maxSlots = Math.max(maxSlots, l.children.length); });
     const containerWidth = pattern.clientWidth || pattern.offsetWidth || 300;
-    // rough padding/margin buffer
-    const bufferPerSlot = 8; // margins and gaps
-    let computed = Math.floor(containerWidth / Math.max(1, maxSlots)) - bufferPerSlot;
-    const minSize = 32;
+
+    const slotMargin = 8; // left + right
+    const slotBorder = 4; // total horizontal border width
+    const gap = 4;
+    const totalGap = Math.max(0, maxSlots - 1) * gap;
+    const available = containerWidth - totalGap - maxSlots * slotMargin - slotBorder;
+    let computed = Math.floor(available / Math.max(1, maxSlots));
+
+    const minSize = 28;
     const maxSize = 92;
     computed = Math.max(minSize, Math.min(maxSize, computed));
     pattern.style.setProperty('--slot-size', computed + 'px');

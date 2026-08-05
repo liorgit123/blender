@@ -232,10 +232,14 @@ button:disabled {
   }
 
   .slot, .letter {
-    width: 56px;
-    height: 56px;
-    min-width: 56px;
-    font-size: 1.25rem;
+    min-width: 32px;
+    min-height: 32px;
+  }
+
+  .slot-line {
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow-x: visible;
   }
 
   .slot-line, .scramble-row {
