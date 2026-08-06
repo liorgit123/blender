@@ -8,7 +8,12 @@
 </head>
 <body dir="rtl">
   <div class="app">
-    <h1>בְּלֶנְדֶּר</h1>
+    <button id="langBtn" class="lang-toggle" type="button" aria-label="Language">
+      <img src="images/lang1.svg" alt="" aria-hidden="true">
+    </button>
+    <span id="langMessage" class="lang-message" role="status" aria-live="polite"></span>
+
+    <img class="logo" src="images/logo.png" alt="בְּלֶנְדֶּר">
 
     <div id="category" class="category"></div>
 
@@ -17,9 +22,18 @@
     <div id="scramble" class="scramble"></div>
 
     <div class="controls">
-      <button id="hintBtn">רמז</button>
-      <button id="resetBtn">אפס</button>
-      <button id="nextBtn">דלג</button>
+      <button id="hintBtn" class="icon-button" aria-label="רמז">
+        <img class="button-icon" src="images/bulb1.svg" alt="" aria-hidden="true">
+        <span class="button-label visually-hidden">רמז</span>
+      </button>
+      <button id="resetBtn" class="icon-button" aria-label="אפס">
+        <img class="button-icon" src="images/reset1.svg" alt="" aria-hidden="true">
+        <span class="button-label visually-hidden">אפס</span>
+      </button>
+      <button id="nextBtn" class="icon-button" aria-label="דלג">
+        <img class="button-icon" src="images/skip1.svg" alt="" aria-hidden="true">
+        <span class="button-label visually-hidden">דלג</span>
+      </button>
     </div>
 
     <div id="fact" class="fact"></div>

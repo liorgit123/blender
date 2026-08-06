@@ -8,8 +8,11 @@ window.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  GameState.currentIndex = 0;
-  GameState.current = GameState.questions[0];
+  if (GameState.questions.length === 0) return;
+
+  setLayoutDirection();
+  GameState.currentIndex = Math.floor(Math.random() * GameState.questions.length);
+  GameState.current = GameState.questions[GameState.currentIndex];
   GameState.hintLevel = 0;
 
   renderQuestion(GameState.current);
@@ -20,6 +23,14 @@ window.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("nextBtn").addEventListener("click", () => {
     nextQuestion();
   });
+
+  const langBtn = document.getElementById("langBtn");
+  if (langBtn) {
+    langBtn.addEventListener("pointerdown", startLanguagePress);
+    langBtn.addEventListener("pointerup", endLanguagePress);
+    langBtn.addEventListener("pointerleave", cancelLanguagePress);
+    langBtn.addEventListener("pointercancel", cancelLanguagePress);
+  }
 
   updateResetButtonState();
 });

@@ -54,7 +54,7 @@ function renderQuestion(question) {
   const clean = question.answer.replace(/\s+/g, "");
   const letters = segmentText(clean);
 
-  categoryBox.textContent = `קטגוריה: ${question.category}`;
+  categoryBox.textContent = `${getLocalizedText("category")}${question.category}`;
 
   // hint 1: תיבות ריקות מופיעות כבר בהתחלה
   createSlots(question.answer, pattern);
@@ -187,7 +187,7 @@ function onSlotClick(e) {
     return;
   }
 
-  if (slot.dataset.filled !== "true") return;
+  if (slot.dataset.filled !== "true" || slot.dataset.locked === "true") return;
 
   const letter = slot.dataset.letter || toBaseHebrew(slot.textContent);
   slot.textContent = "";
@@ -241,7 +241,7 @@ function resetPlacement() {
   const tiles = [...document.querySelectorAll(".letter")];
 
   slots.forEach(slot => {
-    if (slot.dataset.filled === "true") {
+    if (slot.dataset.filled === "true" && slot.dataset.locked !== "true") {
       slot.textContent = "";
       slot.dataset.filled = "false";
       slot.removeAttribute("data-letter");
@@ -249,7 +249,7 @@ function resetPlacement() {
   });
 
   tiles.forEach(tile => {
-    if (tile.dataset.letter) {
+    if (tile.dataset.letter && tile.dataset.locked !== "true") {
       tile.textContent = tile.dataset.letter;
       tile.removeAttribute("data-letter");
       tile.classList.remove("empty", "disabled");
@@ -280,6 +280,7 @@ function revealRandomLetter() {
     const slot = slots[idx];
     const letterBase = toBaseHebrew(letters[idx]);
     placeLetterInSlot(slot, letterBase);
+    slot.dataset.locked = "true";
 
     const tiles = [...document.querySelectorAll(".letter")].filter(
       t => !t.classList.contains("empty") && t.dataset.base === letterBase
@@ -287,6 +288,7 @@ function revealRandomLetter() {
     if (tiles.length > 0) {
       const tile = tiles[0];
       tile.dataset.letter = letterBase;
+      tile.dataset.locked = "true";
       tile.textContent = "";
       tile.classList.add("empty");
       tile.removeEventListener("click", onLetterClick);
@@ -303,6 +305,7 @@ function revealAllLetters() {
   slots.forEach((slot, i) => {
     const letterBase = toBaseHebrew(letters[i]);
     placeLetterInSlot(slot, letterBase);
+    slot.dataset.locked = "true";
   });
 
   const tiles = [...document.querySelectorAll(".letter")];
@@ -323,7 +326,7 @@ function revealAllLetters() {
 
 function updateResetButtonState() {
   const anyPlaced = [...document.querySelectorAll(".slot")].some(
-    s => s.dataset.filled === "true"
+    s => s.dataset.filled === "true" && s.dataset.locked !== "true"
   );
   const resetBtn = document.getElementById("resetBtn");
   resetBtn.disabled = !anyPlaced;
