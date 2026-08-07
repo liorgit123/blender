@@ -29,7 +29,7 @@ body {
 .lang-toggle {
   position: absolute;
   top: 10px;
-  inset-inline-start: 80px;
+  inset-inline-start: 10px;
   background: transparent;
   border: none;
   padding: 4px;
