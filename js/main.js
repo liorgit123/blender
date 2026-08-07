@@ -26,10 +26,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   const langBtn = document.getElementById("langBtn");
   if (langBtn) {
-    langBtn.addEventListener("pointerdown", startLanguagePress);
-    langBtn.addEventListener("pointerup", endLanguagePress);
-    langBtn.addEventListener("pointerleave", cancelLanguagePress);
-    langBtn.addEventListener("pointercancel", cancelLanguagePress);
+    langBtn.addEventListener("click", onLanguageButtonTap);
   }
 
   updateResetButtonState();

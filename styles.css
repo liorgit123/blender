@@ -39,6 +39,18 @@ body {
   justify-content: center;
 }
 
+/* Hebrew mode (RTL): move globe to the LEFT */
+body[dir="rtl"] .lang-toggle {
+  inset-inline-start: auto;
+  inset-inline-end: 10px;
+}
+
+/* English mode (LTR): move globe to the RIGHT */
+body[dir="ltr"] .lang-toggle {
+  inset-inline-start: auto;
+  inset-inline-end: 10px;
+}
+
 .lang-toggle img {
   width: 30px;
   height: 30px;
@@ -47,8 +59,7 @@ body {
 
 .lang-message {
   position: absolute;
-  top: 20px;
-  left: 120px;
+  top: 20px;   /* aligns text with the globe */
   font-size: 0.8rem;
   color: #f1f5ff;
   white-space: nowrap;
@@ -56,6 +67,13 @@ body {
   visibility: hidden;
   pointer-events: none;
   transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+/* Message appears beside the globe in BOTH modes */
+body[dir="ltr"] .lang-message,
+body[dir="rtl"] .lang-message {
+  inset-inline-end: 52px;  /* same side as globe, with some spacing */
+  inset-inline-start: auto;
 }
 
 .lang-message.visible {

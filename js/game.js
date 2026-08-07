@@ -1,5 +1,8 @@
 // game.js – לוגיקת משחק בסיסית
 
+let languageTapWindowOpen = false;
+let languageTapTimer = null;
+
 function normalizeHebrewText(text) {
   return Array.from(text).map(toBaseHebrew).join("");
 }
@@ -13,8 +16,6 @@ const GameState = {
 };
 
 let languageMessageTimer = null;
-let languagePressTimer = null;
-let languagePressTriggered = false;
 
 function setLayoutDirection() {
   const dir = GameState.language === "en" ? "ltr" : "rtl";
@@ -44,8 +45,8 @@ function getLocalizedText(key) {
 
 function getLanguageMessage() {
   return GameState.language === "en"
-    ? "לחצו והחזיקו למעבר לעברית"
-    : "Long tap for English";
+    ? "לחצו שוב למעבר לעברית"
+    : "Tap again for English";
 }
 
 function showLanguageMessage() {
@@ -59,26 +60,6 @@ function showLanguageMessage() {
   languageMessageTimer = setTimeout(() => {
     message.classList.remove("visible");
   }, 2000);
-}
-
-function startLanguagePress() {
-  languagePressTriggered = false;
-  clearTimeout(languagePressTimer);
-  languagePressTimer = window.setTimeout(() => {
-    languagePressTriggered = true;
-    switchLanguage();
-  }, 1000);
-}
-
-function endLanguagePress() {
-  clearTimeout(languagePressTimer);
-  if (!languagePressTriggered) {
-    showLanguageMessage();
-  }
-}
-
-function cancelLanguagePress() {
-  clearTimeout(languagePressTimer);
 }
 
 async function loadQuestions() {
@@ -201,4 +182,30 @@ function showHint() {
     setButtonLabel(nextBtn, getLocalizedText("next"));
     hintBtn.disabled = true;
   }
+}
+
+function onLanguageButtonTap() {
+  const message = document.getElementById("langMessage");
+
+  // If the window is already open → second tap triggers language switch
+  if (languageTapWindowOpen) {
+    clearTimeout(languageTapTimer);
+    languageTapWindowOpen = false;
+    message.classList.remove("visible");
+    message.textContent = "";
+    switchLanguage();
+    return;
+  }
+
+  // First tap → show message and open the window
+  languageTapWindowOpen = true;
+  message.textContent = getLanguageMessage();
+  message.classList.add("visible");
+
+  // Close window after 2 seconds
+  clearTimeout(languageTapTimer);
+  languageTapTimer = setTimeout(() => {
+    languageTapWindowOpen = false;
+    message.classList.remove("visible");
+  }, 2000);
 }
