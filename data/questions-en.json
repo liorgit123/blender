@@ -1,17 +1,17 @@
 [
   {
     "category": "Movies",
-    "answer": "SPEED",
-    "fact": "Released in 1994" 
+    "answer": "FIGHT CLUB",
+    "fact": "Movie was released in 1999"
   },
   {
     "category": "Movies",
     "answer": "THE GODFATHER",
-    "fact": "Released in 1972"
+    "fact": "Movie was released in 1972"
   },
   {
     "category": "Movies",
-    "answer": "BARISTO CATS",
-    "fact": "Test long word"
+    "answer": "FINDING NEMO",
+    "fact": "Movie was released in 2003"
   }
 ]
