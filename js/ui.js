@@ -76,7 +76,7 @@ function renderQuestion(question) {
     let computed = Math.floor(available / Math.max(1, maxSlots));
 
     const minSize = 28;
-    const maxSize = 92;
+    const maxSize = 45;
     computed = Math.max(minSize, Math.min(maxSize, computed));
     pattern.style.setProperty('--slot-size', computed + 'px');
   })();
@@ -119,25 +119,57 @@ function splitIntoRows(items, maxPerRow) {
 }
 
 function createSlots(answer, container) {
-  const words = answer.split(" ");
+  // --- 1. Smart grouping: merge words until total chars > 7 ---
+  function groupWordsMax7(words) {
+    const lines = [];
+    let current = [];
 
-  words.forEach((word, index) => {
-    const letters = segmentText(word);
+    for (const w of words) {
+      const test = [...current, w].join(" ");
+      if (test.length <= 7) {
+        current.push(w);
+      } else {
+        if (current.length) lines.push(current);
+        current = [w];
+      }
+    }
+
+    if (current.length) lines.push(current);
+    return lines;
+  }
+
+  const words = answer.split(" ");
+  const grouped = groupWordsMax7(words);
+
+  // --- 2. Build slot lines based on grouped words ---
+  grouped.forEach((group, index) => {
     const line = document.createElement("div");
     line.className = "slot-line";
 
-    letters.forEach((letter, letterIndex) => {
-      const slot = document.createElement("div");
-      slot.className = "slot";
-      slot.dataset.filled = "false";
-      slot.dataset.final = letterIndex === letters.length - 1 ? "true" : "false";
-      slot.addEventListener("click", onSlotClick);
-      line.appendChild(slot);
+    group.forEach((word, wordIndex) => {
+      const letters = segmentText(word);
+
+      letters.forEach((letter, letterIndex) => {
+        const slot = document.createElement("div");
+        slot.className = "slot";
+        slot.dataset.filled = "false";
+        slot.dataset.final = letterIndex === letters.length - 1 ? "true" : "false";
+        slot.addEventListener("click", onSlotClick);
+        line.appendChild(slot);
+      });
+
+      // Insert gap between words (NOT tiles)
+      if (wordIndex < group.length - 1) {
+        const gap = document.createElement("div");
+        gap.className = "word-gap";
+        line.appendChild(gap);
+      }
     });
 
     container.appendChild(line);
 
-    if (index < words.length - 1) {
+    // Gap between lines
+    if (index < grouped.length - 1) {
       const gap = document.createElement("div");
       gap.className = "line-gap";
       container.appendChild(gap);

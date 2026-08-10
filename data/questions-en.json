@@ -6,12 +6,17 @@
   },
   {
     "category": "Movies",
-    "answer": "THE GODFATHER",
-    "fact": "Movie was released in 1972"
+    "answer": "SPEED",
+    "fact": "Movie was released in 1994"
   },
   {
     "category": "Movies",
     "answer": "FINDING NEMO",
     "fact": "Movie was released in 2003"
+  },
+  {
+    "category": "Movies",
+    "answer": "OUT FROM SPACE",
+    "fact": "Movie was released in 2000"
   }
 ]

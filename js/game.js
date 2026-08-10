@@ -89,6 +89,7 @@ async function switchLanguage() {
   GameState.current = GameState.questions[GameState.currentIndex];
   GameState.hintLevel = 0;
 
+  void document.body.offsetWidth;
   renderQuestion(GameState.current);
   resetButtons();
   updateResetButtonState();
@@ -110,6 +111,7 @@ function nextQuestion() {
   GameState.current = GameState.questions[GameState.currentIndex];
   GameState.hintLevel = 0;
 
+  void document.body.offsetWidth;
   renderQuestion(GameState.current);
   resetButtons();
 }

@@ -1,6 +1,6 @@
 body {
   font-family: Tahoma, sans-serif;
-  background: #000000;
+  background: #ffffff;
   color: #f1f5ff;
   margin: 0;
   padding: 8px 0;
@@ -12,12 +12,14 @@ body {
 
 .app {
   position: relative;
-  width: min(600px, calc(100% - 32px));
+  /* Restricted the width to a mobile phone width (e.g., 375px) */
+  width: min(375px, calc(100% - 32px));
   margin: 20px auto;
   background: #000000;
+  color: #f1f5ff;
   --slot-size: 44px;
   border-radius: 16px;
-  padding: 40px 12px 12px;
+  padding: 20px 12px 22px;
   box-shadow: 0 16px 40px rgba(0,0,0,0.35);
   border: 1px solid rgba(255,255,255,0.05);
   display: flex;
@@ -36,14 +38,14 @@ body {
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-}
+    justify-content: center;
+  }
 
 /* Hebrew mode (RTL): move globe to the LEFT */
 body[dir="rtl"] .lang-toggle {
   inset-inline-start: auto;
   inset-inline-end: 10px;
-}
+  }
 
 /* English mode (LTR): move globe to the RIGHT */
 body[dir="ltr"] .lang-toggle {
@@ -52,8 +54,8 @@ body[dir="ltr"] .lang-toggle {
 }
 
 .lang-toggle img {
-  width: 30px;
-  height: 30px;
+  width: 21px; /* reduced from 30px (30 * 0.7 = 21) */
+  height: 21px; /* reduced from 30px */
   filter: brightness(0) invert(1);
 }
 
@@ -82,10 +84,10 @@ body[dir="rtl"] .lang-message {
 }
 
 .logo {
-  max-width: 240px;
+  max-width: 160px;   /* reduced from 240px */
   width: 100%;
   height: auto;
-  margin-bottom: 24px;
+  margin-bottom: 16px; /* reduced spacing below logo */
   filter: brightness(1.28) contrast(1.08) saturate(1.06);
   -webkit-filter: brightness(1.28) contrast(1.08) saturate(1.06);
 }
@@ -109,15 +111,15 @@ h1 {
 
 .category {
   min-height: 24px;
-  margin-bottom: 8px;
+  margin-bottom: 20px;
   color: #b8d4ff;
   font-weight: 600;
   text-align: center;
 }
 
 .fact {
-  min-height: 56px;
-  margin: 8px 0 2px;
+  min-height: 30px;
+  margin: 10px 0 0 0; /* Reduced top margin to pull it closer to the tiles above */
   padding: 10px 14px;
   color: #dce6ff;
   background: transparent;
@@ -168,15 +170,16 @@ body[dir="ltr"] .fact {
   margin-bottom: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   gap: 2px;
+  width: 100%;
 }
 
 .slot-line {
   display: flex;
   justify-content: center;
-  gap: 4px;
+  gap: 2px;
   flex-wrap: nowrap;
   overflow-x: auto;
   padding: 2px 0;
@@ -188,7 +191,7 @@ body[dir="ltr"] .fact {
 
 .scramble {
   min-height: 60px;
-  margin-bottom: 12px;
+  margin-bottom: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -209,13 +212,13 @@ body[dir="ltr"] .fact {
   height: var(--slot-size);
   border: none;
   border-radius: 10px;
-  margin: 4px;
+  margin: 2px;
   display: flex;
   justify-content: center;
   align-items: center;
   background: #ffffff;
   color: #111111;
-  font-size: calc(var(--slot-size) * 0.32);
+  font-size: calc(var(--slot-size) * 0.55);
   font-weight: 700;
   min-width: var(--slot-size);
   text-align: center;
@@ -230,7 +233,7 @@ body[dir="ltr"] .fact {
 
 /* Bigger font when a slot is filled */
 .slot[data-filled="true"] {
-  font-size: calc(var(--slot-size) * 0.48);
+  font-size: calc(var(--slot-size) * 0.55);
   color: #000000;
 }
 
@@ -259,7 +262,7 @@ body[dir="ltr"] .fact {
 
 /* Larger font for active scramble tiles (blue) */
 .letter:not(.empty) {
-  font-size: calc(var(--slot-size) * 0.48);
+  font-size: calc(var(--slot-size) * 0.55);
 }
 
 .letter.disabled {
@@ -396,6 +399,10 @@ button:disabled {
   margin-top: 12px;
 }
 
+.word-gap {
+  width: 30px; /* or any spacing you prefer */
+}
+
 /* Mobile adjustments */
 @media (max-width: 480px) {
   .app {
@@ -418,3 +425,4 @@ button:disabled {
     gap: 6px;
   }
 }
+
