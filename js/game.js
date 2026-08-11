@@ -45,7 +45,7 @@ function getLocalizedText(key) {
 
 function getLanguageMessage() {
   return GameState.language === "en"
-    ? "לחצו שוב למעבר לעברית"
+    ? "לחצו שוב לעברית"
     : "Tap again for English";
 }
 
@@ -79,7 +79,7 @@ async function switchLanguage() {
   try {
     await loadQuestions();
   } catch (e) {
-    alert(`לא ניתן לטעון ${GameState.language === "en" ? "questions-en.json" : "questions-he.json"}: ` + e.message);
+    alert(`לא ניתן לטעון ${GameState.language === "en" ? "questions-en.json?v=5" : "questions-he.json?v=5"}: ` + e.message);
     return;
   }
 
@@ -170,12 +170,16 @@ function showHint() {
   const hintBtn = document.getElementById("hintBtn");
 
   if (GameState.hintLevel === 1) {
-    factBox.textContent = GameState.current.fact;
-  } else if (GameState.hintLevel === 2) {
+    // First click: Reveal random letters
     clearBoardForHint();
     revealRandomLetter();
+    setButtonLabel(hintBtn, getLocalizedText("hint"));
+  } else if (GameState.hintLevel === 2) {
+    // Second click: Show fact
+    factBox.textContent = GameState.current.fact;
     setButtonLabel(hintBtn, getLocalizedText("reveal"));
   } else if (GameState.hintLevel === 3) {
+    // Third click: Reveal all
     revealAllLetters();
     const resetBtn = document.getElementById("resetBtn");
     const nextBtn = document.getElementById("nextBtn");
@@ -211,3 +215,4 @@ function onLanguageButtonTap() {
     message.classList.remove("visible");
   }, 2000);
 }
+

@@ -28,10 +28,12 @@ body {
   text-align: center;
 }
 
+/* Force globe to the LEFT in BOTH modes */
 .lang-toggle {
   position: absolute;
   top: 10px;
-  inset-inline-start: 10px;
+  left: 10px; /* Force left */
+  right: auto; /* Reset right */
   background: transparent;
   border: none;
   padding: 4px;
@@ -41,16 +43,11 @@ body {
     justify-content: center;
   }
 
-/* Hebrew mode (RTL): move globe to the LEFT */
-body[dir="rtl"] .lang-toggle {
-  inset-inline-start: auto;
-  inset-inline-end: 10px;
-  }
-
-/* English mode (LTR): move globe to the RIGHT */
+/* Remove the RTL/LTR overrides that were causing it to flip */
+body[dir="rtl"] .lang-toggle,
 body[dir="ltr"] .lang-toggle {
-  inset-inline-start: auto;
-  inset-inline-end: 10px;
+  left: 10px;
+  right: auto;
 }
 
 .lang-toggle img {
@@ -61,21 +58,23 @@ body[dir="ltr"] .lang-toggle {
 
 .lang-message {
   position: absolute;
-  top: 20px;   /* aligns text with the globe */
+  top: 16px;   /* aligns text with the globe */
   font-size: 0.8rem;
   color: #f1f5ff;
   white-space: nowrap;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.2s ease, visibility 0.2s ease;
+  transition: opacity 0.5s ease, visibility 0.2s ease;
+  z-index: 100; /* Added z-index to ensure visibility on top */
 }
 
-/* Message appears beside the globe in BOTH modes */
-body[dir="ltr"] .lang-message,
-body[dir="rtl"] .lang-message {
-  inset-inline-end: 52px;  /* same side as globe, with some spacing */
-  inset-inline-start: auto;
+/* Message appears beside the globe (on the left) in BOTH modes */
+.lang-message {
+  inset-inline-start: 45px; /* Forced left side */
+  inset-inline-end: auto;
+  left: 45px;  /* Explicitly override for consistency */
+  right: auto;
 }
 
 .lang-message.visible {
