@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>בלנדר</title>
-  <link rel="stylesheet" href="styles.css?v=5">
+  <link rel="stylesheet" href="styles.css?v=6">
 </head>
 <body dir="rtl">
   <div class="app">
@@ -21,11 +21,14 @@
 
     <div id="scramble" class="scramble"></div>
 
-    <div id="fact" class="fact"></div>
+    <div id="clue" class="clue blurred">
+      <span class="clue-prefix">Clue: </span>
+      <span class="clue-text" id="clue-text"></span>
+    </div>
 
     <div class="controls">
       <button id="hintBtn" class="icon-button" aria-label="רמז">
-        <img class="button-icon" src="images/bulb1.svg" alt="" aria-hidden="true">
+        <img class="button-icon" src="images/target1.svg" alt="" aria-hidden="true">
         <span class="button-label visually-hidden">רמז</span>
       </button>
       <button id="resetBtn" class="icon-button" aria-label="אפס">
@@ -39,9 +42,9 @@
     </div>
   </div>
 
-  <script src="js/game.js?v=5"></script>
-  <script src="js/ui.js?v=5"></script>
-  <script src="js/main.js?v=5"></script>
+  <script src="js/game.js?v=6"></script>
+  <script src="js/ui.js?v=6"></script>
+  <script src="js/main.js?v=6"></script>
 </body>
 </html>
 

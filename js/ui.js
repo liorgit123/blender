@@ -41,16 +41,36 @@ function renderQuestion(question) {
   const pattern = document.getElementById("pattern");
   const scrambleBox = document.getElementById("scramble");
   const categoryBox = document.getElementById("category");
-  const factBox = document.getElementById("fact");
+  const clueText = document.getElementById("clue-text");
+  const cluePrefix = document.querySelector(".clue-prefix");
+  const clueContainer = document.querySelector(".clue");
 
   pattern.innerHTML = "";
   scrambleBox.innerHTML = "";
   categoryBox.textContent = "";
-  factBox.textContent = "";
+  // Reset clue container properly
+  if (clueContainer) {
+  clueContainer.classList.add("blurred");
+    clueContainer.onclick = () => clueContainer.classList.remove("blurred");
+
+    // Clear inner content first, then restore the structure
+    clueContainer.innerHTML = "";
+
+    const prefixSpan = document.createElement("span");
+    prefixSpan.className = "clue-prefix";
+    prefixSpan.textContent = getLocalizedText("clue");
+
+    const textSpan = document.createElement("span");
+    textSpan.className = "clue-text";
+    textSpan.id = "clue-text";
+    textSpan.textContent = question.fact;
+
+    clueContainer.appendChild(prefixSpan);
+    clueContainer.appendChild(textSpan);
+  }
 
   document.getElementById("hintBtn").disabled = false;
   updateResetButtonState();
-
   const clean = question.answer.replace(/\s+/g, "");
   const letters = segmentText(clean);
 
@@ -179,7 +199,7 @@ function createSlots(answer, container) {
 
 function onLetterClick(e) {
   const tile = e.currentTarget;
-  const factBox = document.getElementById("fact");
+  const factBox = document.getElementById("clue");
 
   if (factBox.textContent === "מעולה! תשובה נכונה.") {
     return;
@@ -213,7 +233,7 @@ function onLetterClick(e) {
 
 function onSlotClick(e) {
   const slot = e.currentTarget;
-  const factBox = document.getElementById("fact");
+  const factBox = document.getElementById("clue");
 
   if (factBox.textContent === "מעולה! תשובה נכונה." || factBox.textContent === "לא מדויק, נסה שוב.") {
     return;
@@ -252,26 +272,29 @@ function clearBoardForHint() {
   const tiles = [...document.querySelectorAll(".letter")];
 
   slots.forEach(slot => {
-    slot.textContent = "";
-    slot.dataset.filled = "false";
-    slot.removeAttribute("data-letter");
+    // Only clear if not locked
+    if (slot.dataset.locked !== "true") {
+      slot.textContent = "";
+      slot.dataset.filled = "false";
+      slot.removeAttribute("data-letter");
+    }
   });
 
   tiles.forEach(tile => {
-    if (tile.dataset.letter) {
+    // Only return if not locked
+    if (tile.dataset.letter && tile.dataset.locked !== "true") {
       tile.textContent = tile.dataset.letter;
       tile.removeAttribute("data-letter");
+      tile.classList.remove("empty", "disabled");
+      tile.style.cursor = "grab";
+      tile.addEventListener("click", onLetterClick);
     }
-    tile.classList.remove("empty", "disabled");
-    tile.style.cursor = "grab";
-    tile.addEventListener("click", onLetterClick);
   });
 }
 
 function resetPlacement() {
   const slots = [...document.querySelectorAll(".slot")];
   const tiles = [...document.querySelectorAll(".letter")];
-
   slots.forEach(slot => {
     if (slot.dataset.filled === "true" && slot.dataset.locked !== "true") {
       slot.textContent = "";
@@ -373,3 +396,4 @@ function shuffleArray(arr) {
   }
   return a;
 }
+

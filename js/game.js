@@ -31,6 +31,7 @@ function getLocalizedText(key) {
   const isEnglish = GameState.language === "en";
   switch (key) {
     case "category": return isEnglish ? "Category: " : "קטגוריה: ";
+    case "clue": return isEnglish ? "Clue: " : "רמז: "; // Add this
     case "notAll": return isEnglish ? "Not all letters have been placed." : "לא כל האותיות הונחו במקומן.";
     case "correct": return isEnglish ? "Great! Correct answer." : "מעולה! תשובה נכונה.";
     case "incorrect": return isEnglish ? "Not quite, keep trying." : "לא מדויק, המשיכו לנסות.";
@@ -140,7 +141,7 @@ function checkAnswer() {
   const user = getUserAnswer();
   const target = normalizeHebrewText(GameState.current.answer.replace(/\s+/g, ""));
 
-  const factBox = document.getElementById("fact");
+  const factBox = document.getElementById("clue");
   const hintBtn = document.getElementById("hintBtn");
 
   if (!user || user.length !== target.length) {
@@ -166,28 +167,78 @@ function checkAnswer() {
 function showHint() {
   GameState.hintLevel++;
 
-  const factBox = document.getElementById("fact");
   const hintBtn = document.getElementById("hintBtn");
+  const slots = [...document.querySelectorAll(".slot")];
+
+  // Call the clear board function before revealing hint letters
+  clearBoardForHint();
 
   if (GameState.hintLevel === 1) {
-    // First click: Reveal random letters
-    clearBoardForHint();
-    revealRandomLetter();
-    setButtonLabel(hintBtn, getLocalizedText("hint"));
+    // 20%
+    revealCount(Math.max(1, Math.ceil(slots.length * 0.2)));
   } else if (GameState.hintLevel === 2) {
-    // Second click: Show fact
-    factBox.textContent = GameState.current.fact;
-    setButtonLabel(hintBtn, getLocalizedText("reveal"));
+    // 50%
+    revealCount(Math.max(1, Math.ceil(slots.length * 0.3)));
   } else if (GameState.hintLevel === 3) {
-    // Third click: Reveal all
+    // All
     revealAllLetters();
-    const resetBtn = document.getElementById("resetBtn");
-    const nextBtn = document.getElementById("nextBtn");
-    resetBtn.disabled = true;
-    resetBtn.style.visibility = "hidden";
-    setButtonLabel(nextBtn, getLocalizedText("next"));
     hintBtn.disabled = true;
+    document.getElementById("resetBtn").disabled = true;
+    document.getElementById("resetBtn").style.visibility = "hidden"; // Hide reset
+    setButtonLabel(document.getElementById("nextBtn"), getLocalizedText("next"));
   }
+}
+
+function revealCount(count) {
+  const slots = [...document.querySelectorAll(".slot")];
+  const clean = GameState.current.answer.replace(/\s+/g, "");
+  const letters = segmentText(clean);
+
+  const emptyIndices = slots
+    .map((s, i) => (s.dataset.filled === "false" ? i : null))
+    .filter(i => i !== null);
+
+  // Try to find a set of indices that are not adjacent
+  let toReveal = [];
+  const shuffled = shuffleArray(emptyIndices);
+
+  for (let idx of shuffled) {
+    if (!toReveal.some(revealedIdx => Math.abs(revealedIdx - idx) === 1)) {
+      toReveal.push(idx);
+    }
+    if (toReveal.length === count) break;
+  }
+
+  // If we couldn't find enough non-adjacent slots, fill with remaining
+  if (toReveal.length < count) {
+    for (let idx of shuffled) {
+      if (!toReveal.includes(idx)) {
+        toReveal.push(idx);
+      }
+      if (toReveal.length === count) break;
+    }
+  }
+
+  toReveal.forEach(idx => {
+    const slot = slots[idx];
+    const letterBase = toBaseHebrew(letters[idx]);
+    placeLetterInSlot(slot, letterBase);
+    slot.dataset.locked = "true";
+
+    const tiles = [...document.querySelectorAll(".letter")].filter(
+      t => !t.classList.contains("empty") && t.dataset.base === letterBase
+    );
+    if (tiles.length > 0) {
+      const tile = tiles[0];
+      tile.dataset.letter = letterBase;
+      tile.dataset.locked = "true";
+      tile.textContent = "";
+      tile.classList.add("empty");
+      tile.removeEventListener("click", onLetterClick);
+      tile.style.cursor = "default";
+    }
+  });
+  updateResetButtonState();
 }
 
 function onLanguageButtonTap() {
@@ -213,6 +264,6 @@ function onLanguageButtonTap() {
   languageTapTimer = setTimeout(() => {
     languageTapWindowOpen = false;
     message.classList.remove("visible");
-  }, 2000);
+  }, 1000);
 }
 
