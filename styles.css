@@ -127,8 +127,14 @@ h1 {
   min-height: 24px;
   margin-bottom: 20px;
   color: #b8d4ff;
-  font-weight: 600;
-  text-align: center;
+}
+
+.category-prefix {
+  font-weight: bold;
+}
+
+.category-value {
+  font-weight: normal;
 }
 
 .fact {
@@ -149,7 +155,7 @@ h1 {
 .fact-check {
   color: #35d46b;
   font-size: 2.05rem;
-  font-weight: 900;
+  font-weight: bold;
   line-height: 1;
   flex-shrink: 0;
   animation: checkFadeIn 0.9s ease-out;
@@ -270,6 +276,28 @@ body[dir="ltr"] .fact {
   text-align: center;
   cursor: pointer;
   user-select: none;
+  position: relative; /* For marker */
+  overflow: hidden;
+}
+
+.slot[data-active="true"]::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 10%;              /* bottom 10% of tile */
+  background-color: #0e1dee;
+  border-radius: inherit;  /* matches tile corners */
+  animation: flicker 2s linear infinite;
+}
+
+@keyframes flicker {
+  0%   { opacity: 0.5; }
+  25%  { opacity: 0.3; }
+  50%  { opacity: 0.5; }
+  75%  { opacity: 0.3; }
+  100% { opacity: 0.5; }
 }
 
 .slot[data-locked="true"] {
@@ -294,7 +322,7 @@ body[dir="ltr"] .fact {
   color: #072046;
   border-radius: 12px;
   font-size: calc(var(--slot-size) * 0.35);
-  font-weight: 700;
+  font-weight: bold;
   cursor: grab;
   user-select: none;
 }
@@ -327,11 +355,11 @@ body[dir="ltr"] .fact {
 .controls {
   display: flex;
   gap: 8px;
-  justify-content: center;
+    justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   margin-top: 6px;
-}
+  }
 
 button.icon-button {
   width: 48px;
@@ -343,7 +371,7 @@ button.icon-button {
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-}
+  }
 
 .button-icon {
   width: 60%; /* Reduced size */

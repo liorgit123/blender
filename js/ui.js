@@ -35,6 +35,7 @@ function placeLetterInSlot(slot, letterBase) {
   slot.dataset.filled = "true";
   slot.dataset.letter = letterBase;
   slot.textContent = isFinalSlot(slot) ? toFinalHebrew(letterBase) : letterBase;
+  updateActiveSlot();
 }
 
 function renderQuestion(question) {
@@ -74,8 +75,7 @@ function renderQuestion(question) {
   const clean = question.answer.replace(/\s+/g, "");
   const letters = segmentText(clean);
 
-  categoryBox.textContent = `${getLocalizedText("category")}${question.category}`;
-
+  categoryBox.innerHTML = `<span class="category-prefix">${getLocalizedText("category")}</span><span class="category-value">${question.category}</span>`;
   // hint 1: תיבות ריקות מופיעות כבר בהתחלה
   createSlots(question.answer, pattern);
 
@@ -174,6 +174,7 @@ function createSlots(answer, container) {
         slot.className = "slot";
         slot.dataset.filled = "false";
         slot.dataset.final = letterIndex === letters.length - 1 ? "true" : "false";
+        slot.dataset.active = "false"; // New property for marker
         slot.addEventListener("click", onSlotClick);
         line.appendChild(slot);
       });
@@ -195,39 +196,26 @@ function createSlots(answer, container) {
       container.appendChild(gap);
     }
   });
+
+  // Set default active slot
+  updateActiveSlot();
 }
 
-function onLetterClick(e) {
-  const tile = e.currentTarget;
-  const factBox = document.getElementById("clue");
+function updateActiveSlot(specificSlot = null) {
+  const slots = [...document.querySelectorAll(".slot")];
+  // Clear all
+  slots.forEach(s => s.dataset.active = "false");
 
-  if (factBox.textContent === "מעולה! תשובה נכונה.") {
+  if (specificSlot) {
+    specificSlot.dataset.active = "true";
     return;
   }
 
-  const slots = [...document.querySelectorAll(".slot")].filter(
-    s => s.dataset.filled === "false"
-  );
-  if (slots.length === 0) return;
+  const firstEmpty = slots.find(s => s.dataset.filled === "false");
 
-  const letterBase = tile.dataset.base || toBaseHebrew(tile.textContent);
-  const slot = slots[0];
-  placeLetterInSlot(slot, letterBase);
-
-  tile.dataset.letter = letterBase;
-  tile.textContent = "";
-  tile.classList.add("empty");
-  tile.removeEventListener("click", onLetterClick);
-  tile.style.cursor = "default";
-
-  updateResetButtonState();
-
-  const allSlotsFilled = [...document.querySelectorAll(".slot")].every(
-    s => s.dataset.filled === "true"
-  );
-
-  if (allSlotsFilled) {
-    checkAnswer();
+  // Set first empty
+  if (firstEmpty) {
+    firstEmpty.dataset.active = "true";
   }
 }
 
@@ -239,33 +227,93 @@ function onSlotClick(e) {
     return;
   }
 
-  if (slot.dataset.filled !== "true" || slot.dataset.locked === "true") return;
+  // If slot is empty, make it active
+  if (slot.dataset.filled === "false") {
+    document.querySelectorAll(".slot").forEach(s => s.dataset.active = "false");
+    slot.dataset.active = "true";
+    return;
+  }
+
+  // If slot has letter, handle removal
+  if (slot.dataset.locked === "true") return;
 
   const letter = slot.dataset.letter || toBaseHebrew(slot.textContent);
-  slot.textContent = "";
-  slot.dataset.filled = "false";
-  slot.removeAttribute("data-letter");
+      slot.textContent = "";
+      slot.dataset.filled = "false";
+      slot.removeAttribute("data-letter");
 
-  const tiles = [...document.querySelectorAll(".letter")].filter(
+  // Make this slot active now
+  document.querySelectorAll(".slot").forEach(s => s.dataset.active = "false");
+  slot.dataset.active = "true";
+    const tiles = [...document.querySelectorAll(".letter")].filter(
     t => t.dataset.letter === letter && t.classList.contains("empty")
-  );
-  if (tiles.length > 0) {
-    const tile = tiles[0];
+    );
+    if (tiles.length > 0) {
+      const tile = tiles[0];
     tile.textContent = toBaseHebrew(letter);
     tile.dataset.base = toBaseHebrew(letter);
     tile.removeAttribute("data-letter");
     tile.classList.remove("empty");
     tile.addEventListener("click", onLetterClick);
     tile.style.cursor = "grab";
+    }
+  updateResetButtonState();
+}
+function onLetterClick(e) {
+  const tile = e.currentTarget;
+  const factBox = document.getElementById("clue");
+
+  if (factBox.textContent === "מעולה! תשובה נכונה.") {
+    return;
   }
 
+  // Find currently active slot
+  let targetSlot = document.querySelector(".slot[data-active='true']");
+
+  // Fallback to first empty if none active (though logic should prevent this)
+  if (!targetSlot || targetSlot.dataset.filled === "true") {
+      targetSlot = [...document.querySelectorAll(".slot")].find(s => s.dataset.filled === "false");
+  }
+
+  if (!targetSlot) return;
+
+  const letterBase = tile.dataset.base || toBaseHebrew(tile.textContent);
+  placeLetterInSlot(targetSlot, letterBase);
+      tile.dataset.letter = letterBase;
+      tile.textContent = "";
+      tile.classList.add("empty");
+      tile.removeEventListener("click", onLetterClick);
+      tile.style.cursor = "default";
   updateResetButtonState();
+
+  // Find next empty slot for active marker
+  const slots = [...document.querySelectorAll(".slot")];
+  const currentIndex = slots.indexOf(targetSlot);
+
+  let nextActive = null;
+  for (let i = 1; i <= slots.length; i++) {
+      const nextIndex = (currentIndex + i) % slots.length;
+      if (slots[nextIndex].dataset.filled === "false") {
+          nextActive = slots[nextIndex];
+          break;
+      }
+  }
+
+  updateActiveSlot(nextActive);
+
+  const allSlotsFilled = [...document.querySelectorAll(".slot")].every(
+    s => s.dataset.filled === "true"
+  );
+
+  if (allSlotsFilled) {
+    checkAnswer();
+}
 }
 
 function getUserAnswer() {
   const slots = [...document.querySelectorAll(".slot")];
   return slots.map(s => toBaseHebrew(s.textContent)).join("");
-}
+  }
 
 function clearBoardForHint() {
   const slots = [...document.querySelectorAll(".slot")];
@@ -277,8 +325,9 @@ function clearBoardForHint() {
       slot.textContent = "";
       slot.dataset.filled = "false";
       slot.removeAttribute("data-letter");
-    }
+}
   });
+  updateActiveSlot();
 
   tiles.forEach(tile => {
     // Only return if not locked
@@ -302,6 +351,7 @@ function resetPlacement() {
       slot.removeAttribute("data-letter");
     }
   });
+  updateActiveSlot();
 
   tiles.forEach(tile => {
     if (tile.dataset.letter && tile.dataset.locked !== "true") {
@@ -350,6 +400,7 @@ function revealRandomLetter() {
       tile.style.cursor = "default";
     }
   });
+  updateActiveSlot();
 }
 
 function revealAllLetters() {
@@ -375,6 +426,7 @@ function revealAllLetters() {
     t.removeEventListener("click", onLetterClick);
     t.style.cursor = "default";
   });
+  updateActiveSlot();
 
   updateResetButtonState();
 }

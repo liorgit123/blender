@@ -64,7 +64,7 @@ function showLanguageMessage() {
 }
 
 async function loadQuestions() {
-  const fileName = GameState.language === "en" ? "questions-en.json" : "questions-he.json";
+  const fileName = GameState.language === "en" ? "questions-en.json?v=7" : "questions-he.json?v=7";
   const res = await fetch(`data/${fileName}`);
   if (!res.ok) {
     throw new Error(`Failed to load ${fileName}`);
@@ -80,7 +80,7 @@ async function switchLanguage() {
   try {
     await loadQuestions();
   } catch (e) {
-    alert(`לא ניתן לטעון ${GameState.language === "en" ? "questions-en.json?v=5" : "questions-he.json?v=5"}: ` + e.message);
+    alert(`לא ניתן לטעון ${GameState.language === "en" ? "questions-en.json" : "questions-he.json"}: ` + e.message);
     return;
   }
 
