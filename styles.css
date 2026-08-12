@@ -293,11 +293,11 @@ body[dir="ltr"] .fact {
 }
 
 @keyframes flicker {
-  0%   { opacity: 0.5; }
+  0%   { opacity: 0.7; }
   25%  { opacity: 0.3; }
-  50%  { opacity: 0.5; }
+  50%  { opacity: 0.7; }
   75%  { opacity: 0.3; }
-  100% { opacity: 0.5; }
+  100% { opacity: 0.7; }
 }
 
 .slot[data-locked="true"] {
