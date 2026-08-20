@@ -114,7 +114,15 @@ function renderQuestion(question) {
       tile.className = "letter";
       tile.dataset.base = toBaseHebrew(letter);
       tile.textContent = toBaseHebrew(letter);
-      tile.addEventListener("click", onLetterClick);
+
+      // Merge logic: use a single handler that checks the state
+      tile.addEventListener("click", (e) => {
+          if (tile.classList.contains("empty")) {
+              onEmptyLetterClick(e);
+          } else {
+              onLetterClick(e);
+          }
+      });
       row.appendChild(tile);
     });
 
@@ -219,95 +227,148 @@ function updateActiveSlot(specificSlot = null) {
   }
 }
 
+function isGameWon() {
+  const factBox = document.getElementById("clue");
+  return factBox.querySelector(".fact-check") !== null;
+}
+
 function onSlotClick(e) {
   const slot = e.currentTarget;
-  const factBox = document.getElementById("clue");
+  if (isGameWon() || slot.dataset.filled !== "true" || slot.dataset.locked === "true") return;
 
-  if (factBox.textContent === "מעולה! תשובה נכונה." || factBox.textContent === "לא מדויק, נסה שוב.") {
-    return;
-  }
+  const letterBase = slot.dataset.letter;
+  // Find the source tile that matches this letter
+  const originalTile = [...document.querySelectorAll(".letter")].find(
+    t => t.dataset.letter === letterBase && t.classList.contains("empty")
+  );
 
-  // If slot is empty, make it active
-  if (slot.dataset.filled === "false") {
-    document.querySelectorAll(".slot").forEach(s => s.dataset.active = "false");
-    slot.dataset.active = "true";
-    return;
-  }
+  if (originalTile) {
+    const slotRect = slot.getBoundingClientRect();
+    const tileRect = originalTile.getBoundingClientRect();
 
-  // If slot has letter, handle removal
-  if (slot.dataset.locked === "true") return;
+    const ghost = document.createElement("div");
+    ghost.textContent = slot.textContent;
+  ghost.className = "letter moving";
+    ghost.style.left = slotRect.left + "px";
+    ghost.style.top = slotRect.top + "px";
+    ghost.style.width = slot.offsetWidth + "px";
+    ghost.style.height = slot.offsetHeight + "px";
+    ghost.style.fontSize = window.getComputedStyle(slot).fontSize;
+  document.body.appendChild(ghost);
 
-  const letter = slot.dataset.letter || toBaseHebrew(slot.textContent);
       slot.textContent = "";
       slot.dataset.filled = "false";
       slot.removeAttribute("data-letter");
+    document.querySelectorAll(".slot").forEach(s => s.dataset.active = "false");
+    slot.dataset.active = "true";
 
-  // Make this slot active now
-  document.querySelectorAll(".slot").forEach(s => s.dataset.active = "false");
-  slot.dataset.active = "true";
-    const tiles = [...document.querySelectorAll(".letter")].filter(
-    t => t.dataset.letter === letter && t.classList.contains("empty")
-    );
-    if (tiles.length > 0) {
-      const tile = tiles[0];
-    tile.textContent = toBaseHebrew(letter);
-    tile.dataset.base = toBaseHebrew(letter);
-    tile.removeAttribute("data-letter");
-    tile.classList.remove("empty");
-    tile.addEventListener("click", onLetterClick);
-    tile.style.cursor = "grab";
-    }
+    requestAnimationFrame(() => {
+      ghost.style.left = tileRect.left + "px";
+      ghost.style.top = tileRect.top + "px";
+  });
+
+    ghost.addEventListener("transitionend", () => {
+      ghost.remove();
+      originalTile.textContent = originalTile.dataset.base;
+      originalTile.classList.remove("empty");
+      originalTile.removeAttribute("data-letter");
   updateResetButtonState();
+    });
 }
+}
+
 function onLetterClick(e) {
   const tile = e.currentTarget;
-  const factBox = document.getElementById("clue");
+  if (isGameWon() || tile.classList.contains("empty")) return;
 
-  if (factBox.textContent === "מעולה! תשובה נכונה.") {
-    return;
-  }
-
-  // Find currently active slot
   let targetSlot = document.querySelector(".slot[data-active='true']");
-
-  // Fallback to first empty if none active (though logic should prevent this)
   if (!targetSlot || targetSlot.dataset.filled === "true") {
-      targetSlot = [...document.querySelectorAll(".slot")].find(s => s.dataset.filled === "false");
+    targetSlot = [...document.querySelectorAll(".slot")].find(s => s.dataset.filled === "false");
   }
-
   if (!targetSlot) return;
 
-  const letterBase = tile.dataset.base || toBaseHebrew(tile.textContent);
-  placeLetterInSlot(targetSlot, letterBase);
-      tile.dataset.letter = letterBase;
-      tile.textContent = "";
+  // Use dataset to store the letter being moved
+  tile.dataset.letter = tile.dataset.base || toBaseHebrew(tile.textContent);
+
+  // Clone the tile background for the "empty" effect
       tile.classList.add("empty");
-      tile.removeEventListener("click", onLetterClick);
-      tile.style.cursor = "default";
+
+  // Animate ONLY the text
+  const rect = tile.getBoundingClientRect();
+  const slotRect = targetSlot.getBoundingClientRect();
+
+  const ghost = document.createElement("div");
+  ghost.textContent = tile.dataset.letter;
+  ghost.className = "letter moving";
+  ghost.style.left = rect.left + "px";
+  ghost.style.top = rect.top + "px";
+  ghost.style.width = tile.offsetWidth + "px";
+  ghost.style.height = tile.offsetHeight + "px";
+  ghost.style.fontSize = window.getComputedStyle(tile).fontSize;
+  document.body.appendChild(ghost);
+
+      tile.textContent = "";
+  requestAnimationFrame(() => {
+    ghost.style.left = slotRect.left + "px";
+    ghost.style.top = slotRect.top + "px";
+  });
+
+  ghost.addEventListener("transitionend", () => {
+    ghost.remove();
+    placeLetterInSlot(targetSlot, tile.dataset.letter);
   updateResetButtonState();
-
-  // Find next empty slot for active marker
-  const slots = [...document.querySelectorAll(".slot")];
-  const currentIndex = slots.indexOf(targetSlot);
-
-  let nextActive = null;
-  for (let i = 1; i <= slots.length; i++) {
-      const nextIndex = (currentIndex + i) % slots.length;
-      if (slots[nextIndex].dataset.filled === "false") {
-          nextActive = slots[nextIndex];
-          break;
-      }
-  }
-
-  updateActiveSlot(nextActive);
-
-  const allSlotsFilled = [...document.querySelectorAll(".slot")].every(
-    s => s.dataset.filled === "true"
-  );
-
-  if (allSlotsFilled) {
-    checkAnswer();
+    updateActiveSlot();
+    if ([...document.querySelectorAll(".slot")].every(s => s.dataset.filled === "true")) checkAnswer();
+  });
 }
+
+function onEmptyLetterClick(e) {
+  const tile = e.currentTarget;
+  if (isGameWon() || !tile.classList.contains("empty") || !tile.dataset.letter) return;
+
+  const letter = tile.dataset.letter;
+
+  // Find slot with this letter
+  // IMPORTANT: We need to make sure we don't pick a locked slot (hinted ones)
+  const slot = [...document.querySelectorAll(".slot")].find(s =>
+      s.dataset.filled === "true" &&
+      s.dataset.letter === letter &&
+      s.dataset.locked !== "true"
+    );
+
+  if (!slot) return;
+
+  // Animate back to stash
+  const slotRect = slot.getBoundingClientRect();
+  const tileRect = tile.getBoundingClientRect();
+
+  const ghost = document.createElement("div");
+  ghost.textContent = letter;
+  ghost.className = "letter moving";
+  ghost.style.left = slotRect.left + "px";
+  ghost.style.top = slotRect.top + "px";
+  ghost.style.width = slot.offsetWidth + "px";
+  ghost.style.height = slot.offsetHeight + "px";
+  ghost.style.fontSize = window.getComputedStyle(slot).fontSize;
+  document.body.appendChild(ghost);
+
+  slot.textContent = "";
+  slot.dataset.filled = "false";
+  slot.removeAttribute("data-letter");
+
+  requestAnimationFrame(() => {
+      ghost.style.left = tileRect.left + "px";
+      ghost.style.top = tileRect.top + "px";
+  });
+
+  ghost.addEventListener("transitionend", () => {
+      ghost.remove();
+      tile.textContent = letter;
+      tile.classList.remove("empty");
+      tile.removeAttribute("data-letter");
+  updateResetButtonState();
+      updateActiveSlot();
+  });
 }
 
 function getUserAnswer() {
@@ -318,7 +379,6 @@ function getUserAnswer() {
 function clearBoardForHint() {
   const slots = [...document.querySelectorAll(".slot")];
   const tiles = [...document.querySelectorAll(".letter")];
-
   slots.forEach(slot => {
     // Only clear if not locked
     if (slot.dataset.locked !== "true") {
@@ -337,7 +397,7 @@ function clearBoardForHint() {
       tile.classList.remove("empty", "disabled");
       tile.style.cursor = "grab";
       tile.addEventListener("click", onLetterClick);
-    }
+}
   });
 }
 
@@ -349,7 +409,7 @@ function resetPlacement() {
       slot.textContent = "";
       slot.dataset.filled = "false";
       slot.removeAttribute("data-letter");
-    }
+}
   });
   updateActiveSlot();
 

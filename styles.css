@@ -293,11 +293,11 @@ body[dir="ltr"] .fact {
 }
 
 @keyframes flicker {
-  0%   { opacity: 0.7; }
+  0%   { opacity: 0.5; }
   25%  { opacity: 0.3; }
-  50%  { opacity: 0.7; }
+  50%  { opacity: 0.5; }
   75%  { opacity: 0.3; }
-  100% { opacity: 0.7; }
+  100% { opacity: 0.5; }
 }
 
 .slot[data-locked="true"] {
@@ -322,9 +322,25 @@ body[dir="ltr"] .fact {
   color: #072046;
   border-radius: 12px;
   font-size: calc(var(--slot-size) * 0.35);
-  font-weight: bold;
+  font-weight: 700;
   cursor: grab;
   user-select: none;
+  transition: all 0.2s ease; /* Smooth movement */
+}
+
+/* Add a class for animating the movement */
+.letter.moving {
+  position: fixed; /* Changed to fixed for easier coordinate handling */
+  z-index: 1000;
+  pointer-events: none;
+  /* Remove background/border here so only the text moves */
+  background: transparent;
+  color: #072046; /* Text color */
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
 }
 
 .letter.empty {
@@ -332,6 +348,7 @@ body[dir="ltr"] .fact {
   color: transparent;
   cursor: default;
   border: none;
+  visibility: visible; /* Ensure the tile remains visible */
 }
 
 /* Larger font for active scramble tiles (blue) */
@@ -348,8 +365,13 @@ body[dir="ltr"] .fact {
   cursor: default !important;
 }
 
+/* Keep the tile background visible */
 .letter.hidden {
-  visibility: hidden;
+  color: transparent !important;
+  /* Ensure it looks like an "empty" tile */
+  background: rgba(0, 122, 255, 0.40);
+  cursor: default;
+  visibility: visible; /* Ensure it stays visible */
 }
 
 .controls {

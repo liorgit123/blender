@@ -145,28 +145,68 @@ function checkAnswer() {
   const hintBtn = document.getElementById("hintBtn");
 
   if (!user || user.length !== target.length) {
+    const previousFact = GameState.current.fact;
+    const wasBlurred = factBox.classList.contains("blurred");
+
     factBox.textContent = getLocalizedText("notAll");
-    return;
+
+    setTimeout(() => {
+      if (factBox.textContent === getLocalizedText("notAll")) {
+        factBox.innerHTML = `<span class="clue-prefix">${getLocalizedText("clue")}</span><span class="clue-text" id="clue-text">${previousFact}</span>`;
+
+        // Restore previous blur state
+        if (wasBlurred) {
+        factBox.classList.add("blurred");
+        factBox.onclick = () => factBox.classList.remove("blurred");
+        } else {
+            factBox.classList.remove("blurred");
+            factBox.onclick = null;
+      }
   }
+    }, 2000);
+    return;
+}
 
   if (user === target) {
     factBox.innerHTML = `<span class="fact-check">✓</span>${getLocalizedText("correct")}`;
     hintBtn.disabled = true;
     document.getElementById("resetBtn").disabled = true;
+    document.getElementById("resetBtn").style.visibility = "hidden"; // Hide reset
     setButtonLabel(document.getElementById("nextBtn"), "הבא");
+
+    // Disable active marker
+    document.querySelectorAll(".slot").forEach(s => s.dataset.active = "false");
+
     document.querySelectorAll(".letter").forEach(tile => {
       tile.style.cursor = "default";
       tile.classList.add("disabled");
       tile.removeEventListener("click", onLetterClick);
     });
   } else {
+    const previousFact = GameState.current.fact;
+    const wasBlurred = factBox.classList.contains("blurred");
+
     factBox.textContent = getLocalizedText("incorrect");
+
+    setTimeout(() => {
+      if (factBox.textContent === getLocalizedText("incorrect")) {
+        factBox.innerHTML = `<span class="clue-prefix">${getLocalizedText("clue")}</span><span class="clue-text" id="clue-text">${previousFact}</span>`;
+
+        // Restore previous blur state
+        if (wasBlurred) {
+        factBox.classList.add("blurred");
+        factBox.onclick = () => factBox.classList.remove("blurred");
+        } else {
+            factBox.classList.remove("blurred");
+            factBox.onclick = null;
+      }
   }
+    }, 2000);
+}
 }
 
 function showHint() {
   GameState.hintLevel++;
-
   const hintBtn = document.getElementById("hintBtn");
   const slots = [...document.querySelectorAll(".slot")];
 
@@ -246,13 +286,13 @@ function onLanguageButtonTap() {
 
   // If the window is already open → second tap triggers language switch
   if (languageTapWindowOpen) {
-    clearTimeout(languageTapTimer);
+  clearTimeout(languageTapTimer);
     languageTapWindowOpen = false;
     message.classList.remove("visible");
     message.textContent = "";
     switchLanguage();
     return;
-  }
+}
 
   // First tap → show message and open the window
   languageTapWindowOpen = true;
