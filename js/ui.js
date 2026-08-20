@@ -34,8 +34,8 @@ function isFinalSlot(slot) {
 function placeLetterInSlot(slot, letterBase) {
   slot.dataset.filled = "true";
   slot.dataset.letter = letterBase;
-  slot.textContent = isFinalSlot(slot) ? toFinalHebrew(letterBase) : letterBase;
-  updateActiveSlot();
+  // Wrap content in a span so we can animate it
+  slot.innerHTML = `<span class="slot-text">${isFinalSlot(slot) ? toFinalHebrew(letterBase) : letterBase}</span>`;
 }
 
 function renderQuestion(question) {
@@ -116,18 +116,21 @@ function renderQuestion(question) {
       tile.textContent = toBaseHebrew(letter);
 
       // Merge logic: use a single handler that checks the state
-      tile.addEventListener("click", (e) => {
-          if (tile.classList.contains("empty")) {
-              onEmptyLetterClick(e);
-          } else {
-              onLetterClick(e);
-          }
-      });
+      tile.addEventListener("click", handleTileClick);
       row.appendChild(tile);
     });
 
     scrambleBox.appendChild(row);
   });
+}
+
+function handleTileClick(e) {
+  const tile = e.currentTarget;
+    if (tile.classList.contains("empty")) {
+        onEmptyLetterClick(e);
+  } else {
+        onLetterClick(e);
+}
 }
 
 function splitIntoRows(items, maxPerRow) {
@@ -180,7 +183,7 @@ function createSlots(answer, container) {
       letters.forEach((letter, letterIndex) => {
         const slot = document.createElement("div");
         slot.className = "slot";
-        slot.dataset.filled = "false";
+  slot.dataset.filled = "false";
         slot.dataset.final = letterIndex === letters.length - 1 ? "true" : "false";
         slot.dataset.active = "false"; // New property for marker
         slot.addEventListener("click", onSlotClick);
@@ -226,7 +229,6 @@ function updateActiveSlot(specificSlot = null) {
     firstEmpty.dataset.active = "true";
   }
 }
-
 function isGameWon() {
   const factBox = document.getElementById("clue");
   return factBox.querySelector(".fact-check") !== null;
@@ -239,43 +241,33 @@ function onSlotClick(e) {
   const letterBase = slot.dataset.letter;
   // Find the source tile that matches this letter
   const originalTile = [...document.querySelectorAll(".letter")].find(
-    t => t.dataset.letter === letterBase && t.classList.contains("empty")
+    t => t.classList.contains("empty") && (t.dataset.base === letterBase || t.dataset.letter === letterBase)
   );
 
-  if (originalTile) {
-    const slotRect = slot.getBoundingClientRect();
-    const tileRect = originalTile.getBoundingClientRect();
+  const letterSpan = slot.querySelector(".slot-text");
 
-    const ghost = document.createElement("div");
-    ghost.textContent = slot.textContent;
-  ghost.className = "letter moving";
-    ghost.style.left = slotRect.left + "px";
-    ghost.style.top = slotRect.top + "px";
-    ghost.style.width = slot.offsetWidth + "px";
-    ghost.style.height = slot.offsetHeight + "px";
-    ghost.style.fontSize = window.getComputedStyle(slot).fontSize;
-  document.body.appendChild(ghost);
-
-      slot.textContent = "";
-      slot.dataset.filled = "false";
-      slot.removeAttribute("data-letter");
-    document.querySelectorAll(".slot").forEach(s => s.dataset.active = "false");
-    slot.dataset.active = "true";
-
-    requestAnimationFrame(() => {
-      ghost.style.left = tileRect.left + "px";
-      ghost.style.top = tileRect.top + "px";
-  });
-
-    ghost.addEventListener("transitionend", () => {
-      ghost.remove();
-      originalTile.textContent = originalTile.dataset.base;
+  if (originalTile && letterSpan) {
+    // Fade out only the letter span
+    letterSpan.animate(
+      [{ opacity: 1 }, { opacity: 0 }],
+      { duration: 100, easing: 'ease-out' }
+    ).onfinish = () => {
+    // Restore tile immediately
+      originalTile.textContent = letterBase;
+    originalTile.dataset.base = letterBase;
       originalTile.classList.remove("empty");
       originalTile.removeAttribute("data-letter");
+
+    // Clear slot
+  slot.textContent = "";
+  slot.dataset.filled = "false";
+  slot.removeAttribute("data-letter");
+
   updateResetButtonState();
-    });
+  updateActiveSlot();
+    };
 }
-}
+  }
 
 function onLetterClick(e) {
   const tile = e.currentTarget;
@@ -287,39 +279,29 @@ function onLetterClick(e) {
   }
   if (!targetSlot) return;
 
-  // Use dataset to store the letter being moved
-  tile.dataset.letter = tile.dataset.base || toBaseHebrew(tile.textContent);
+  // Ensure dataset.letter is correctly set
+  const letterToMove = tile.dataset.base || toBaseHebrew(tile.textContent);
+  tile.dataset.letter = letterToMove;
 
-  // Clone the tile background for the "empty" effect
+  // Mark as empty immediately
       tile.classList.add("empty");
-
-  // Animate ONLY the text
-  const rect = tile.getBoundingClientRect();
-  const slotRect = targetSlot.getBoundingClientRect();
-
-  const ghost = document.createElement("div");
-  ghost.textContent = tile.dataset.letter;
-  ghost.className = "letter moving";
-  ghost.style.left = rect.left + "px";
-  ghost.style.top = rect.top + "px";
-  ghost.style.width = tile.offsetWidth + "px";
-  ghost.style.height = tile.offsetHeight + "px";
-  ghost.style.fontSize = window.getComputedStyle(tile).fontSize;
-  document.body.appendChild(ghost);
-
       tile.textContent = "";
-  requestAnimationFrame(() => {
-    ghost.style.left = slotRect.left + "px";
-    ghost.style.top = slotRect.top + "px";
-  });
 
-  ghost.addEventListener("transitionend", () => {
-    ghost.remove();
-    placeLetterInSlot(targetSlot, tile.dataset.letter);
+  // Place in slot
+  placeLetterInSlot(targetSlot, letterToMove);
+
+  // Re-add fade animation
+  const letterSpan = targetSlot.querySelector(".slot-text");
+  if (letterSpan) {
+    letterSpan.animate(
+      [{ opacity: 0 }, { opacity: 1 }],
+      { duration: 300, easing: 'ease-in-out' }
+    );
+}
+
+  updateActiveSlot();
   updateResetButtonState();
-    updateActiveSlot();
-    if ([...document.querySelectorAll(".slot")].every(s => s.dataset.filled === "true")) checkAnswer();
-  });
+  if ([...document.querySelectorAll(".slot")].every(s => s.dataset.filled === "true")) checkAnswer();
 }
 
 function onEmptyLetterClick(e) {
@@ -329,48 +311,26 @@ function onEmptyLetterClick(e) {
   const letter = tile.dataset.letter;
 
   // Find slot with this letter
-  // IMPORTANT: We need to make sure we don't pick a locked slot (hinted ones)
   const slot = [...document.querySelectorAll(".slot")].find(s =>
       s.dataset.filled === "true" &&
       s.dataset.letter === letter &&
       s.dataset.locked !== "true"
-    );
+  );
 
   if (!slot) return;
-
-  // Animate back to stash
-  const slotRect = slot.getBoundingClientRect();
-  const tileRect = tile.getBoundingClientRect();
-
-  const ghost = document.createElement("div");
-  ghost.textContent = letter;
-  ghost.className = "letter moving";
-  ghost.style.left = slotRect.left + "px";
-  ghost.style.top = slotRect.top + "px";
-  ghost.style.width = slot.offsetWidth + "px";
-  ghost.style.height = slot.offsetHeight + "px";
-  ghost.style.fontSize = window.getComputedStyle(slot).fontSize;
-  document.body.appendChild(ghost);
 
   slot.textContent = "";
   slot.dataset.filled = "false";
   slot.removeAttribute("data-letter");
 
-  requestAnimationFrame(() => {
-      ghost.style.left = tileRect.left + "px";
-      ghost.style.top = tileRect.top + "px";
-  });
-
-  ghost.addEventListener("transitionend", () => {
-      ghost.remove();
-      tile.textContent = letter;
-      tile.classList.remove("empty");
-      tile.removeAttribute("data-letter");
+  // Restore tile
+  tile.textContent = letter;
+  tile.dataset.base = letter; // Ensure base is set
+  tile.classList.remove("empty");
+  tile.removeAttribute("data-letter");
   updateResetButtonState();
-      updateActiveSlot();
-  });
+  updateActiveSlot();
 }
-
 function getUserAnswer() {
   const slots = [...document.querySelectorAll(".slot")];
   return slots.map(s => toBaseHebrew(s.textContent)).join("");
@@ -508,4 +468,5 @@ function shuffleArray(arr) {
   }
   return a;
 }
+
 

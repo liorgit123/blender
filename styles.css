@@ -328,19 +328,9 @@ body[dir="ltr"] .fact {
   transition: all 0.2s ease; /* Smooth movement */
 }
 
-/* Add a class for animating the movement */
+/* Remove moving animation as it's no longer used */
 .letter.moving {
-  position: fixed; /* Changed to fixed for easier coordinate handling */
-  z-index: 1000;
-  pointer-events: none;
-  /* Remove background/border here so only the text moves */
-  background: transparent;
-  color: #072046; /* Text color */
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
+  display: none;
 }
 
 .letter.empty {
