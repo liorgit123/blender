@@ -18,7 +18,7 @@ body {
   background: #000000;
   color: #f1f5ff;
   --slot-size: 44px;
-  border-radius: 16px;
+  border-radius: 0px;
   padding: 20px 12px 22px;
   box-shadow: 0 16px 40px rgba(0,0,0,0.35);
   border: 2px solid #ffffff;
