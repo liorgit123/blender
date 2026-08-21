@@ -72,6 +72,7 @@ async function loadQuestions() {
 
 async function switchLanguage() {
   GameState.language = GameState.language === "en" ? "he" : "en";
+  localStorage.setItem("lang", GameState.language);
   setLayoutDirection();
 
   try {
