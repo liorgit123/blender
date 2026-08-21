@@ -229,6 +229,32 @@ function updateActiveSlot(specificSlot = null) {
     firstEmpty.dataset.active = "true";
   }
 }
+
+function updateActiveSlotAfterPlacement(lastPlacedSlot) {
+  const slots = [...document.querySelectorAll(".slot")];
+  const currentIndex = slots.indexOf(lastPlacedSlot);
+
+  // Find next empty slot after the current one
+  let nextEmpty = null;
+  for (let i = currentIndex + 1; i < slots.length; i++) {
+    if (slots[i].dataset.filled === "false") {
+      nextEmpty = slots[i];
+      break;
+    }
+  }
+
+  // If no empty slot found after, look from the beginning
+  if (!nextEmpty) {
+    nextEmpty = slots.find(s => s.dataset.filled === "false");
+  }
+
+  // Clear all
+  slots.forEach(s => s.dataset.active = "false");
+
+  if (nextEmpty) {
+    nextEmpty.dataset.active = "true";
+  }
+}
 function isGameWon() {
   const factBox = document.getElementById("clue");
   return factBox.querySelector(".fact-check") !== null;
@@ -236,7 +262,12 @@ function isGameWon() {
 
 function onSlotClick(e) {
   const slot = e.currentTarget;
-  if (isGameWon() || slot.dataset.filled !== "true" || slot.dataset.locked === "true") return;
+  if (isGameWon() || slot.dataset.locked === "true") return;
+
+  if (slot.dataset.filled === "false") {
+    updateActiveSlot(slot);
+    return;
+  }
 
   const letterBase = slot.dataset.letter;
   // Find the source tile that matches this letter
@@ -262,7 +293,6 @@ function onSlotClick(e) {
   slot.textContent = "";
   slot.dataset.filled = "false";
   slot.removeAttribute("data-letter");
-
   updateResetButtonState();
   updateActiveSlot();
     };
@@ -299,7 +329,7 @@ function onLetterClick(e) {
     );
 }
 
-  updateActiveSlot();
+  updateActiveSlotAfterPlacement(targetSlot);
   updateResetButtonState();
   if ([...document.querySelectorAll(".slot")].every(s => s.dataset.filled === "true")) checkAnswer();
 }
@@ -468,5 +498,4 @@ function shuffleArray(arr) {
   }
   return a;
 }
-
 

@@ -1,6 +1,6 @@
 body {
-  font-family: Tahoma, sans-serif;
-  background: #000000;
+  font-family: 'Inter', sans-serif;
+  background: #ffffff;
   color: #f1f5ff;
   margin: 0;
   padding: 8px 0;
@@ -8,6 +8,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
+}
+
+body[dir="rtl"] {
+  font-family: 'Heebo', sans-serif;
 }
 
 .app {
@@ -18,7 +22,7 @@ body {
   background: #000000;
   color: #f1f5ff;
   --slot-size: 44px;
-  border-radius: 0px;
+  border-radius: 16px;
   padding: 20px 12px 22px;
   box-shadow: 0 16px 40px rgba(0,0,0,0.35);
   border: none;
@@ -51,8 +55,8 @@ body[dir="ltr"] .lang-toggle {
 }
 
 .lang-toggle img {
-  width: 21px; /* reduced from 30px (30 * 0.7 = 21) */
-  height: 21px; /* reduced from 30px */
+  width: 31.5px; /* 21 * 1.5 = 31.5 */
+  height: 31.5px; /* 21 * 1.5 = 31.5 */
   filter: brightness(0) invert(1);
 }
 
@@ -112,7 +116,7 @@ h1 {
   text-align: center;
   font-size: 3.2rem;
   line-height: 0.92;
-  font-family: "Segoe UI Hebrew", "Segoe UI", Tahoma, Arial, system-ui, sans-serif;
+  font-family: 'Heebo', sans-serif;
   color: #ffffff;
   letter-spacing: 0.04em;
   text-transform: uppercase;

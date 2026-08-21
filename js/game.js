@@ -1,8 +1,5 @@
 // game.js – לוגיקת משחק בסיסית
 
-let languageTapWindowOpen = false;
-let languageTapTimer = null;
-
 function normalizeHebrewText(text) {
   return Array.from(text).map(toBaseHebrew).join("");
 }
@@ -279,31 +276,5 @@ function revealCount(count) {
     }
   });
   updateResetButtonState();
-}
-
-function onLanguageButtonTap() {
-  const message = document.getElementById("langMessage");
-
-  // If the window is already open → second tap triggers language switch
-  if (languageTapWindowOpen) {
-  clearTimeout(languageTapTimer);
-    languageTapWindowOpen = false;
-    message.classList.remove("visible");
-    message.textContent = "";
-    switchLanguage();
-    return;
-}
-
-  // First tap → show message and open the window
-  languageTapWindowOpen = true;
-  message.textContent = getLanguageMessage();
-  message.classList.add("visible");
-
-  // Close window after 2 seconds
-  clearTimeout(languageTapTimer);
-  languageTapTimer = setTimeout(() => {
-    languageTapWindowOpen = false;
-    message.classList.remove("visible");
-  }, 1000);
 }
 

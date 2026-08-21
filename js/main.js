@@ -26,8 +26,9 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   const langBtn = document.getElementById("langBtn");
   if (langBtn) {
-    langBtn.addEventListener("click", onLanguageButtonTap);
+    langBtn.addEventListener("click", switchLanguage);
   }
 
   updateResetButtonState();
 });
+
