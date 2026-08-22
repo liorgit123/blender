@@ -1,20 +1,18 @@
 // main.js – אתחול
 
 window.addEventListener("DOMContentLoaded", async () => {
-  // שליפת השפה השמורה
-  const savedLang = localStorage.getItem("lang") || "he";
-  GameState.language = savedLang;
-  
+  // Prevent context menu on long press
+  document.addEventListener("contextmenu", (e) => e.preventDefault());
   try {
+    setLayoutDirection();
     await loadQuestions();
   } catch (e) {
-    alert("לא ניתן לטעון את questions.json: " + e.message);
+    alert("לא ניתן לטעון את השאלות: " + e.message);
     return;
   }
 
   if (GameState.questions.length === 0) return;
 
-  setLayoutDirection();
   GameState.currentIndex = Math.floor(Math.random() * GameState.questions.length);
   GameState.current = GameState.questions[GameState.currentIndex];
   GameState.hintLevel = 0;

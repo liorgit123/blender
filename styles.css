@@ -8,6 +8,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  user-select: none; /* Non-prefixed version */
 }
 
 body[dir="rtl"] {
@@ -448,6 +451,7 @@ button {
   font-size: 0.95rem;
   cursor: pointer;
   transition: transform 0.15s ease, opacity 0.15s ease;
+  -webkit-touch-callout: none;
 }
 
 button:hover:not(:disabled) {

@@ -9,7 +9,7 @@ const GameState = {
   currentIndex: 0,
   current: null,
   hintLevel: 0,
-  language: "he"
+  language: localStorage.getItem("gameLanguage") || "he"
 };
 
 let languageMessageTimer = null;
@@ -72,7 +72,7 @@ async function loadQuestions() {
 
 async function switchLanguage() {
   GameState.language = GameState.language === "en" ? "he" : "en";
-  localStorage.setItem("lang", GameState.language);
+  localStorage.setItem("gameLanguage", GameState.language);
   setLayoutDirection();
 
   try {
