@@ -9,7 +9,8 @@ const GameState = {
   currentIndex: 0,
   current: null,
   hintLevel: 0,
-  language: localStorage.getItem("gameLanguage") || "he"
+  language: localStorage.getItem("gameLanguage") || "he",
+  solved: JSON.parse(localStorage.getItem("solvedLevels") || "{}")
 };
 
 let languageMessageTimer = null;
@@ -28,7 +29,10 @@ function getLocalizedText(key) {
   const isEnglish = GameState.language === "en";
   switch (key) {
     case "category": return isEnglish ? "Category: " : "קטגוריה: ";
-    case "clue": return isEnglish ? "Clue: " : "רמז: "; // Add this
+    case "clue": return isEnglish ? "Clue: " : "רמז: ";
+    case "solved": return isEnglish ? "SOLVED" : "פתרת";
+    case "remaining": return isEnglish ? "REMAINING" : "נשארו";
+    case "counter": return isEnglish ? "solved {solved} out of {total}" : "נפתרו {solved} מתוך {total}";
     case "notAll": return isEnglish ? "Not all letters have been placed." : "לא כל האותיות הונחו במקומן.";
     case "correct": return isEnglish ? "Great! Correct answer." : "מעולה! תשובה נכונה.";
     case "incorrect": return isEnglish ? "Not quite, keep trying." : "לא מדויק, המשיכו לנסות.";
@@ -60,6 +64,23 @@ function showLanguageMessage() {
   }, 2000);
 }
 
+function updateCounter() {
+  const counterEl = document.getElementById("counter");
+  if (!counterEl) return;
+
+  const solved = GameState.solved[GameState.language] || [];
+  const total = GameState.questions.length;
+  const remaining = total - solved.length;
+
+  counterEl.innerHTML = `
+    <div class="counter-line solved">
+      <span>${getLocalizedText("solved")} ${solved.length}</span>
+    </div>
+    <div class="counter-line remaining">
+      <span>${getLocalizedText("remaining")} ${remaining}</span>
+    </div>
+  `;
+}
 async function loadQuestions() {
   const fileName = GameState.language === "en" ? "questions-en.json?v=7" : "questions-he.json?v=7";
   const res = await fetch(`data/${fileName}`);
@@ -67,13 +88,16 @@ async function loadQuestions() {
     throw new Error(`Failed to load ${fileName}`);
   }
   const data = await res.json();
-  GameState.questions = data;
+  // Assign unique IDs to questions if they don't have them
+  GameState.questions = data.map((q, index) => ({ ...q, id: q.id || index }));
+  updateCounter();
 }
 
 async function switchLanguage() {
   GameState.language = GameState.language === "en" ? "he" : "en";
   localStorage.setItem("gameLanguage", GameState.language);
   setLayoutDirection();
+  updateCounter(); // Add this
 
   try {
     await loadQuestions();
@@ -171,6 +195,16 @@ function checkAnswer() {
     document.getElementById("resetBtn").disabled = true;
     document.getElementById("resetBtn").style.visibility = "hidden"; // Hide reset
     setButtonLabel(document.getElementById("nextBtn"), "הבא");
+
+    // Mark as solved
+    const solved = GameState.solved[GameState.language] || [];
+    const questionId = GameState.current.id; // Using the id we assigned
+    if (!solved.includes(questionId)) {
+      solved.push(questionId);
+      GameState.solved[GameState.language] = solved;
+      localStorage.setItem("solvedLevels", JSON.stringify(GameState.solved));
+      updateCounter();
+    }
 
     // Disable active marker
     document.querySelectorAll(".slot").forEach(s => s.dataset.active = "false");

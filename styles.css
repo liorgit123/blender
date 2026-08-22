@@ -11,6 +11,7 @@ body {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
   user-select: none; /* Non-prefixed version */
+  touch-action: manipulation; /* Disable double-tap zoom, keep pinch */
 }
 
 body[dir="rtl"] {
@@ -65,7 +66,8 @@ body[dir="ltr"] .lang-toggle {
 
 .lang-message {
   position: absolute;
-  top: 16px;
+  top: 10px;
+  left: 50px;
   font-size: 0.8rem;
   color: #f1f5ff;
   white-space: nowrap;
@@ -104,7 +106,33 @@ body[dir="ltr"] .lang-toggle {
   width: 200px; /* Adjust width to fit your longest message */
 }
 
+.counter {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.counter-line.solved {
+  color: #2e7d32;
+}
+
+.counter-line.remaining {
+  color: #ef6c00;
+}
+
+/* Force right alignment for the counter container in both LTR and RTL */
+.counter {
+  right: 10px !important;
+  left: auto !important;
+  text-align: right !important;
+}
+
 .logo {
+  display: block;
   max-width: 160px;   /* reduced from 240px */
   width: 100%;
   height: auto;

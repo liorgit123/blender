@@ -46,6 +46,8 @@ function renderQuestion(question) {
   const cluePrefix = document.querySelector(".clue-prefix");
   const clueContainer = document.querySelector(".clue");
 
+  updateCounter(); // Add this to ensure it's updated when question changes
+
   pattern.innerHTML = "";
   scrambleBox.innerHTML = "";
   categoryBox.textContent = "";
