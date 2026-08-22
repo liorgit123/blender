@@ -80,7 +80,7 @@ function updateCounter() {
   `;
 }
 async function loadQuestions() {
-  const fileName = GameState.language === "en" ? "questions-en.json?v=7" : "questions-he.json?v=7";
+  const fileName = GameState.language === "en" ? "questions-en.json?v=8" : "questions-he.json?v=8";
   const res = await fetch(`data/${fileName}`);
   if (!res.ok) {
     throw new Error(`Failed to load ${fileName}`);
