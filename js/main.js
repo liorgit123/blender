@@ -1,6 +1,10 @@
 // main.js – אתחול
 
 window.addEventListener("DOMContentLoaded", async () => {
+  // שליפת השפה השמורה
+  const savedLang = localStorage.getItem("lang") || "he";
+  GameState.language = savedLang;
+  
   try {
     await loadQuestions();
   } catch (e) {
@@ -9,10 +13,6 @@ window.addEventListener("DOMContentLoaded", async () => {
   }
 
   if (GameState.questions.length === 0) return;
-
-  // שליפת השפה השמורה
-  const savedLang = localStorage.getItem("lang") || "he";
-  GameState.language = savedLang;
 
   setLayoutDirection();
   GameState.currentIndex = Math.floor(Math.random() * GameState.questions.length);
