@@ -71,13 +71,11 @@ function updateCounter() {
 
   const solved = GameState.solved[GameState.language] || [];
   const total = GameState.questions.length;
+  const percentage = total > 0 ? Math.round((solved.length / total) * 100) : 0;
 
   counterEl.innerHTML = `
-    <div class="counter-line total">
-      <span>${getLocalizedText("total")}: ${total}</span>
-    </div>
-    <div class="counter-line solved">
-      <span>${getLocalizedText("solved")}: ${solved.length}</span>
+    <div class="counter-content">
+      <strong>${percentage}%</strong> (${solved.length}/${total})
     </div>
   `;
 }

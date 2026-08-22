@@ -36,7 +36,7 @@ body[dir="rtl"] {
   text-align: center;
 }
 
-/* Force globe to the RIGHT in LTR, LEFT in RTL */
+/* Force globe to the RIGHT in ALL languages */
 .lang-toggle {
   position: absolute;
   top: 10px;
@@ -51,9 +51,10 @@ body[dir="rtl"] {
   justify-content: center;
 }
 
+/* Ensure globe stays on the right */
 body[dir="rtl"] .lang-toggle {
-  left: 10px;
-  right: auto;
+  right: 10px;
+  left: auto;
 }
 
 .lang-toggle img {
@@ -64,7 +65,7 @@ body[dir="rtl"] .lang-toggle {
 .lang-message {
   position: absolute;
   top: 10px;
-  right: 50px;
+  right: 45px;
   left: auto;
   font-size: 0.8rem;
   color: #f1f5ff;
@@ -78,17 +79,12 @@ body[dir="rtl"] .lang-toggle {
   z-index: 100;
   /* Ensure it starts from the right */
   text-align: right;
-  inset-inline-start: auto;
-  inset-inline-end: 45px;
-  left: auto;
-  right: 45px;
-  /* Keep LTR to ensure wipe is always from right to left */
   direction: ltr;
 }
 
 body[dir="rtl"] .lang-message {
-  left: 45px;
-  right: auto;
+  right: 45px;
+  left: auto;
   text-align: left;
 }
 
@@ -110,27 +106,24 @@ body[dir="rtl"] .lang-message {
   left: 10px;
   right: auto;
   font-size: 0.85rem;
-  font-weight: bold;
+  font-weight: normal;
   white-space: nowrap;
   font-family: 'Inter', sans-serif;
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Always align content to the left */
-  gap: 2px;
+  align-items: flex-start;
+  direction: ltr; /* Force LTR for counter display to keep 50% (250/500) format */
 }
 
-/* Ensure RTL doesn't break the right alignment */
 [dir="rtl"] .counter {
-  right: 10px;
-  left: auto;
+  left: 10px;
+  right: auto;
   font-family: 'Heebo', sans-serif;
-  align-items: flex-end;
-  line-height: 1.1;
+  align-items: flex-start;
 }
 
-[dir="rtl"] .counter .counter-line {
-  text-align: right;
-  width: 100%;
+.counter-content strong {
+  font-weight: bold;
 }
 
 .counter-line.solved {
