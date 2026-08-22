@@ -30,7 +30,8 @@ function getLocalizedText(key) {
   switch (key) {
     case "category": return isEnglish ? "Category: " : "קטגוריה: ";
     case "clue": return isEnglish ? "Clue: " : "רמז: ";
-    case "solved": return isEnglish ? "SOLVED" : "פתרת";
+    case "solved": return isEnglish ? "Solved" : "פתרת";
+    case "total": return isEnglish ? "Total" : "סה\"כ";
     case "remaining": return isEnglish ? "REMAINING" : "נשארו";
     case "counter": return isEnglish ? "solved {solved} out of {total}" : "נפתרו {solved} מתוך {total}";
     case "notAll": return isEnglish ? "Not all letters have been placed." : "לא כל האותיות הונחו במקומן.";
@@ -70,14 +71,13 @@ function updateCounter() {
 
   const solved = GameState.solved[GameState.language] || [];
   const total = GameState.questions.length;
-  const remaining = total - solved.length;
 
   counterEl.innerHTML = `
-    <div class="counter-line solved">
-      <span>${getLocalizedText("solved")} ${solved.length}</span>
+    <div class="counter-line total">
+      <span>${getLocalizedText("total")}: ${total}</span>
     </div>
-    <div class="counter-line remaining">
-      <span>${getLocalizedText("remaining")} ${remaining}</span>
+    <div class="counter-line solved">
+      <span>${getLocalizedText("solved")}: ${solved.length}</span>
     </div>
   `;
 }

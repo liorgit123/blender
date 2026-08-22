@@ -36,47 +36,39 @@ body[dir="rtl"] {
   text-align: center;
 }
 
-/* Force globe to the LEFT in BOTH modes */
+/* Force globe to the RIGHT in LTR, LEFT in RTL */
 .lang-toggle {
   position: absolute;
   top: 10px;
-  left: 10px; /* Force left */
-  right: auto; /* Reset right */
+  right: 10px;
+  left: auto;
   background: transparent;
   border: none;
   padding: 4px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-    justify-content: center;
-  }
+  justify-content: center;
+}
 
-/* Remove the RTL/LTR overrides that were causing it to flip */
-body[dir="rtl"] .lang-toggle,
-body[dir="ltr"] .lang-toggle {
+body[dir="rtl"] .lang-toggle {
   left: 10px;
   right: auto;
 }
 
 .lang-toggle img {
-  width: 31.5px; /* 21 * 1.5 = 31.5 */
-  height: 31.5px; /* 21 * 1.5 = 31.5 */
+  width: 20px; /* 21 * 1.5 = 31.5 */
+  height: 20px; /* 21 * 1.5 = 31.5 */
   filter: brightness(0) invert(1);
 }
-
 .lang-message {
   position: absolute;
   top: 10px;
-  left: 50px;
+  right: 50px;
+  left: auto;
   font-size: 0.8rem;
   color: #f1f5ff;
   white-space: nowrap;
-
-  /* old-code:
-  width: auto;
-    opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.5s ease, visibility 0.5s; */
 
   /* new-code */
   width: 0;
@@ -84,14 +76,20 @@ body[dir="ltr"] .lang-toggle {
   transition: width 0.4s ease-out;
 
   z-index: 100;
-  /* Ensure it starts from the left */
-  text-align: left;
-  inset-inline-start: 45px;
-  inset-inline-end: auto;
+  /* Ensure it starts from the right */
+  text-align: right;
+  inset-inline-start: auto;
+  inset-inline-end: 45px;
+  left: auto;
+  right: 45px;
+  /* Keep LTR to ensure wipe is always from right to left */
+  direction: ltr;
+}
+
+body[dir="rtl"] .lang-message {
   left: 45px;
   right: auto;
-  /* Keep LTR to ensure wipe is always from left to right */
-  direction: ltr;
+  text-align: left;
 }
 
 /* old-code
@@ -109,26 +107,42 @@ body[dir="ltr"] .lang-toggle {
 .counter {
   position: absolute;
   top: 10px;
-  right: 10px;
-  font-size: 0.8rem;
+  left: 10px;
+  right: auto;
+  font-size: 0.85rem;
   font-weight: bold;
-  text-align: right;
   white-space: nowrap;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Always align content to the left */
+  gap: 2px;
+}
+
+/* Ensure RTL doesn't break the right alignment */
+[dir="rtl"] .counter {
+  right: 10px;
+  left: auto;
+  font-family: 'Heebo', sans-serif;
+  align-items: flex-end;
+  line-height: 1.1;
+}
+
+[dir="rtl"] .counter .counter-line {
+  text-align: right;
+  width: 100%;
 }
 
 .counter-line.solved {
-  color: #2e7d32;
+  color: #39FF14; /* Neon green */
 }
 
 .counter-line.remaining {
   color: #ef6c00;
 }
 
-/* Force right alignment for the counter container in both LTR and RTL */
-.counter {
-  right: 10px !important;
-  left: auto !important;
-  text-align: right !important;
+.counter-line.total {
+  color: #ef6c00;
 }
 
 .logo {
