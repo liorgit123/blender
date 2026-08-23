@@ -15,13 +15,8 @@
     "fact": "movie was released in 2003"
   },
   {
-    "category": "movies",
+    "category": "Movies",
     "answer": "OUT FROM SPACE",
     "fact": "movie was released in 2000"
-  },
-  {
-    "category": "music",
-    "answer": "LADY GAGA",
-    "fact": "female singer, born in 1990"
   }
 ]

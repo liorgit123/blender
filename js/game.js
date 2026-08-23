@@ -80,7 +80,7 @@ function updateCounter() {
   `;
 }
 async function loadQuestions() {
-  const fileName = GameState.language === "en" ? "questions-en.json?v=8" : "questions-he.json?v=8";
+  const fileName = GameState.language === "en" ? "questions-en.json?v=7" : "questions-he.json?v=7";
   const res = await fetch(`data/${fileName}`);
   if (!res.ok) {
     throw new Error(`Failed to load ${fileName}`);
@@ -119,22 +119,52 @@ async function switchLanguage() {
 function nextQuestion() {
   if (GameState.questions.length === 0) return;
 
-  if (GameState.questions.length === 1) {
-    GameState.currentIndex = 0;
-  } else {
-    let nextIndex;
-    do {
-      nextIndex = Math.floor(Math.random() * GameState.questions.length);
-    } while (nextIndex === GameState.currentIndex);
-    GameState.currentIndex = nextIndex;
-  }
+    const solved = GameState.solved[GameState.language] || [];
 
-  GameState.current = GameState.questions[GameState.currentIndex];
+  // Filter questions that are NOT in the solved list
+  const unsolvedQuestions = GameState.questions.filter(q => !solved.includes(q.id));
+
+  // If no unsolved questions, show win dialog
+  if (unsolvedQuestions.length === 0) {
+    showWinDialog();
+    return;
+}
+
+  // Pick a random unsolved question
+  const randomIndex = Math.floor(Math.random() * unsolvedQuestions.length);
+  GameState.current = unsolvedQuestions[randomIndex];
+  GameState.currentIndex = GameState.questions.findIndex(q => q.id === GameState.current.id);
+
   GameState.hintLevel = 0;
 
   void document.body.offsetWidth;
   renderQuestion(GameState.current);
   resetButtons();
+}
+
+function showWinDialog() {
+  const dialog = document.createElement("div");
+  dialog.className = "win-dialog";
+  const isEn = GameState.language === "en";
+  dialog.innerHTML = `
+    <div class="win-content">
+      <h2>🎉</h2>
+      <p>${isEn ? "Well done! You finished all levels!" : "כל הכבוד! סיימת את כל השלבים!"}</p>
+      <button id="winReset">${isEn ? "Reset Progress" : "איפוס התקדמות"}</button>
+      <button id="winSwitch">${isEn ? "Switch Language" : "החלפת שפה"}</button>
+    </div>
+  `;
+  document.body.appendChild(dialog);
+
+  document.getElementById("winReset").onclick = () => {
+    localStorage.removeItem("solvedLevels");
+    location.reload();
+  };
+
+  document.getElementById("winSwitch").onclick = () => {
+    dialog.remove();
+    switchLanguage();
+  };
 }
 
 function setButtonLabel(button, label) {
@@ -192,7 +222,7 @@ function checkAnswer() {
     hintBtn.disabled = true;
     document.getElementById("resetBtn").disabled = true;
     document.getElementById("resetBtn").style.visibility = "hidden"; // Hide reset
-    setButtonLabel(document.getElementById("nextBtn"), "הבא");
+    setButtonLabel(document.getElementById("nextBtn"), getLocalizedText("next"));
 
     // Mark as solved
     const solved = GameState.solved[GameState.language] || [];
@@ -202,7 +232,7 @@ function checkAnswer() {
       GameState.solved[GameState.language] = solved;
       localStorage.setItem("solvedLevels", JSON.stringify(GameState.solved));
       updateCounter();
-    }
+  }
 
     // Disable active marker
     document.querySelectorAll(".slot").forEach(s => s.dataset.active = "false");
@@ -211,7 +241,7 @@ function checkAnswer() {
       tile.style.cursor = "default";
       tile.classList.add("disabled");
       tile.removeEventListener("click", onLetterClick);
-    });
+  });
   } else {
     const previousFact = GameState.current.fact;
     const wasBlurred = factBox.classList.contains("blurred");
@@ -229,7 +259,7 @@ function checkAnswer() {
         } else {
             factBox.classList.remove("blurred");
             factBox.onclick = null;
-      }
+}
   }
     }, 2000);
 }
