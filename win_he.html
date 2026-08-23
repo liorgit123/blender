@@ -3,48 +3,101 @@
 <head>
 <meta charset="UTF-8">
 <title>ניצחון!</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;800&display=swap" rel="stylesheet">
+
 <style>
   body {
-    background: #f0f4ff;
-    font-family: Arial, sans-serif;
+    background: #000000;
+    color: #ffffff;
+    font-family: 'Heebo', sans-serif;
     text-align: center;
-    padding-top: 60px;
+    padding-top: 120px;
+    padding-bottom: 120px;
+    margin: 0;
+    overflow: hidden;
   }
 
-  h1 {
-    font-size: 36px;
-    color: #0044aa;
-    margin-bottom: 40px;
+  img.logo {
+    width: 700px; /* 1000 × 0.7 */
+    margin-bottom: 56px;
   }
 
-  button {
-    width: 220px;
-    padding: 18px;
-    margin: 12px;
-    font-size: 20px;
+  .title-line1 {
+    font-size: 90px; /* 128 × 0.7 */
+    font-weight: 800;
+    margin: 0;
+  }
+
+  .title-line2 {
+    font-size: 62px; /* 88 × 0.7 */
+    font-weight: 400;
+    margin-top: 20px;
+    margin-bottom: 98px;
+  }
+
+  .btn {
+    width: 532px;      /* 760 × 0.7 */
+    padding: 48px;     /* 68 × 0.7 */
+    margin: 30px auto; /* 44 × 0.7 */
+    font-size: 48px;   /* 68 × 0.7 */
+    font-weight: 600;
     border: none;
-    border-radius: 12px;
+    border-radius: 34px; /* 48 × 0.7 */
     cursor: pointer;
+    transition: 0.2s;
+    display: block;
   }
 
   #resetBtn {
-    background: #4caf50;
+    background: #238636;
     color: white;
+  }
+  #resetBtn:hover {
+    background: #2ea043;
   }
 
   #langBtn {
-    background: #673ab7;
+    background: #7d4cff;
     color: white;
+  }
+  #langBtn:hover {
+    background: #6b3dff;
+  }
+
+  .spark {
+    position: absolute;
+    width: 28px;      /* 40 × 0.7 */
+    height: 28px;     /* 40 × 0.7 */
+    background: #ffcc00;
+    border-radius: 50%;
+    animation: explode 2.6s infinite ease-out;
+    opacity: 0.95;
+    box-shadow: 0 0 20px #ffcc00;
+  }
+
+  @keyframes explode {
+    0% {
+      transform: translate(0,0) scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(var(--dx), var(--dy)) scale(0);
+      opacity: 0;
+    }
   }
 </style>
 </head>
 
 <body>
 
-<h1>🎉 ניצחת! כל השלבים נפתרו</h1>
+<img class="logo" src="images/logo.png" alt="סבלנדר">
 
-<button id="resetBtn">איפוס משחק</button>
-<button id="langBtn">החלפת שפה</button>
+<h1 class="title-line1">ניצחת!</h1>
+<h2 class="title-line2">כל השלבים נפתרו</h2>
+
+<button class="btn" id="resetBtn">איפוס התקדמות</button>
+<button class="btn" id="langBtn">החלפת שפה</button>
 
 <script>
 document.getElementById("resetBtn").onclick = () => {
@@ -56,6 +109,29 @@ document.getElementById("langBtn").onclick = () => {
   localStorage.setItem("blender_lang", "en");
   window.location.replace("win_en.html");
 };
+
+function createSpark() {
+  const spark = document.createElement("div");
+  spark.classList.add("spark");
+
+  const x = Math.random() * window.innerWidth;
+  const y = Math.random() * window.innerHeight;
+
+  spark.style.left = x + "px";
+  spark.style.top = y + "px";
+
+  const dx = (Math.random() - 0.5) * 840; /* 1200 × 0.7 */
+  const dy = (Math.random() - 0.5) * 840;
+
+  spark.style.setProperty("--dx", dx + "px");
+  spark.style.setProperty("--dy", dy + "px");
+
+  document.body.appendChild(spark);
+
+  setTimeout(() => spark.remove(), 2600);
+}
+
+setInterval(createSpark, 90);
 </script>
 
 </body>
