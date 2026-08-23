@@ -8,43 +8,44 @@
 
 <style>
   body {
-    background: #000000; /* שחור מוחלט */
+    background: #000000;
     color: #ffffff;
     font-family: 'Inter', sans-serif;
     text-align: center;
-    padding-top: 40px;
+    padding-top: 120px;   /* רווח גדול למעלה */
+    padding-bottom: 120px;/* רווח גדול למטה */
     margin: 0;
     overflow: hidden;
   }
 
   img.logo {
-    width: 500px; /* גדול */
-    margin-bottom: 40px;
+    width: 1000px; /* פי 2 */
+    margin-bottom: 80px;
   }
 
   .title-line1 {
-    font-size: 64px;
+    font-size: 128px; /* פי 2 */
     font-weight: 800;
     color: #ffffff;
     margin: 0;
   }
 
   .title-line2 {
-    font-size: 44px;
+    font-size: 88px; /* פי 2 */
     font-weight: 400;
     color: #ffffff;
-    margin-top: 14px;
-    margin-bottom: 70px;
+    margin-top: 28px;
+    margin-bottom: 140px;
   }
 
   .btn {
-    width: 380px;
-    padding: 34px;
-    margin: 22px auto;
-    font-size: 34px;
+    width: 760px;      /* פי 2 */
+    padding: 68px;     /* פי 2 */
+    margin: 44px auto; /* פי 2 */
+    font-size: 68px;   /* פי 2 */
     font-weight: 600;
     border: none;
-    border-radius: 24px;
+    border-radius: 48px; /* פי 2 */
     cursor: pointer;
     transition: 0.2s;
     display: block;
@@ -68,13 +69,13 @@
 
   .spark {
     position: absolute;
-    width: 20px;
-    height: 20px;
+    width: 40px;      /* פי 2 */
+    height: 40px;     /* פי 2 */
     background: #ffcc00;
     border-radius: 50%;
-    animation: explode 2.2s infinite ease-out;
+    animation: explode 2.6s infinite ease-out;
     opacity: 0.95;
-    box-shadow: 0 0 14px #ffcc00;
+    box-shadow: 0 0 28px #ffcc00; /* פי 2 */
   }
 
   @keyframes explode {
@@ -121,18 +122,18 @@ function createSpark() {
   spark.style.left = x + "px";
   spark.style.top = y + "px";
 
-  const dx = (Math.random() - 0.5) * 600;
-  const dy = (Math.random() - 0.5) * 600;
+  const dx = (Math.random() - 0.5) * 1200; /* פי 2 */
+  const dy = (Math.random() - 0.5) * 1200;
 
   spark.style.setProperty("--dx", dx + "px");
   spark.style.setProperty("--dy", dy + "px");
 
   document.body.appendChild(spark);
 
-  setTimeout(() => spark.remove(), 2200);
+  setTimeout(() => spark.remove(), 2600);
 }
 
-setInterval(createSpark, 100);
+setInterval(createSpark, 90); /* קצת יותר זיקוקים */
 </script>
 
 </body>
