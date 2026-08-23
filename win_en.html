@@ -4,12 +4,11 @@
 <meta charset="UTF-8">
 <title>Victory!</title>
 
-<!-- Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 
 <style>
   body {
-    background: #ffffff;
+    background: #000000; /* שחור מוחלט */
     color: #ffffff;
     font-family: 'Inter', sans-serif;
     text-align: center;
@@ -18,42 +17,34 @@
     overflow: hidden;
   }
 
-  /* Logo wrapper to match background */
-  .logo-wrapper {
-    background: #0d1117;
-    padding: 20px 0;
-  }
-
   img.logo {
-    width: 480px; /* גדול יותר */
+    width: 500px; /* גדול */
     margin-bottom: 40px;
   }
 
-  /* Title */
   .title-line1 {
-    font-size: 62px; /* גדול יותר */
+    font-size: 64px;
     font-weight: 800;
     color: #ffffff;
     margin: 0;
   }
 
   .title-line2 {
-    font-size: 42px; /* גדול יותר */
+    font-size: 44px;
     font-weight: 400;
     color: #ffffff;
     margin-top: 14px;
     margin-bottom: 70px;
   }
 
-  /* Buttons */
   .btn {
-    width: 360px; /* גדול יותר */
-    padding: 32px; /* גדול יותר */
-    margin: 20px auto;
-    font-size: 32px; /* גדול יותר */
+    width: 380px;
+    padding: 34px;
+    margin: 22px auto;
+    font-size: 34px;
     font-weight: 600;
     border: none;
-    border-radius: 22px;
+    border-radius: 24px;
     cursor: pointer;
     transition: 0.2s;
     display: block;
@@ -75,15 +66,15 @@
     background: #6b3dff;
   }
 
-  /* Fireworks Animation */
   .spark {
     position: absolute;
-    width: 18px;      /* גדול יותר */
-    height: 18px;     /* גדול יותר */
+    width: 20px;
+    height: 20px;
     background: #ffcc00;
     border-radius: 50%;
-    animation: explode 2s infinite ease-out;
-    opacity: 0.9;
+    animation: explode 2.2s infinite ease-out;
+    opacity: 0.95;
+    box-shadow: 0 0 14px #ffcc00;
   }
 
   @keyframes explode {
@@ -101,9 +92,7 @@
 
 <body>
 
-<div class="logo-wrapper">
-  <img class="logo" src="images/logo.png" alt="Sablander">
-</div>
+<img class="logo" src="images/logo.png" alt="Sablander">
 
 <h1 class="title-line1">You Won!</h1>
 <h2 class="title-line2">All levels solved</h2>
@@ -112,7 +101,6 @@
 <button class="btn" id="langBtn">Switch Language</button>
 
 <script>
-/* Buttons */
 document.getElementById("resetBtn").onclick = () => {
   localStorage.removeItem("blender_solvedLevels");
   window.location.replace("index.html");
@@ -123,7 +111,6 @@ document.getElementById("langBtn").onclick = () => {
   window.location.replace("win_he.html");
 };
 
-/* Fireworks generator */
 function createSpark() {
   const spark = document.createElement("div");
   spark.classList.add("spark");
@@ -134,18 +121,18 @@ function createSpark() {
   spark.style.left = x + "px";
   spark.style.top = y + "px";
 
-  const dx = (Math.random() - 0.5) * 520;   /* פיזור רחב יותר */
-  const dy = (Math.random() - 0.5) * 520;
+  const dx = (Math.random() - 0.5) * 600;
+  const dy = (Math.random() - 0.5) * 600;
 
   spark.style.setProperty("--dx", dx + "px");
   spark.style.setProperty("--dy", dy + "px");
 
   document.body.appendChild(spark);
 
-  setTimeout(() => spark.remove(), 2000);
+  setTimeout(() => spark.remove(), 2200);
 }
 
-setInterval(createSpark, 110);   /* יותר זיקוקים */
+setInterval(createSpark, 100);
 </script>
 
 </body>
