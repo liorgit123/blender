@@ -3,48 +3,72 @@
 <head>
 <meta charset="UTF-8">
 <title>Victory!</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
 <style>
   body {
-    background: #f0f4ff;
-    font-family: Arial, sans-serif;
+    background: #0d1117;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
     text-align: center;
-    padding-top: 60px;
+    padding-top: 40px;
+    margin: 0;
   }
 
-  h1 {
-    font-size: 36px;
-    color: #0044aa;
+  img.logo {
+    width: 220px;
     margin-bottom: 40px;
   }
 
-  button {
-    width: 220px;
-    padding: 18px;
-    margin: 12px;
-    font-size: 20px;
+  h1 {
+    font-size: 46px;
+    font-weight: 800;
+    margin-bottom: 50px;
+    color: #58a6ff;
+  }
+
+  .btn {
+    width: 280px;
+    padding: 22px;
+    margin: 14px;
+    font-size: 26px;
+    font-weight: 600;
     border: none;
-    border-radius: 12px;
+    border-radius: 18px;
     cursor: pointer;
+    transition: 0.2s;
   }
 
   #resetBtn {
-    background: #4caf50;
+    background: #238636;
     color: white;
   }
 
+  #resetBtn:hover {
+    background: #2ea043;
+  }
+
   #langBtn {
-    background: #673ab7;
+    background: #7d4cff;
     color: white;
+  }
+
+  #langBtn:hover {
+    background: #6b3dff;
   }
 </style>
 </head>
 
 <body>
 
+<img class="logo" src="images/logo.png" alt="Sablander">
+
 <h1>🎉 You Won! All levels solved</h1>
 
-<button id="resetBtn">Reset Game</button>
-<button id="langBtn">Switch Language</button>
+<button class="btn" id="resetBtn">Reset Game</button>
+<button class="btn" id="langBtn">Switch Language</button>
 
 <script>
 document.getElementById("resetBtn").onclick = () => {
