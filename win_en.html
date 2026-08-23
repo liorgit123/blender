@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Victory!</title>
+<style>
+  body {
+    background: #f0f4ff;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding-top: 60px;
+  }
+
+  h1 {
+    font-size: 36px;
+    color: #0044aa;
+    margin-bottom: 40px;
+  }
+
+  button {
+    width: 220px;
+    padding: 18px;
+    margin: 12px;
+    font-size: 20px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+  }
+
+  #resetBtn {
+    background: #4caf50;
+    color: white;
+  }
+
+  #langBtn {
+    background: #673ab7;
+    color: white;
+  }
+</style>
+</head>
+
+<body>
+
+<h1>🎉 You Won! All levels solved</h1>
+
+<button id="resetBtn">Reset Game</button>
+<button id="langBtn">Switch Language</button>
+
+<script>
+document.getElementById("resetBtn").onclick = () => {
+  localStorage.removeItem("blender_solvedLevels");
+  window.location.replace("index.html");
+};
+
+document.getElementById("langBtn").onclick = () => {
+  localStorage.setItem("blender_lang", "he");
+  window.location.replace("win_he.html");
+};
+</script>
+
+</body>
+</html>
