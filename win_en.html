@@ -16,34 +16,47 @@
     padding-bottom: 120px;
     margin: 0;
     overflow: hidden;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Fireworks layer */
+  #fireworks-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
   }
 
   img.logo {
-    width: 700px; /* 1000 × 0.7 */
-    margin-bottom: 56px; /* 80 × 0.7 */
+    width: 700px;
+    margin-bottom: 56px;
   }
 
   .title-line1 {
-    font-size: 90px; /* 128 × 0.7 */
+    font-size: 90px;
     font-weight: 800;
     margin: 0;
   }
 
   .title-line2 {
-    font-size: 62px; /* 88 × 0.7 */
+    font-size: 62px;
     font-weight: 400;
     margin-top: 20px;
-    margin-bottom: 98px; /* 140 × 0.7 */
+    margin-bottom: 98px;
   }
 
   .btn {
-    width: 532px;      /* 760 × 0.7 */
-    padding: 48px;     /* 68 × 0.7 */
-    margin: 30px auto; /* 44 × 0.7 */
-    font-size: 48px;   /* 68 × 0.7 */
+    width: 532px;
+    padding: 48px;
+    margin: 30px auto;
+    font-size: 48px;
     font-weight: 600;
     border: none;
-    border-radius: 34px; /* 48 × 0.7 */
+    border-radius: 34px;
     cursor: pointer;
     transition: 0.2s;
     display: block;
@@ -67,13 +80,13 @@
 
   .spark {
     position: absolute;
-    width: 28px;      /* 40 × 0.7 */
-    height: 28px;     /* 40 × 0.7 */
+    width: 28px;
+    height: 28px;
     background: #ffcc00;
     border-radius: 50%;
-    animation: explode 2.6s infinite ease-out;
+    animation: explode 2.6s ease-out forwards;
     opacity: 0.95;
-    box-shadow: 0 0 20px #ffcc00; /* 28 × 0.7 */
+    box-shadow: 0 0 20px #ffcc00;
   }
 
   @keyframes explode {
@@ -91,13 +104,15 @@
 
 <body>
 
+<div id="fireworks-layer"></div>
+
 <img class="logo" src="images/logo.png" alt="Sablander">
 
 <h1 class="title-line1">You Won!</h1>
 <h2 class="title-line2">All levels solved</h2>
 
-<button class="btn" id="resetBtn">Reset Progress</button>
-<button class="btn" id="langBtn">Switch Language</button>
+<button class="btn" id="resetBtn">Reset progress</button>
+<button class="btn" id="langBtn">Switch language</button>
 
 <script>
 document.getElementById("resetBtn").onclick = () => {
@@ -114,19 +129,21 @@ function createSpark() {
   const spark = document.createElement("div");
   spark.classList.add("spark");
 
+  const layer = document.getElementById("fireworks-layer");
+
   const x = Math.random() * window.innerWidth;
   const y = Math.random() * window.innerHeight;
 
   spark.style.left = x + "px";
   spark.style.top = y + "px";
 
-  const dx = (Math.random() - 0.5) * 840; /* 1200 × 0.7 */
+  const dx = (Math.random() - 0.5) * 840;
   const dy = (Math.random() - 0.5) * 840;
 
   spark.style.setProperty("--dx", dx + "px");
   spark.style.setProperty("--dy", dy + "px");
 
-  document.body.appendChild(spark);
+  layer.appendChild(spark);
 
   setTimeout(() => spark.remove(), 2600);
 }
