@@ -11,6 +11,8 @@ window.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
+  if (checkWinCondition()) return;
+
   if (GameState.questions.length === 0) return;
 
   GameState.currentIndex = Math.floor(Math.random() * GameState.questions.length);

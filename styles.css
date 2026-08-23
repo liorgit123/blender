@@ -572,3 +572,13 @@ button:disabled {
   cursor: pointer;
 }
 
+body[dir="rtl"] .win-content {
+  font-family: 'Heebo', sans-serif;
+}
+
+body[dir="rtl"] .win-content button {
+  font-family: 'Heebo', sans-serif !important;
+}
+
+
+

@@ -1,155 +1,154 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<title>ניצחון!</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ניצחון!</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=12">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&display=swap" rel="stylesheet">
 
-<style>
-  body {
-    background: #000000;
-    color: #ffffff;
-    font-family: 'Heebo', sans-serif;
-    text-align: center;
-    padding-top: 120px;
-    padding-bottom: 120px;
-    margin: 0;
-    overflow: hidden;
-    position: relative;
-    z-index: 1;
-  }
-
-  /* Fireworks layer */
-  #fireworks-layer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  img.logo {
-    width: 700px;
-    margin-bottom: 56px;
-  }
-
-  .title-line1 {
-    font-size: 90px;
-    font-weight: 800;
-    margin: 0;
-  }
-
-  .title-line2 {
-    font-size: 62px;
-    font-weight: 400;
-    margin-top: 20px;
-    margin-bottom: 98px;
-  }
-
-  .btn {
-    width: 459px;
-    padding: 30px;
-    margin: 30px auto;
-    font-size: 50px;     /* ← גודל חדש */
-    font-weight: 400;    /* ← לא בולד */
-    border: none;
-    border-radius: 34px;
-    cursor: pointer;
-    transition: 0.2s;
-    display: block;
-  }
-
-  #resetBtn {
-    background: #238636;
-    color: white;
-  }
-  #resetBtn:hover {
-    background: #2ea043;
-  }
-
-  #langBtn {
-    background: #7d4cff;
-    color: white;
-  }
-  #langBtn:hover {
-    background: #6b3dff;
-  }
-
-  .spark {
-    position: absolute;
-    width: 28px;
-    height: 28px;
-    background: #ffcc00;
-    border-radius: 50%;
-    animation: explode 2.6s ease-out forwards;
-    opacity: 0.95;
-    box-shadow: 0 0 20px #ffcc00;
-  }
-
-  @keyframes explode {
-    0% {
-      transform: translate(0,0) scale(1);
-      opacity: 1;
+  <style>
+    /* Fireworks ALWAYS on top */
+    #fireworks-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2000; /* higher than everything */
     }
-    100% {
-      transform: translate(var(--dx), var(--dy)) scale(0);
-      opacity: 0;
+
+    .spark {
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      background: #ffcc00;
+      border-radius: 50%;
+      animation: explode 2.6s ease-out forwards;
+      opacity: 0.95;
+      box-shadow: 0 0 20px #ffcc00;
     }
-  }
-</style>
+
+    @keyframes explode {
+      0% { transform: translate(0,0) scale(1); opacity: 1; }
+      100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
+    }
+
+    /* Full-screen centered content */
+    .win-dialog {
+      position: fixed;
+      inset: 0;
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .win-content {
+      text-align: center;
+      padding: 20px;
+      margin: 0 auto;
+    }
+
+    .win-content h2 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    .win-content p {
+      font-size: 1.4rem;
+      margin-bottom: 30px;
+      color: #b8d4ff;
+    }
+
+    .win-content button {
+      display: block;
+      width: 240px;
+      margin: 10px auto;
+      padding: 15px;
+      background: #6e75ff;
+      border-radius: 16px;
+      color: #fff;
+      font-size: 1.2rem;
+      cursor: pointer;
+      border: none;
+    }
+
+    #resetBtn {
+      background: #238636;
+    }
+
+    #langBtn {
+      background: #7d4cff;
+    }
+
+    /* Make sure logo is centered with the content */
+    .win-content .logo {
+      display: block;
+      margin: 0 auto 24px auto;
+      max-width: 200px;
+    }
+  </style>
 </head>
 
-<body>
+<body dir="rtl">
 
-<div id="fireworks-layer"></div>
+  <!-- Fireworks layer on top -->
+  <div id="fireworks-layer"></div>
 
-<img class="logo" src="images/logo.png" alt="סבלנדר">
+  <!-- Centered win dialog -->
+  <div class="win-dialog">
+    <div class="win-content">
 
-<h1 class="title-line1">ניצחת!</h1>
-<h2 class="title-line2">כל השלבים נפתרו</h2>
+      <img class="logo" src="images/logo.png" alt="בלנדר">
 
-<button class="btn" id="resetBtn">איפוס התקדמות</button>
-<button class="btn" id="langBtn">החלפת שפה</button>
+      <h2>ניצחת!</h2>
+      <p>כל השלבים נפתרו</p>
 
-<script>
-document.getElementById("resetBtn").onclick = () => {
-  localStorage.removeItem("blender_solvedLevels");
-  window.location.replace("index.html");
-};
+      <button id="resetBtn">איפוס התקדמות</button>
+      <button id="langBtn">החלפת שפה</button>
 
-document.getElementById("langBtn").onclick = () => {
-  localStorage.setItem("blender_lang", "en");
-  window.location.replace("win_en.html");
-};
+    </div>
+  </div>
 
-function createSpark() {
-  const spark = document.createElement("div");
-  spark.classList.add("spark");
+  <script>
+    document.getElementById("resetBtn").onclick = () => {
+      localStorage.removeItem("solvedLevels");
+      window.location.replace("index.html");
+    };
 
-  const layer = document.getElementById("fireworks-layer");
+    document.getElementById("langBtn").onclick = () => {
+      localStorage.setItem("gameLanguage", "en");
+      window.location.replace("index.html");
+    };
 
-  const x = Math.random() * window.innerWidth;
-  const y = Math.random() * window.innerHeight;
+    function createSpark() {
+      const spark = document.createElement("div");
+      spark.classList.add("spark");
 
-  spark.style.left = x + "px";
-  spark.style.top = y + "px";
+      const layer = document.getElementById("fireworks-layer");
+      const rect = layer.getBoundingClientRect();
 
-  const dx = (Math.random() - 0.5) * 840;
-  const dy = (Math.random() - 0.5) * 840;
+      const x = Math.random() * rect.width;
+      const y = Math.random() * rect.height;
 
-  spark.style.setProperty("--dx", dx + "px");
-  spark.style.setProperty("--dy", dy + "px");
+      spark.style.left = x + "px";
+      spark.style.top = y + "px";
 
-  layer.appendChild(spark);
+      const dx = (Math.random() - 0.5) * 300;
+      const dy = (Math.random() - 0.5) * 300;
 
-  setTimeout(() => spark.remove(), 2600);
-}
+      spark.style.setProperty("--dx", dx + "px");
+      spark.style.setProperty("--dy", dy + "px");
 
-setInterval(createSpark, 90);
-</script>
+      layer.appendChild(spark);
+
+      setTimeout(() => spark.remove(), 2600);
+    }
+
+    setInterval(createSpark, 90);
+  </script>
 
 </body>
 </html>

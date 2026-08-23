@@ -91,9 +91,23 @@ async function loadQuestions() {
   updateCounter();
 }
 
+function checkWinCondition() {
+    const solved = GameState.solved[GameState.language] || [];
+  const unsolvedQuestions = GameState.questions.filter(q => !solved.includes(q.id));
+
+  if (unsolvedQuestions.length === 0) {
+    window.location.href = GameState.language === "en" ? "win_en.html" : "win_he.html";
+    return true;
+}
+  return false;
+}
+
 async function switchLanguage() {
   GameState.language = GameState.language === "en" ? "he" : "en";
   localStorage.setItem("gameLanguage", GameState.language);
+
+  if (checkWinCondition()) return;
+
   setLayoutDirection();
   updateCounter(); // Add this
 
@@ -102,7 +116,7 @@ async function switchLanguage() {
   } catch (e) {
     alert(`לא ניתן לטעון ${GameState.language === "en" ? "questions-en.json" : "questions-he.json"}: ` + e.message);
     return;
-  }
+}
 
   if (GameState.questions.length === 0) return;
 
@@ -117,6 +131,8 @@ async function switchLanguage() {
 }
 
 function nextQuestion() {
+  if (checkWinCondition()) return;
+
   if (GameState.questions.length === 0) return;
 
     const solved = GameState.solved[GameState.language] || [];
@@ -143,28 +159,7 @@ function nextQuestion() {
 }
 
 function showWinDialog() {
-  const dialog = document.createElement("div");
-  dialog.className = "win-dialog";
-  const isEn = GameState.language === "en";
-  dialog.innerHTML = `
-    <div class="win-content">
-      <h2>🎉</h2>
-      <p>${isEn ? "Well done! You finished all levels!" : "כל הכבוד! סיימת את כל השלבים!"}</p>
-      <button id="winReset">${isEn ? "Reset Progress" : "איפוס התקדמות"}</button>
-      <button id="winSwitch">${isEn ? "Switch Language" : "החלפת שפה"}</button>
-    </div>
-  `;
-  document.body.appendChild(dialog);
-
-  document.getElementById("winReset").onclick = () => {
-    localStorage.removeItem("solvedLevels");
-    location.reload();
-  };
-
-  document.getElementById("winSwitch").onclick = () => {
-    dialog.remove();
-    switchLanguage();
-  };
+  // Logic replaced by redirects to win_en.html / win_he.html
 }
 
 function setButtonLabel(button, label) {
