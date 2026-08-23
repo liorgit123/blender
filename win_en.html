@@ -18,39 +18,45 @@
     overflow: hidden;
   }
 
-  /* Logo */
+  /* Logo wrapper to match background */
+  .logo-wrapper {
+    background: #0d1117;
+    padding: 20px 0;
+  }
+
   img.logo {
-    width: 330px; /* פי 1.5 בערך */
+    width: 480px; /* גדול יותר */
     margin-bottom: 40px;
   }
 
   /* Title */
   .title-line1 {
-    font-size: 48px;
+    font-size: 62px; /* גדול יותר */
     font-weight: 800;
     color: #ffffff;
     margin: 0;
   }
 
   .title-line2 {
-    font-size: 32px;
+    font-size: 42px; /* גדול יותר */
     font-weight: 400;
     color: #ffffff;
-    margin-top: 10px;
-    margin-bottom: 50px;
+    margin-top: 14px;
+    margin-bottom: 70px;
   }
 
   /* Buttons */
   .btn {
-    width: 300px;
-    padding: 24px;
-    margin: 14px;
-    font-size: 26px; /* מוגדל */
+    width: 360px; /* גדול יותר */
+    padding: 32px; /* גדול יותר */
+    margin: 20px auto;
+    font-size: 32px; /* גדול יותר */
     font-weight: 600;
     border: none;
-    border-radius: 18px;
+    border-radius: 22px;
     cursor: pointer;
     transition: 0.2s;
+    display: block;
   }
 
   #resetBtn {
@@ -72,12 +78,12 @@
   /* Fireworks Animation */
   .spark {
     position: absolute;
-    width: 6px;
-    height: 6px;
+    width: 18px;      /* גדול יותר */
+    height: 18px;     /* גדול יותר */
     background: #ffcc00;
     border-radius: 50%;
-    animation: explode 1.6s infinite ease-out;
-    opacity: 0.8;
+    animation: explode 2s infinite ease-out;
+    opacity: 0.9;
   }
 
   @keyframes explode {
@@ -95,7 +101,9 @@
 
 <body>
 
-<img class="logo" src="images/logo.png" alt="Sablander">
+<div class="logo-wrapper">
+  <img class="logo" src="images/logo.png" alt="Sablander">
+</div>
 
 <h1 class="title-line1">You Won!</h1>
 <h2 class="title-line2">All levels solved</h2>
@@ -126,18 +134,18 @@ function createSpark() {
   spark.style.left = x + "px";
   spark.style.top = y + "px";
 
-  const dx = (Math.random() - 0.5) * 200;
-  const dy = (Math.random() - 0.5) * 200;
+  const dx = (Math.random() - 0.5) * 520;   /* פיזור רחב יותר */
+  const dy = (Math.random() - 0.5) * 520;
 
   spark.style.setProperty("--dx", dx + "px");
   spark.style.setProperty("--dy", dy + "px");
 
   document.body.appendChild(spark);
 
-  setTimeout(() => spark.remove(), 1600);
+  setTimeout(() => spark.remove(), 2000);
 }
 
-setInterval(createSpark, 180);
+setInterval(createSpark, 110);   /* יותר זיקוקים */
 </script>
 
 </body>
