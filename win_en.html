@@ -12,40 +12,38 @@
     color: #ffffff;
     font-family: 'Inter', sans-serif;
     text-align: center;
-    padding-top: 120px;   /* רווח גדול למעלה */
-    padding-bottom: 120px;/* רווח גדול למטה */
+    padding-top: 120px;
+    padding-bottom: 120px;
     margin: 0;
     overflow: hidden;
   }
 
   img.logo {
-    width: 1000px; /* פי 2 */
-    margin-bottom: 80px;
+    width: 700px; /* 1000 × 0.7 */
+    margin-bottom: 56px; /* 80 × 0.7 */
   }
 
   .title-line1 {
-    font-size: 128px; /* פי 2 */
+    font-size: 90px; /* 128 × 0.7 */
     font-weight: 800;
-    color: #ffffff;
     margin: 0;
   }
 
   .title-line2 {
-    font-size: 88px; /* פי 2 */
+    font-size: 62px; /* 88 × 0.7 */
     font-weight: 400;
-    color: #ffffff;
-    margin-top: 28px;
-    margin-bottom: 140px;
+    margin-top: 20px;
+    margin-bottom: 98px; /* 140 × 0.7 */
   }
 
   .btn {
-    width: 760px;      /* פי 2 */
-    padding: 68px;     /* פי 2 */
-    margin: 44px auto; /* פי 2 */
-    font-size: 68px;   /* פי 2 */
+    width: 532px;      /* 760 × 0.7 */
+    padding: 48px;     /* 68 × 0.7 */
+    margin: 30px auto; /* 44 × 0.7 */
+    font-size: 48px;   /* 68 × 0.7 */
     font-weight: 600;
     border: none;
-    border-radius: 48px; /* פי 2 */
+    border-radius: 34px; /* 48 × 0.7 */
     cursor: pointer;
     transition: 0.2s;
     display: block;
@@ -69,13 +67,13 @@
 
   .spark {
     position: absolute;
-    width: 40px;      /* פי 2 */
-    height: 40px;     /* פי 2 */
+    width: 28px;      /* 40 × 0.7 */
+    height: 28px;     /* 40 × 0.7 */
     background: #ffcc00;
     border-radius: 50%;
     animation: explode 2.6s infinite ease-out;
     opacity: 0.95;
-    box-shadow: 0 0 28px #ffcc00; /* פי 2 */
+    box-shadow: 0 0 20px #ffcc00; /* 28 × 0.7 */
   }
 
   @keyframes explode {
@@ -122,8 +120,8 @@ function createSpark() {
   spark.style.left = x + "px";
   spark.style.top = y + "px";
 
-  const dx = (Math.random() - 0.5) * 1200; /* פי 2 */
-  const dy = (Math.random() - 0.5) * 1200;
+  const dx = (Math.random() - 0.5) * 840; /* 1200 × 0.7 */
+  const dy = (Math.random() - 0.5) * 840;
 
   spark.style.setProperty("--dx", dx + "px");
   spark.style.setProperty("--dy", dy + "px");
@@ -133,7 +131,7 @@ function createSpark() {
   setTimeout(() => spark.remove(), 2600);
 }
 
-setInterval(createSpark, 90); /* קצת יותר זיקוקים */
+setInterval(createSpark, 90);
 </script>
 
 </body>
