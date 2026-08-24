@@ -106,11 +106,7 @@ async function switchLanguage() {
   GameState.language = GameState.language === "en" ? "he" : "en";
   localStorage.setItem("gameLanguage", GameState.language);
 
-  if (checkWinCondition()) return;
-
-  setLayoutDirection();
-  updateCounter(); // Add this
-
+  // Load questions first so we have the list to check win condition against
   try {
     await loadQuestions();
   } catch (e) {
@@ -118,10 +114,22 @@ async function switchLanguage() {
     return;
 }
 
+  // Now check if all levels are solved
+  if (checkWinCondition()) return;
+
+  setLayoutDirection();
+      updateCounter();
+
   if (GameState.questions.length === 0) return;
 
-  GameState.currentIndex = Math.floor(Math.random() * GameState.questions.length);
-  GameState.current = GameState.questions[GameState.currentIndex];
+    const solved = GameState.solved[GameState.language] || [];
+  const unsolvedQuestions = GameState.questions.filter(q => !solved.includes(q.id));
+
+  if (unsolvedQuestions.length === 0) return;
+
+  GameState.currentIndex = Math.floor(Math.random() * unsolvedQuestions.length);
+  GameState.current = unsolvedQuestions[GameState.currentIndex];
+  GameState.currentIndex = GameState.questions.findIndex(q => q.id === GameState.current.id);
   GameState.hintLevel = 0;
 
   void document.body.offsetWidth;
@@ -147,8 +155,22 @@ function nextQuestion() {
 }
 
   // Pick a random unsolved question
-  const randomIndex = Math.floor(Math.random() * unsolvedQuestions.length);
-  GameState.current = unsolvedQuestions[randomIndex];
+  let nextQuestion;
+  if (unsolvedQuestions.length > 1 && GameState.current) {
+    const currentCategory = GameState.current.category;
+    const differentCategoryQuestions = unsolvedQuestions.filter(q => q.category !== currentCategory);
+
+    if (differentCategoryQuestions.length > 0) {
+      nextQuestion = differentCategoryQuestions[Math.floor(Math.random() * differentCategoryQuestions.length)];
+    } else {
+      const candidates = unsolvedQuestions.filter(q => q.id !== GameState.current.id);
+      nextQuestion = candidates[Math.floor(Math.random() * candidates.length)];
+    }
+  } else {
+    nextQuestion = unsolvedQuestions[Math.floor(Math.random() * unsolvedQuestions.length)];
+  }
+
+  GameState.current = nextQuestion;
   GameState.currentIndex = GameState.questions.findIndex(q => q.id === GameState.current.id);
 
   GameState.hintLevel = 0;
@@ -156,7 +178,7 @@ function nextQuestion() {
   void document.body.offsetWidth;
   renderQuestion(GameState.current);
   resetButtons();
-}
+  }
 
 function showWinDialog() {
   // Logic replaced by redirects to win_en.html / win_he.html
@@ -178,7 +200,19 @@ function resetButtons() {
   hintBtn.disabled = false;
   setButtonLabel(hintBtn, getLocalizedText("hint"));
   hintBtn.style.visibility = "visible";
-  resetBtn.disabled = true;
+
+  // Update Reset button: visible, but disabled if no tiles are placed
+  resetBtn.style.visibility = "visible";
+  setButtonLabel(nextBtn, getLocalizedText("skip"));
+
+  // Initial check for buttons state
+  updateResetButtonState();
+
+  // Disable next button if only one unsolved question is left
+    const solved = GameState.solved[GameState.language] || [];
+  const unsolvedQuestions = GameState.questions.filter(q => !solved.includes(q.id));
+  nextBtn.disabled = unsolvedQuestions.length <= 1;
+
   setButtonLabel(nextBtn, getLocalizedText("skip"));
 }
 
@@ -216,8 +250,14 @@ function checkAnswer() {
     factBox.innerHTML = `<span class="fact-check">✓</span>${getLocalizedText("correct")}`;
     hintBtn.disabled = true;
     document.getElementById("resetBtn").disabled = true;
-    document.getElementById("resetBtn").style.visibility = "hidden"; // Hide reset
+    // Keep it visible as per requirement
     setButtonLabel(document.getElementById("nextBtn"), getLocalizedText("next"));
+
+    // Ensure button is enabled when correct, unless it was disabled via checkWinCondition
+    document.getElementById("nextBtn").disabled = false;
+
+    // Trigger fireworks
+    triggerFireworks();
 
     // Mark as solved
     const solved = GameState.solved[GameState.language] || [];

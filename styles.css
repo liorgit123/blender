@@ -494,7 +494,10 @@ button:hover:not(:disabled) {
 }
 
 button:disabled {
-  display: none;
+  background: #333 !important;
+  color: #888 !important;
+  cursor: default !important;
+  pointer-events: none;
 }
 
 .message {
@@ -579,6 +582,4 @@ body[dir="rtl"] .win-content {
 body[dir="rtl"] .win-content button {
   font-family: 'Heebo', sans-serif !important;
 }
-
-
 

@@ -489,7 +489,7 @@ function updateResetButtonState() {
   );
   const resetBtn = document.getElementById("resetBtn");
   resetBtn.disabled = !anyPlaced;
-  resetBtn.style.visibility = anyPlaced ? "visible" : "hidden";
+  resetBtn.style.visibility = "visible";
 }
 
 function shuffleArray(arr) {

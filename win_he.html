@@ -114,7 +114,9 @@
 
   <script>
     document.getElementById("resetBtn").onclick = () => {
-      localStorage.removeItem("solvedLevels");
+      const solved = JSON.parse(localStorage.getItem("solvedLevels") || "{}");
+      delete solved["he"];
+      localStorage.setItem("solvedLevels", JSON.stringify(solved));
       window.location.replace("index.html");
     };
 
@@ -152,3 +154,4 @@
 
 </body>
 </html>
+
