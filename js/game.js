@@ -198,6 +198,9 @@ function resetButtons() {
   const nextBtn = document.getElementById("nextBtn");
 
   hintBtn.disabled = false;
+  hintBtn.style.backgroundColor = "";
+  hintBtn.style.opacity = "";
+  hintBtn.style.cursor = "";
   setButtonLabel(hintBtn, getLocalizedText("hint"));
   hintBtn.style.visibility = "visible";
 
@@ -314,6 +317,12 @@ function showHint() {
   } else if (GameState.hintLevel === 2) {
     // 50%
     revealCount(Math.max(1, Math.ceil(slots.length * 0.3)));
+
+    // Disable and gray out hint button after 2nd click
+    hintBtn.disabled = true;
+    hintBtn.style.backgroundColor = "#333";
+    hintBtn.style.opacity = "0.6";
+    hintBtn.style.cursor = "default";
   } else if (GameState.hintLevel === 3) {
     // All
     revealAllLetters();
@@ -375,4 +384,3 @@ function revealCount(count) {
   });
   updateResetButtonState();
 }
-
