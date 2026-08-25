@@ -305,7 +305,7 @@ body[dir="ltr"] .fact {
   width: var(--slot-size);
   height: var(--slot-size);
   border: none;
-  border-radius: 10px;
+  border-radius: 0; /* 10px; */
   margin: 2px;
   display: flex;
   justify-content: center;
@@ -362,7 +362,7 @@ body[dir="ltr"] .fact {
   margin: 4px;
   background: #8fcfff;
   color: #072046;
-  border-radius: 12px;
+  border-radius: 0; /* 12px; */
   font-size: calc(var(--slot-size) * 0.35);
   font-weight: 700;
   cursor: grab;
