@@ -320,27 +320,35 @@ body[dir="ltr"] .fact {
   /* allow bevel + inner shadow to show */
   overflow: visible;
 
-  /* force crisp corners */
+  /* crisp corners */
   border-radius: 0;
 
   /* STRONGER WHITE TILE GRADIENT */
   background: linear-gradient(
     165deg,
     #ffffff 0%,
-    #f2f6ff 40%,
-    #dce6f7 70%,
-    #c3d3eb 100%
+    #f0f4ff 35%,
+    #d6e2f5 70%,
+    #c0d0e8 100%
   );
 
-  /* clearer bevel highlight */
-  border-top: 1px solid rgba(255,255,255,0.9);
+  /* bevel highlight */
+  border-top: 1px solid rgba(255,255,255,0.95);
   border-left: 1px solid rgba(255,255,255,0.75);
 
-  /* STRONGER SHADOWS FOR BLACK BACKGROUND */
+  /* MULTI-LAYER SHADOW SYSTEM (visible on black) */
   box-shadow:
-    0 6px 14px rgba(0,0,0,0.55),        /* deeper outer shadow */
-    0 2px 4px rgba(0,0,0,0.35),         /* soft lift */
-    inset 0 -2px 0 rgba(180,195,220,1); /* crisp bottom bevel */
+    /* ambient rim glow */
+    0 0 6px rgba(255,255,255,0.35),
+
+    /* medium drop shadow */
+    0 6px 14px rgba(0,0,0,0.65),
+
+    /* long soft shadow */
+    0 14px 28px rgba(0,0,0,0.55),
+
+    /* crisp bottom bevel */
+    inset 0 -2px 0 rgba(180,195,220,1);
 }
 
 .slot[data-active="true"]::after {
