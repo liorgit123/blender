@@ -304,13 +304,10 @@ body[dir="ltr"] .fact {
   box-sizing: border-box;
   width: var(--slot-size);
   height: var(--slot-size);
-  /* border: none; */
-  /* border-radius: 10px; */
   margin: 2px;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background: #ffffff; */
   color: #111111;
   font-size: calc(var(--slot-size) * 0.55);
   font-weight: 700;
@@ -319,12 +316,22 @@ body[dir="ltr"] .fact {
   cursor: pointer;
   user-select: none;
   position: relative; /* For marker */
-  overflow: hidden;
-  /* WHITE TILE STYLE */
+
+  /* FIX 1: allow bevel + inner shadow to show */
+  overflow: visible;
+
+  /* FIX 2: prevent inherited rounded corners */
+  border-radius: 0;
+
+  /* WHITE TILE STYLE (enhanced for black background) */
   background: linear-gradient(158deg, #ffffff 0%, #eef3fb 52%, #d9e4f4 100%);
   border-top: 1px solid #ffffff;
   border-left: 1px solid #ffffffd0;
-  box-shadow: 0 10px 24px #26324833, inset 0 -2px 0 #bfcde3;
+
+  /* FIX 3: stronger outer shadow so it’s visible on black */
+  box-shadow:
+    0 10px 24px rgba(38, 50, 72, 0.45),
+    inset 0 -2px 0 #bfcde3;
 }
 
 .slot[data-active="true"]::after {
