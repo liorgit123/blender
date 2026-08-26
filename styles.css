@@ -270,9 +270,8 @@ body[dir="ltr"] .fact {
 }
 
 .slot-line {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 1fr;        /* all tiles equal width */
+  display: flex;
+  justify-content: space-between;
   gap: 6px;
   width: 100%;
 }
@@ -301,17 +300,16 @@ body[dir="ltr"] .fact {
 .slot {
   box-sizing: border-box;
 
-  /* AUTO-FIT + KEEP SQUARE */
-  aspect-ratio: 1 / 1;
-  width: 100%;                /* grid gives equal width */
+  /* AUTO-FIT WIDTH — stays square */
+  flex: 1 1 auto;
+  aspect-ratio: 1 / 1; /* IMPORTANT: keeps tiles square */
   max-width: var(--slot-size);
   max-height: var(--slot-size);
 
-  margin: 0;                  /* grid handles spacing */
+  margin: 6px;
   display: flex;
   justify-content: center;
   align-items: center;
-
   color: #111111;
   font-size: calc(var(--slot-size) * 0.55);
   font-weight: 700;
@@ -325,7 +323,7 @@ body[dir="ltr"] .fact {
   /* MATCH BLUE TILE CORNERS */
   border-radius: 6px;
 
-  /* WHITE GRADIENT */
+  /* STRONGER WHITE GRADIENT */
   background: linear-gradient(
     165deg,
     #ffffff 0%,
@@ -338,7 +336,7 @@ body[dir="ltr"] .fact {
   border-top: 1px solid rgba(255,255,255,0.95);
   border-left: 1px solid rgba(255,255,255,0.75);
 
-  /* SHADOW VISIBLE ON BLACK */
+  /* VISIBLE SHADOW ON BLACK */
   box-shadow:
     0 0 6px rgba(255,255,255,0.35),
     0 10px 20px rgba(0,0,0,0.75),
@@ -385,8 +383,10 @@ body[dir="ltr"] .fact {
   height: var(--slot-size);
   margin: 6px;
 
-  border-radius: 6px; /* match white tiles */
+  /* MATCH WHITE TILE CORNERS */
+  border-radius: 6px;
 
+  /* BLUE GRADIENT */
   background: linear-gradient(
     165deg,
     #8fcfff 0%,
