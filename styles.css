@@ -338,10 +338,17 @@ body[dir="ltr"] .fact {
 
   /* VISIBLE SHADOW ON BLACK */
   box-shadow:
-    0 0 6px rgba(255,255,255,0.35),
-    0 10px 20px rgba(0,0,0,0.75),
-    0 0 28px rgba(0,0,0,0.65),
-    inset 0 -2px 0 rgba(180,195,220,1);
+  /* rim glow */
+  0 0 6px rgba(255,255,255,0.35),
+
+  /* brighter, visible shadow */
+  0 10px 20px rgba(60, 80, 120, 0.55),
+
+  /* wide soft colored shadow */
+  0 0 28px rgba(30, 60, 120, 0.45),
+
+  /* crisp bevel */
+  inset 0 -2px 0 rgba(180,195,220,1);
 }
 
 .slot[data-active="true"]::after {
