@@ -27,10 +27,7 @@ body[dir="rtl"] {
   --slot-size: 40px;
   border-radius: 16px;
   padding: 20px 12px 22px;
-
-  /* FIX: remove shadow that hides tile shadows */
-  box-shadow: none;
-
+  box-shadow: none; /* IMPORTANT */
   border: none;
   display: flex;
   flex-direction: column;
@@ -274,11 +271,9 @@ body[dir="ltr"] .fact {
 
 .slot-line {
   display: flex;
-  justify-content: center;
-  gap: 2px;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  padding: 2px 0;
+  justify-content: space-between; /* AUTO-FIT MAGIC */
+  gap: 6px;
+  width: 100%;
 }
 
 .line-gap {
@@ -304,7 +299,12 @@ body[dir="ltr"] .fact {
 
 .slot {
   box-sizing: border-box;
-  width: var(--slot-size);
+
+  /* AUTO-FIT WIDTH */
+  flex: 1 1 auto;
+  max-width: var(--slot-size);
+  max-height: var(--slot-size);
+
   height: var(--slot-size);
   margin: 6px; /* IMPORTANT: gives shadow room */
   display: flex;
@@ -313,7 +313,6 @@ body[dir="ltr"] .fact {
   color: #111111;
   font-size: calc(var(--slot-size) * 0.55);
   font-weight: 700;
-  min-width: var(--slot-size);
   text-align: center;
   cursor: pointer;
   user-select: none;
@@ -334,16 +333,9 @@ body[dir="ltr"] .fact {
   border-left: 1px solid rgba(255,255,255,0.75);
 
   box-shadow:
-    /* rim glow to separate from black */
     0 0 6px rgba(255,255,255,0.35),
-
-    /* wide soft shadow */
     0 10px 20px rgba(0,0,0,0.75),
-
-    /* side spread shadow */
     0 0 28px rgba(0,0,0,0.65),
-
-    /* crisp bevel */
     inset 0 -2px 0 rgba(180,195,220,1);
 }
 
