@@ -315,23 +315,32 @@ body[dir="ltr"] .fact {
   text-align: center;
   cursor: pointer;
   user-select: none;
-  position: relative; /* For marker */
+  position: relative;
 
-  /* FIX 1: allow bevel + inner shadow to show */
+  /* allow bevel + inner shadow to show */
   overflow: visible;
 
-  /* FIX 2: prevent inherited rounded corners */
+  /* force crisp corners */
   border-radius: 0;
 
-  /* WHITE TILE STYLE (enhanced for black background) */
-  background: linear-gradient(158deg, #ffffff 0%, #eef3fb 52%, #d9e4f4 100%);
-  border-top: 1px solid #ffffff;
-  border-left: 1px solid #ffffffd0;
+  /* STRONGER WHITE TILE GRADIENT */
+  background: linear-gradient(
+    165deg,
+    #ffffff 0%,
+    #f2f6ff 40%,
+    #dce6f7 70%,
+    #c3d3eb 100%
+  );
 
-  /* FIX 3: stronger outer shadow so it’s visible on black */
+  /* clearer bevel highlight */
+  border-top: 1px solid rgba(255,255,255,0.9);
+  border-left: 1px solid rgba(255,255,255,0.75);
+
+  /* STRONGER SHADOWS FOR BLACK BACKGROUND */
   box-shadow:
-    0 10px 24px rgba(38, 50, 72, 0.45),
-    inset 0 -2px 0 #bfcde3;
+    0 6px 14px rgba(0,0,0,0.55),        /* deeper outer shadow */
+    0 2px 4px rgba(0,0,0,0.35),         /* soft lift */
+    inset 0 -2px 0 rgba(180,195,220,1); /* crisp bottom bevel */
 }
 
 .slot[data-active="true"]::after {
