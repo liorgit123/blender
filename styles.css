@@ -515,6 +515,14 @@ button:disabled {
   width: 30px; /* or any spacing you prefer */
 }
 
+.slot, .letter {
+  border-radius: 0; /* keep sharp corners */
+  border: 1px solid rgba(255,255,255,0.18); /* subtle outline */
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.25),             /* soft outer shadow */
+    inset 0 0 0 1px rgba(255,255,255,0.35); /* inner highlight */
+}
+
 /* Mobile adjustments */
 @media (max-width: 480px) {
   .app {
