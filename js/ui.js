@@ -259,7 +259,7 @@ function updateActiveSlotAfterPlacement(lastPlacedSlot) {
 }
 function isGameWon() {
   const factBox = document.getElementById("clue");
-  return factBox.querySelector(".fact-check") !== null;
+  return factBox && factBox.querySelector(".fact-check") !== null;
 }
 
 function onSlotClick(e) {

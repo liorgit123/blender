@@ -303,84 +303,98 @@ function checkAnswer() {
 }
 }
 
-function showHint() {
+async function showHint() {
   GameState.hintLevel++;
   const hintBtn = document.getElementById("hintBtn");
   const slots = [...document.querySelectorAll(".slot")];
 
+  // Disable all letter clicking at start
+  const allTiles = document.querySelectorAll(".letter");
+  allTiles.forEach(t => t.style.pointerEvents = "none");
+
   // Call the clear board function before revealing hint letters
   clearBoardForHint();
 
+  let count = 0;
   if (GameState.hintLevel === 1) {
-    // 20%
-    revealCount(Math.max(1, Math.ceil(slots.length * 0.2)));
+    count = Math.max(1, Math.ceil(slots.length * 0.2));
   } else if (GameState.hintLevel === 2) {
-    // 50%
-    revealCount(Math.max(1, Math.ceil(slots.length * 0.3)));
-
-    // Disable and gray out hint button after 2nd click
+    count = Math.max(1, Math.ceil(slots.length * 0.3));
     hintBtn.disabled = true;
     hintBtn.style.backgroundColor = "#333";
     hintBtn.style.opacity = "0.6";
     hintBtn.style.cursor = "default";
   } else if (GameState.hintLevel === 3) {
-    // All
-    revealAllLetters();
+    count = slots.length;
     hintBtn.disabled = true;
     document.getElementById("resetBtn").disabled = true;
-    document.getElementById("resetBtn").style.visibility = "hidden"; // Hide reset
+    document.getElementById("resetBtn").style.visibility = "hidden";
     setButtonLabel(document.getElementById("nextBtn"), getLocalizedText("next"));
   }
-}
 
-function revealCount(count) {
-  const slots = [...document.querySelectorAll(".slot")];
+  // Animate one by one
   const clean = GameState.current.answer.replace(/\s+/g, "");
   const letters = segmentText(clean);
-
   const emptyIndices = slots
     .map((s, i) => (s.dataset.filled === "false" ? i : null))
     .filter(i => i !== null);
 
-  // Try to find a set of indices that are not adjacent
-  let toReveal = [];
-  const shuffled = shuffleArray(emptyIndices);
+  const toReveal = shuffleArray(emptyIndices).slice(0, count);
 
-  for (let idx of shuffled) {
-    if (!toReveal.some(revealedIdx => Math.abs(revealedIdx - idx) === 1)) {
-      toReveal.push(idx);
-    }
-    if (toReveal.length === count) break;
-  }
-
-  // If we couldn't find enough non-adjacent slots, fill with remaining
-  if (toReveal.length < count) {
-    for (let idx of shuffled) {
-      if (!toReveal.includes(idx)) {
-        toReveal.push(idx);
-      }
-      if (toReveal.length === count) break;
-    }
-  }
-
-  toReveal.forEach(idx => {
+  for (let i = 0; i < toReveal.length; i++) {
+    const idx = toReveal[i];
     const slot = slots[idx];
     const letterBase = toBaseHebrew(letters[idx]);
-    placeLetterInSlot(slot, letterBase);
-    slot.dataset.locked = "true";
 
+    // 1. Identify and clear the tile first
     const tiles = [...document.querySelectorAll(".letter")].filter(
       t => !t.classList.contains("empty") && t.dataset.base === letterBase
     );
+
     if (tiles.length > 0) {
       const tile = tiles[0];
       tile.dataset.letter = letterBase;
       tile.dataset.locked = "true";
-      tile.textContent = "";
-      tile.classList.add("empty");
-      tile.removeEventListener("click", onLetterClick);
-      tile.style.cursor = "default";
+        tile.textContent = "";
+        tile.classList.add("empty");
+        tile.removeEventListener("click", onLetterClick);
+        tile.style.cursor = "default";
     }
-  });
+
+    // 2. Wait a moment to show that the tile is gone
+    await new Promise(resolve => setTimeout(resolve, 1));
+
+    // 3. Then appear in the slot
+    placeLetterInSlot(slot, letterBase);
+    slot.dataset.locked = "true";
+
+    const letterSpan = slot.querySelector(".slot-text");
+    if (letterSpan) {
+      letterSpan.animate(
+        [{ opacity: 0 }, { opacity: 1 }],
+        { duration: 300, easing: 'ease-out' }
+      );
+    }
+
+    // 4. Wait a moment before moving to the next pair (disappear/appear)
+    await new Promise(resolve => setTimeout(resolve, 500));
+  }
+
+  updateActiveSlot();
   updateResetButtonState();
+
+  // Re-enable clicking for tiles that are not "empty"
+  const updatedTiles = document.querySelectorAll(".letter");
+  updatedTiles.forEach(t => {
+    t.style.pointerEvents = "auto";
+  });
 }
+
+function revealCount(count) {
+    // This function is now superseded by logic inside showHint, can be removed or kept as a helper
+}
+
+function revealAllLetters() {
+  // This function is also now superseded by showHint logic
+}
+
