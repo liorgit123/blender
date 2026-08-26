@@ -267,11 +267,11 @@ body[dir="ltr"] .fact {
     justify-content: center;
   gap: 2px;
   width: 100%;
-  }
+}
 
 .slot-line {
   display: flex;
-  justify-content: space-between; /* AUTO-FIT MAGIC */
+  justify-content: space-between;
   gap: 6px;
   width: 100%;
 }
@@ -300,13 +300,13 @@ body[dir="ltr"] .fact {
 .slot {
   box-sizing: border-box;
 
-  /* AUTO-FIT WIDTH */
+  /* AUTO-FIT WIDTH — stays square */
   flex: 1 1 auto;
+  aspect-ratio: 1 / 1; /* IMPORTANT: keeps tiles square */
   max-width: var(--slot-size);
   max-height: var(--slot-size);
 
-  height: var(--slot-size);
-  margin: 6px; /* IMPORTANT: gives shadow room */
+  margin: 6px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -319,8 +319,11 @@ body[dir="ltr"] .fact {
   position: relative;
 
   overflow: visible;
-  border-radius: 0;
 
+  /* MATCH BLUE TILE CORNERS */
+  border-radius: 6px;
+
+  /* STRONGER WHITE GRADIENT */
   background: linear-gradient(
     165deg,
     #ffffff 0%,
@@ -329,9 +332,11 @@ body[dir="ltr"] .fact {
     #c0d0e8 100%
   );
 
+  /* BEVEL */
   border-top: 1px solid rgba(255,255,255,0.95);
   border-left: 1px solid rgba(255,255,255,0.75);
 
+  /* VISIBLE SHADOW ON BLACK */
   box-shadow:
     0 0 6px rgba(255,255,255,0.35),
     0 10px 20px rgba(0,0,0,0.75),
@@ -377,9 +382,19 @@ body[dir="ltr"] .fact {
   width: var(--slot-size);
   height: var(--slot-size);
   margin: 6px;
-  background: linear-gradient(165deg, #8fcfff 0%, #6fb8ff 100%);
-  color: #072046;
+
+  /* MATCH WHITE TILE CORNERS */
   border-radius: 6px;
+
+  /* BLUE GRADIENT */
+  background: linear-gradient(
+    165deg,
+    #8fcfff 0%,
+    #6fb8ff 40%,
+    #4fa4ff 100%
+  );
+
+  color: #072046;
   font-size: calc(var(--slot-size) * 0.55);
   font-weight: 700;
   cursor: grab;
