@@ -1,8 +1,8 @@
 function triggerFireworks() {
-  const factBox = document.getElementById("clue");
-  if (!factBox) return;
+  const patternBox = document.getElementById("pattern");
+  if (!patternBox) return;
 
-  const rect = factBox.getBoundingClientRect();
+  const rect = patternBox.getBoundingClientRect();
   const layer = document.createElement("div");
   layer.id = "fireworks-layer";
   layer.style.position = "fixed";
@@ -13,47 +13,54 @@ function triggerFireworks() {
 
   const style = document.createElement("style");
   style.textContent = `
-    .spark {
+    .firework-particle {
       position: absolute;
-      width: 12px;
-      height: 12px;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
       opacity: 0;
-      animation: pop 0.8s ease-out forwards;
-    }
-    @keyframes pop {
-      0% { transform: scale(0); opacity: 1; }
-      100% { transform: scale(4); opacity: 0; }
     }
   `;
   document.head.appendChild(style);
 
   const colors = ["#FF5733", "#33FF57", "#3357FF", "#F3FF33", "#FF33F6", "#33FFF6"];
 
-  // Center coordinates for the explosion
-  const centerX = rect.left + rect.width / 2;
-  const centerY = rect.top + rect.height / 2;
+  function explodeAt(x, y) {
+  for (let i = 0; i < 30; i++) {
+    const angle = Math.random() * Math.PI * 2;
+      const distance = 40 + Math.random() * 40;
+    const particle = document.createElement("div");
+    particle.classList.add("firework-particle");
+    particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      particle.style.left = `${x}px`;
+      particle.style.top = `${y}px`;
 
-  // Create 6 sparks, popping one after another
-  for (let i = 0; i < 6; i++) {
-  setTimeout(() => {
-      const spark = document.createElement("div");
-      spark.classList.add("spark");
-      spark.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-      spark.style.boxShadow = `0 0 12px ${spark.style.backgroundColor}`;
+    particle.animate([
+      { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+      { transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) scale(0)`, opacity: 0 }
+    ], {
+        duration: 3000 + Math.random() * 500, // Slower animation
+      easing: 'cubic-bezier(0, 0, 0.2, 1)',
+      fill: 'forwards'
+    });
 
-      // Position further apart (range of 80px)
-      spark.style.left = centerX + (Math.random() - 0.5) * 80 + "px";
-      spark.style.top = centerY + (Math.random() - 0.5) * 80 + "px";
-
-      layer.appendChild(spark);
-      setTimeout(() => spark.remove(), 800);
-    }, i * 400); // Delay each pop slightly more
+    layer.appendChild(particle);
+    setTimeout(() => particle.remove(), 2000);
+  }
 }
+
+  // Trigger 4 explosions at intervals
+  for (let j = 0; j < 4; j++) {
+    setTimeout(() => {
+      const randomX = rect.left + (rect.width * 0.2) + Math.random() * (rect.width * 0.6);
+      const randomY = rect.top + (rect.height * 0.2) + Math.random() * (rect.height * 0.6);
+      explodeAt(randomX, randomY);
+    }, j * 500); // Trigger next explosion every 1000ms
+  }
 
   setTimeout(() => {
     layer.remove();
     style.remove();
-  }, 3000);
+  }, 5000);
 }
 

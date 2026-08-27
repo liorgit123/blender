@@ -35,8 +35,11 @@ function getLocalizedText(key) {
     case "remaining": return isEnglish ? "REMAINING" : "נשארו";
     case "counter": return isEnglish ? "solved {solved} out of {total}" : "נפתרו {solved} מתוך {total}";
     case "notAll": return isEnglish ? "Not all letters have been placed." : "לא כל האותיות הונחו במקומן.";
-    case "correct": return isEnglish ? "Great! Correct answer." : "מעולה! תשובה נכונה.";
-    case "incorrect": return isEnglish ? "Not quite, keep trying." : "לא מדויק, המשיכו לנסות.";
+    case "correct": return isEnglish ? "Well done - solved without hints!" : "כל הכבוד - פתרת ללא עזרה!";
+    case "correctLevel1": return isEnglish ? "Good job - correct answer" : "יפה מאוד - תשובה נכונה";
+    case "correctLevel2": return isEnglish ? "Good job - correct answer" : "יפה מאוד - תשובה נכונה";
+    case "correctLevel3": return isEnglish ? "Good job - correct answer" : "יפה מאוד - תשובה נכונה";
+    case "incorrect": return isEnglish ? "Not quite - keep trying" : "לא מדויק - המשיכו לנסות";
     case "hint": return isEnglish ? "Hint" : "רמז";
     case "reveal": return isEnglish ? "Reveal" : "גלה";
     case "skip": return isEnglish ? "Skip" : "דלג";
@@ -225,32 +228,55 @@ function checkAnswer() {
 
   const factBox = document.getElementById("clue");
   const hintBtn = document.getElementById("hintBtn");
+  const messageBox = document.getElementById("messageBox");
+
+  function showTemporaryMessage(text, isSuccess = false) {
+    factBox.classList.add("hidden");
+
+    // Create new content just for the message, no prefix
+    messageBox.innerHTML = `<span>${text}</span>`;
+
+        messageBox.style.color = "#dce6ff";
+        messageBox.style.fontWeight = "normal"; // Ensure it is not bold
+        messageBox.style.fontSize = "1rem"; // Match clue size (approx 1rem)
+        messageBox.style.fontFamily = "inherit"; // Match clue font
+        messageBox.style.backgroundColor = "transparent"; // Background should be transparent to look same as clue
+        messageBox.style.zIndex = "20"; // Higher z-index to cover clue text
+        messageBox.style.pointerEvents = "auto";
+        messageBox.style.visibility = "visible";
+
+        messageBox.classList.add("show");
+
+    if (!isSuccess) {
+      setTimeout(() => {
+        messageBox.classList.remove("show");
+        messageBox.style.visibility = "hidden";
+        factBox.classList.remove("hidden");
+      }, 2000);
+    }
+  }
 
   if (!user || user.length !== target.length) {
-    const previousFact = GameState.current.fact;
-    const wasBlurred = factBox.classList.contains("blurred");
-
-    factBox.textContent = getLocalizedText("notAll");
-
-    setTimeout(() => {
-      if (factBox.textContent === getLocalizedText("notAll")) {
-        factBox.innerHTML = `<span class="clue-prefix">${getLocalizedText("clue")}</span><span class="clue-text" id="clue-text">${previousFact}</span>`;
-
-        // Restore previous blur state
-        if (wasBlurred) {
-        factBox.classList.add("blurred");
-        factBox.onclick = () => factBox.classList.remove("blurred");
-        } else {
-            factBox.classList.remove("blurred");
-            factBox.onclick = null;
-      }
-  }
-    }, 2000);
+    showTemporaryMessage(getLocalizedText("notAll"));
     return;
-}
+  }
 
   if (user === target) {
-    factBox.innerHTML = `<span class="fact-check">✓</span>${getLocalizedText("correct")}`;
+    let successText;
+    if (GameState.hintLevel === 0) {
+      successText = getLocalizedText("correct");
+    } else if (GameState.hintLevel === 1) {
+      successText = getLocalizedText("correctLevel1");
+  } else if (GameState.hintLevel === 2) {
+      successText = getLocalizedText("correctLevel2");
+    } else {
+      successText = getLocalizedText("correctLevel3");
+    }
+
+    showTemporaryMessage(successText, true);
+
+    // Original success logic kept for functionality
+    // factBox.innerHTML = `<span class="fact-check">✓</span>${getLocalizedText("correct")}`;
     hintBtn.disabled = true;
     document.getElementById("resetBtn").disabled = true;
     // Keep it visible as per requirement
@@ -276,31 +302,13 @@ function checkAnswer() {
     document.querySelectorAll(".slot").forEach(s => s.dataset.active = "false");
 
     document.querySelectorAll(".letter").forEach(tile => {
-      tile.style.cursor = "default";
+        tile.style.cursor = "default";
       tile.classList.add("disabled");
       tile.removeEventListener("click", onLetterClick);
   });
   } else {
-    const previousFact = GameState.current.fact;
-    const wasBlurred = factBox.classList.contains("blurred");
-
-    factBox.textContent = getLocalizedText("incorrect");
-
-    setTimeout(() => {
-      if (factBox.textContent === getLocalizedText("incorrect")) {
-        factBox.innerHTML = `<span class="clue-prefix">${getLocalizedText("clue")}</span><span class="clue-text" id="clue-text">${previousFact}</span>`;
-
-        // Restore previous blur state
-        if (wasBlurred) {
-        factBox.classList.add("blurred");
-        factBox.onclick = () => factBox.classList.remove("blurred");
-        } else {
-            factBox.classList.remove("blurred");
-            factBox.onclick = null;
-}
-  }
-    }, 2000);
-}
+    showTemporaryMessage(getLocalizedText("incorrect"));
+    }
 }
 
 async function showHint() {
@@ -349,7 +357,7 @@ async function showHint() {
     // 1. Identify and clear the tile first
     const tiles = [...document.querySelectorAll(".letter")].filter(
       t => !t.classList.contains("empty") && t.dataset.base === letterBase
-    );
+      );
 
     if (tiles.length > 0) {
       const tile = tiles[0];
@@ -359,7 +367,7 @@ async function showHint() {
         tile.classList.add("empty");
         tile.removeEventListener("click", onLetterClick);
         tile.style.cursor = "default";
-    }
+  }
 
     // 2. Wait a moment to show that the tile is gone
     await new Promise(resolve => setTimeout(resolve, 1));
@@ -374,7 +382,7 @@ async function showHint() {
         [{ opacity: 0 }, { opacity: 1 }],
         { duration: 300, easing: 'ease-out' }
       );
-    }
+  }
 
     // 4. Wait a moment before moving to the next pair (disappear/appear)
     await new Promise(resolve => setTimeout(resolve, 500));

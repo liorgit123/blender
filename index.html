@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=45">
+  <link rel="stylesheet" href="styles.css?v=55">
 </head>
 <body dir="rtl">
   <div class="app">
@@ -25,9 +25,12 @@
 
     <div id="scramble" class="scramble"></div>
 
+    <div id="clue-wrapper" style="position: relative; width: 100%; min-height: 50px;">
+    <div id="messageBox" class="message"></div>
     <div id="clue" class="clue blurred">
-      <span class="clue-prefix">Clue: </span>
+        <span class="clue-prefix" id="clue-prefix">Clue: </span>
       <span class="clue-text" id="clue-text"></span>
+    </div>
     </div>
 
     <div class="controls">
@@ -43,13 +46,13 @@
         <img class="button-icon" src="images/skip1.svg" alt="" aria-hidden="true">
         <span class="button-label visually-hidden">דלג</span>
       </button>
-    </div>
+  </div>
   </div>
 
-  <script src="js/game.js?v=44"></script>
-  <script src="js/ui.js?v=44"></script>
-  <script src="js/main.js?v=44"></script>
-  <script src="js/fireworks.js?v=44"></script>
+  <script src="js/game.js?v=55"></script>
+  <script src="js/ui.js?v=55"></script>
+  <script src="js/main.js?v=55"></script>
+  <script src="js/fireworks.js?v=55"></script>
 </body>
 </html>
 

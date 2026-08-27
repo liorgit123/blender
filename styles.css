@@ -227,6 +227,7 @@ body[dir="ltr"] .fact {
 }
 
 .clue {
+  position: relative;
   min-height: 30px;
   margin: 10px 0 0 0;
   padding: 10px 14px;
@@ -239,8 +240,19 @@ body[dir="ltr"] .fact {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  cursor: pointer;
+    cursor: pointer;
   user-select: none;
+  transition: opacity 0.3s ease-in-out;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.clue:focus {
+  outline: none;
+}
+
+.clue.hidden {
+  opacity: 0;
 }
 
 .clue-text {
@@ -263,7 +275,7 @@ body[dir="ltr"] .fact {
   margin-bottom: 20px;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: center;
     justify-content: center;
   gap: 2px;
   width: 100%;
@@ -271,9 +283,9 @@ body[dir="ltr"] .fact {
 
 .slot-line {
   display: flex;
-  justify-content: space-between;
-  gap: 6px;
-  width: 100%;
+  justify-content: center; /* Changed from space-between; */
+  gap: 0px; /* Reduced to control gap through margins only */
+  width: auto; /* Added to keep them grouped */
 }
 
 .line-gap {
@@ -292,7 +304,7 @@ body[dir="ltr"] .fact {
 
 .scramble-row {
   display: flex;
-  gap: 4px;
+  gap: 0px; /* Reduced to control gap through margins only */
   justify-content: center;
   flex-wrap: nowrap;
 }
@@ -301,12 +313,12 @@ body[dir="ltr"] .fact {
   box-sizing: border-box;
 
   /* AUTO-FIT WIDTH — stays square */
-  flex: 1 1 auto;
+  flex: 0 0 var(--slot-size); /* Changed from flex: 1 1 auto; */
   aspect-ratio: 1 / 1; /* IMPORTANT: keeps tiles square */
   max-width: var(--slot-size);
   max-height: var(--slot-size);
 
-  margin: 6px;
+  margin: 1px; /* Creates 2px gap between tiles */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -339,13 +351,13 @@ body[dir="ltr"] .fact {
   /* VISIBLE SHADOW ON BLACK */
   box-shadow:
   /* rim glow */
-  0 0 6px rgba(255,255,255,0.35),
+  0 0 4px rgba(255,255,255,0.25),
 
   /* brighter, visible shadow */
-  0 10px 20px rgba(60, 80, 120, 0.55),
+  0 6px 12px rgba(60, 80, 120, 0.4),
 
   /* wide soft colored shadow */
-  0 0 28px rgba(30, 60, 120, 0.45),
+  0 0 16px rgba(30, 60, 120, 0.3),
 
   /* crisp bevel */
   inset 0 -2px 0 rgba(180,195,220,1);
@@ -378,7 +390,7 @@ body[dir="ltr"] .fact {
 
 /* Bigger font when a slot is filled */
 .slot[data-filled="true"] {
-  font-size: calc(var(--slot-size) * 0.55);
+  font-size: calc(var(--slot-size) * 0.50);
   color: #000000;
 }
 
@@ -388,8 +400,7 @@ body[dir="ltr"] .fact {
   justify-content: center;
   width: var(--slot-size);
   height: var(--slot-size);
-  margin: 6px;
-
+  margin: 2px; /* Creates 4px gap between tiles */
   /* MATCH WHITE TILE CORNERS */
   border-radius: 6px;
 
@@ -409,7 +420,8 @@ body[dir="ltr"] .fact {
 
   box-shadow:
     0 0 4px rgba(255,255,255,0.25),
-    0 6px 14px rgba(0,0,0,0.55),
+    0 6px 12px rgba(60, 80, 120, 0.4),
+    0 0 16px rgba(30, 60, 120, 0.3),
     inset 0 -2px 0 rgba(255,255,255,0.35);
 }
 
@@ -544,14 +556,27 @@ button:disabled {
 }
 
 .message {
-  margin-top: 8px;
-  text-align: center;
-  min-height: 0;
+  position: absolute;
+  top: 5px;
+  left: 0;
   width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: normal; /* Ensure it is not bold */
+  font-size: 1rem; /* Match clue size */
+  opacity: 0;
+  z-index: 10; /* Ensure it is above the clue */
+  transition: opacity 0.3s ease-in-out;
+  gap: 8px; /* Match the gap from .clue */
+  pointer-events: none; /* Default to none */
 }
 
-.message:not(:empty) {
-  margin-top: 12px;
+.message.show {
+  opacity: 1;
+  pointer-events: auto; /* Only capture events when shown */
+  visibility: visible;
 }
 
 .word-gap {
@@ -631,3 +656,4 @@ body[dir="rtl"] .win-content button {
   opacity: 0.5 !important;
   filter: none; /* Remove filter if you use a direct background color */
 }
+

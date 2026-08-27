@@ -42,14 +42,18 @@ function renderQuestion(question) {
   const pattern = document.getElementById("pattern");
   const scrambleBox = document.getElementById("scramble");
   const categoryBox = document.getElementById("category");
-  const clueText = document.getElementById("clue-text");
-  const cluePrefix = document.querySelector(".clue-prefix");
+  const messageBox = document.getElementById("messageBox");
   const clueContainer = document.querySelector(".clue");
-
   updateCounter(); // Add this to ensure it's updated when question changes
 
   pattern.innerHTML = "";
   scrambleBox.innerHTML = "";
+  messageBox.textContent = "";
+  messageBox.classList.remove("show"); // Ensure message is hidden
+
+  // Ensure clue is visible
+  if (clueContainer) clueContainer.classList.remove("hidden");
+
   categoryBox.textContent = "";
   // Reset clue container properly
   if (clueContainer) {
