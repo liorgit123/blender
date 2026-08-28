@@ -26,7 +26,7 @@ body[dir="rtl"] {
   background: #000000;
   color: #f1f5ff;
   --slot-size: 40px;
-  border-radius: none; /* 16px; */
+  border-radius: 16px;
   padding: 20px 12px 22px;
   box-shadow: none; /* IMPORTANT */
   border: none;
@@ -336,7 +336,7 @@ body[dir="ltr"] .fact {
   overflow: visible;
 
   /* MATCH BLUE TILE CORNERS */
-  border-radius: 6px;
+  border-radius: 0;
 
   /* STRONGER WHITE GRADIENT */
   background: linear-gradient(
@@ -411,7 +411,7 @@ body[dir="ltr"] .fact {
 
   margin: 2px; /* Creates 4px gap between tiles */
   /* MATCH WHITE TILE CORNERS */
-  border-radius: 6px;
+  border-radius: 0;
 
   /* BLUE GRADIENT */
   background: linear-gradient(
@@ -489,7 +489,7 @@ button.icon-button {
   height: 48px;
   min-width: 48px;
   padding: 0 !important;
-  border-radius: 16px;
+  border-radius: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
