@@ -26,7 +26,7 @@ body[dir="rtl"] {
   background: #000000;
   color: #f1f5ff;
   --slot-size: 40px;
-  border-radius: 16px;
+  border-radius: none; /* 16px; */
   padding: 20px 12px 22px;
   box-shadow: none; /* IMPORTANT */
   border: none;
