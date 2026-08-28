@@ -19,7 +19,7 @@ body[dir="rtl"] {
 }
 
 :root {
-  --radius: 20px; /* Change this once, affects everything */
+  --radius: 50;
 }
 
 .app {
