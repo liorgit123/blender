@@ -314,8 +314,10 @@ body[dir="ltr"] .fact {
   box-sizing: border-box;
 
   /* AUTO-FIT WIDTH — stays square */
-  flex: 0 0 var(--slot-size); /* Changed from flex: 1 1 auto; */
-  aspect-ratio: 1 / 1; /* IMPORTANT: keeps tiles square */
+  flex: 0 0 auto;
+  aspect-ratio: 1 / 1;
+  width: var(--slot-size);
+  height: var(--slot-size);
   max-width: var(--slot-size);
   max-height: var(--slot-size);
 
@@ -399,8 +401,14 @@ body[dir="ltr"] .fact {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
+  /* FIXED: Set explicit sizing to prevent stretching */
+  flex: 0 0 var(--slot-size);
   width: var(--slot-size);
   height: var(--slot-size);
+  max-width: var(--slot-size);
+  max-height: var(--slot-size);
+
   margin: 2px; /* Creates 4px gap between tiles */
   /* MATCH WHITE TILE CORNERS */
   border-radius: 6px;
