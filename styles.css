@@ -36,12 +36,6 @@ body[dir="rtl"] {
   text-align: center;
 }
 
-.word-gap {
-  display: inline-block;
-  width: 40px;          /* controls horizontal spacing */
-  height: var(--slot-size); /* keeps it aligned with tiles */
-}
-
 /* Force globe to the RIGHT in ALL languages */
 .lang-toggle {
   position: absolute;
@@ -587,7 +581,7 @@ button:disabled {
 }
 
 .word-gap {
-  width: 30px; /* or any spacing you prefer */
+  width: 55px; /* or any spacing you prefer */
 }
 
 /* Mobile adjustments */
