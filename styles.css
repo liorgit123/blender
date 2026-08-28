@@ -581,7 +581,9 @@ button:disabled {
 }
 
 .word-gap {
-  width: 55px; /* or any spacing you prefer */
+  display: inline-block;
+  width: 30px;          /* controls horizontal spacing */
+  height: var(--slot-size); /* keeps it aligned with tiles */
 }
 
 /* Mobile adjustments */
