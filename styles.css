@@ -590,7 +590,7 @@ button:disabled {
 
 .word-gap {
   display: inline-block;
-  width: 30px;          /* controls horizontal spacing */
+  width: 20px;          /* controls horizontal spacing */
   height: var(--slot-size); /* keeps it aligned with tiles */
 }
 
