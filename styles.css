@@ -18,6 +18,10 @@ body[dir="rtl"] {
   font-family: 'Heebo', sans-serif;
 }
 
+:root {
+  --radius: 20px; /* Change this once, affects everything */
+}
+
 .app {
   position: relative;
   box-sizing: border-box;
@@ -235,7 +239,7 @@ body[dir="ltr"] .fact {
   color: #dce6ff;
   background: transparent;
   border: none;
-  border-radius: 0;
+  border-radius: 5px;
   text-align: center;
   display: flex;
   align-items: center;
@@ -336,7 +340,7 @@ body[dir="ltr"] .fact {
   overflow: visible;
 
   /* MATCH BLUE TILE CORNERS */
-  border-radius: 0;
+  border-radius: var(--radius);
 
   /* STRONGER WHITE GRADIENT */
   background: linear-gradient(
@@ -411,7 +415,7 @@ body[dir="ltr"] .fact {
 
   margin: 2px; /* Creates 4px gap between tiles */
   /* MATCH WHITE TILE CORNERS */
-  border-radius: 0;
+  border-radius: var(--radius);
 
   /* BLUE GRADIENT */
   background: linear-gradient(
@@ -489,7 +493,7 @@ button.icon-button {
   height: 48px;
   min-width: 48px;
   padding: 0 !important;
-  border-radius: 0;
+  border-radius: var(--radius);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -549,7 +553,7 @@ body[dir="rtl"] #nextBtn .button-icon {
 
 button {
   padding: 10px 18px;
-  border-radius: 0; /* Match icon-button border radius */
+  border-radius: var(--radius); /* Match icon-button border radius */
   border: none;
   color: white;
   font-size: 0.95rem;
