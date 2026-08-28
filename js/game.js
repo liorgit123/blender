@@ -253,6 +253,10 @@ function checkAnswer() {
         messageBox.style.visibility = "hidden";
         factBox.classList.remove("hidden");
       }, 2000);
+    } else {
+        // If it's a success, we don't want to show the clue anymore,
+        // but we need to ensure the clue wrapper doesn't block interactions if needed
+        // The clue itself is hidden, but the wrapper is there.
     }
   }
 
@@ -306,6 +310,12 @@ function checkAnswer() {
       tile.classList.add("disabled");
       tile.removeEventListener("click", onLetterClick);
   });
+
+    // CRITICAL FIX: Ensure the clue wrapper does not capture events after success
+    // Actually, the clue container itself should be made unclickable or removed from layout if we don't want it to interfere.
+    // The current problem is the messageBox covering it might be misconfigured, or the clue container remains in the DOM structure with some event handlers.
+    // Let's explicitly disable the clue container's pointer events.
+    document.getElementById("clue").style.pointerEvents = "none";
   } else {
     showTemporaryMessage(getLocalizedText("incorrect"));
     }

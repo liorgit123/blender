@@ -50,9 +50,13 @@ function renderQuestion(question) {
   scrambleBox.innerHTML = "";
   messageBox.textContent = "";
   messageBox.classList.remove("show"); // Ensure message is hidden
+  messageBox.style.visibility = "hidden"; // Also ensure visibility is hidden
 
   // Ensure clue is visible
-  if (clueContainer) clueContainer.classList.remove("hidden");
+  if (clueContainer) {
+    clueContainer.classList.remove("hidden");
+    clueContainer.style.pointerEvents = "auto"; // Ensure it's re-enabled
+  }
 
   categoryBox.textContent = "";
   // Reset clue container properly
