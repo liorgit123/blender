@@ -20,7 +20,8 @@ body[dir="rtl"] {
 
 .app {
   position: relative;
-  width: min(375px, calc(100% - 32px));
+  box-sizing: border-box;
+  width: min(375px, calc(100% -32px));
   margin: 20px auto;
   background: #000000;
   color: #f1f5ff;
@@ -596,7 +597,7 @@ button:disabled {
   }
 
   .slot-line {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
     overflow-x: visible;
   }
