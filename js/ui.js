@@ -324,8 +324,15 @@ function onLetterClick(e) {
   tile.dataset.letter = letterToMove;
 
   // Mark as empty immediately
-      tile.classList.add("empty");
-      tile.textContent = "";
+  tile.animate(
+  [{ opacity: 1 }, { opacity: 0 }],
+  { duration: 200, easing: "ease-out" }
+).onfinish = () => {
+  tile.classList.add("empty");
+  tile.textContent = "";
+  tile.style.opacity = 1; // reset for next fade-in
+};
+
 
   // Place in slot
   placeLetterInSlot(targetSlot, letterToMove);
@@ -335,7 +342,7 @@ function onLetterClick(e) {
   if (letterSpan) {
     letterSpan.animate(
       [{ opacity: 0 }, { opacity: 1 }],
-      { duration: 1000, easing: 'ease-in-out' }
+      { duration: 500, easing: 'ease-in-out' }
     );
 }
 
