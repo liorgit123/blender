@@ -326,7 +326,7 @@ function onLetterClick(e) {
   // Mark as empty immediately
   tile.animate(
   [{ opacity: 1 }, { opacity: 0 }],
-  { duration: 200, easing: "ease-out" }
+  { duration: 500, easing: "ease-out" }
 ).onfinish = () => {
   tile.classList.add("empty");
   tile.textContent = "";
