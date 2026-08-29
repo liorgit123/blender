@@ -19,7 +19,7 @@ body[dir="rtl"] {
 }
 
 :root {
-  --radius: 10%;
+  --radius: 50%;
 }
 
 .app {
@@ -340,7 +340,7 @@ body[dir="ltr"] .fact {
   overflow: visible;
 
   /* MATCH BLUE TILE CORNERS */
-  border-radius: var(--radius);
+  border-radius: 15%;
 
   /* STRONGER WHITE GRADIENT */
   background: linear-gradient(
