@@ -32,7 +32,7 @@ body[dir="rtl"] {
   --slot-size: 40px;
   border-radius: 16px;
   padding: 20px 12px 22px;
-  box-shadow: none; /* IMPORTANT */
+  box-shadow: none;
   border: none;
   display: flex;
   flex-direction: column;
@@ -62,10 +62,11 @@ body[dir="rtl"] .lang-toggle {
 }
 
 .lang-toggle img {
-  width: 20px; /* 21 * 1.5 = 31.5 */
-  height: 20px; /* 21 * 1.5 = 31.5 */
+  width: 20px;
+  height: 20px;
   filter: brightness(0) invert(1);
 }
+
 .lang-message {
   position: absolute;
   top: 10px;
@@ -75,13 +76,11 @@ body[dir="rtl"] .lang-toggle {
   color: #f1f5ff;
   white-space: nowrap;
 
-  /* new-code */
   width: 0;
   overflow: hidden;
   transition: width 0.4s ease-out;
 
   z-index: 100;
-  /* Ensure it starts from the right */
   text-align: right;
   direction: ltr;
 }
@@ -92,16 +91,8 @@ body[dir="rtl"] .lang-message {
   text-align: left;
 }
 
-/* old-code
 .lang-message.visible {
-  opacity: 1;
-  visibility: visible;
-  width: auto;
-} */
-
-/* new-code */
-.lang-message.visible {
-  width: 200px; /* Adjust width to fit your longest message */
+  width: 200px;
 }
 
 .counter {
@@ -116,7 +107,7 @@ body[dir="rtl"] .lang-message {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  direction: ltr; /* Force LTR for counter display to keep 50% (250/500) format */
+  direction: ltr;
 }
 
 [dir="rtl"] .counter {
@@ -131,7 +122,7 @@ body[dir="rtl"] .lang-message {
 }
 
 .counter-line.solved {
-  color: #39FF14; /* Neon green */
+  color: #39FF14;
 }
 
 .counter-line.remaining {
@@ -144,10 +135,10 @@ body[dir="rtl"] .lang-message {
 
 .logo {
   display: block;
-  max-width: 160px;   /* reduced from 240px */
+  max-width: 160px;
   width: 100%;
   height: auto;
-  margin-bottom: 16px; /* reduced spacing below logo */
+  margin-bottom: 16px;
   filter: brightness(1.28) contrast(1.08) saturate(1.06);
   -webkit-filter: brightness(1.28) contrast(1.08) saturate(1.06);
 }
@@ -185,7 +176,7 @@ h1 {
 
 .fact {
   min-height: 30px;
-  margin: 10px 0 0 0; /* Reduced top margin to pull it closer to the tiles above */
+  margin: 10px 0 0 0;
   padding: 10px 14px;
   color: #dce6ff;
   background: transparent;
@@ -194,9 +185,9 @@ h1 {
   text-align: center;
   display: flex;
   align-items: center;
-    justify-content: center;
+  justify-content: center;
   gap: 8px;
-  }
+}
 
 .fact-check {
   color: #35d46b;
@@ -231,6 +222,11 @@ body[dir="ltr"] .fact {
   direction: ltr;
 }
 
+
+/* =========================================================
+   CLUE / FOG EFFECT
+   ========================================================= */
+
 .clue {
   position: relative;
   min-height: 30px;
@@ -245,7 +241,7 @@ body[dir="ltr"] .fact {
   align-items: center;
   justify-content: center;
   gap: 8px;
-    cursor: pointer;
+  cursor: pointer;
   user-select: none;
   transition: opacity 0.3s ease-in-out;
   outline: none;
@@ -260,20 +256,73 @@ body[dir="ltr"] .fact {
   opacity: 0;
 }
 
+/* Actual clue text */
 .clue-text {
-  transition: filter 0.3s ease;
+  position: relative;
+  display: inline-block;
+  color: #dce6ff;
+
+  transition:
+    filter 1.2s ease,
+    opacity 1.2s ease;
 }
 
+/*
+   Fog layer.
+
+   It sits above the text without changing
+   the layout or size of the clue.
+*/
+.clue-text::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+
+  /* Slightly larger than the text */
+  inset: 1px 1px;
+
+  border-radius: 12px;
+
+  background:
+    radial-gradient(
+      ellipse at 20% 40%,
+      rgba(190, 200, 215, 0.72) 0%,
+      rgba(150, 160, 175, 0.58) 35%,
+      rgba(100, 110, 125, 0.42) 65%,
+      rgba(70, 80, 95, 0.25) 100%
+    );
+
+  filter: blur(3px);
+
+  opacity: 0;
+
+  transition:
+    opacity 1.2s ease,
+    transform 1.2s ease;
+}
+
+/* Hidden / foggy state */
 .clue.blurred .clue-text {
   color: transparent;
-  background: linear-gradient(90deg, #444, #222, #444);
-  border-radius: 0;
-  /* This will make the whole text area a single block with a gradient */
+  filter: blur(7px);
+  opacity: 0.9;
+}
+
+/* Visible fog */
+.clue.blurred .clue-text::after {
+  opacity: 1;
+  transform: scale(1.05);
 }
 
 .clue-prefix {
   font-weight: bold;
 }
+
+
+/* =========================================================
+   PATTERN / WHITE TILES
+   ========================================================= */
 
 .pattern {
   min-height: 60px;
@@ -281,21 +330,26 @@ body[dir="ltr"] .fact {
   display: flex;
   flex-direction: column;
   align-items: center;
-    justify-content: center;
+  justify-content: center;
   gap: 2px;
   width: 100%;
 }
 
 .slot-line {
   display: flex;
-  justify-content: center; /* Changed from space-between; */
-  gap: 0px; /* Reduced to control gap through margins only */
-  width: auto; /* Added to keep them grouped */
+  justify-content: center;
+  gap: 0px;
+  width: auto;
 }
 
 .line-gap {
   height: 2px;
 }
+
+
+/* =========================================================
+   SCRAMBLE / BLUE TILES
+   ========================================================= */
 
 .scramble {
   min-height: 60px;
@@ -309,15 +363,19 @@ body[dir="ltr"] .fact {
 
 .scramble-row {
   display: flex;
-  gap: 0px; /* Reduced to control gap through margins only */
+  gap: 0px;
   justify-content: center;
   flex-wrap: nowrap;
 }
 
+
+/* =========================================================
+   WHITE SLOT
+   ========================================================= */
+
 .slot {
   box-sizing: border-box;
 
-  /* AUTO-FIT WIDTH — stays square */
   flex: 0 0 auto;
   aspect-ratio: 1 / 1;
   width: var(--slot-size);
@@ -325,24 +383,25 @@ body[dir="ltr"] .fact {
   max-width: var(--slot-size);
   max-height: var(--slot-size);
 
-  margin: 1px; /* Creates 2px gap between tiles */
+  margin: 1px;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   color: #111111;
   font-size: calc(var(--slot-size) * 0.55);
   font-weight: 700;
   text-align: center;
+
   cursor: pointer;
   user-select: none;
   position: relative;
 
   overflow: visible;
 
-  /* MATCH BLUE TILE CORNERS */
   border-radius: 15%;
 
-  /* STRONGER WHITE GRADIENT */
   background: linear-gradient(
     165deg,
     #ffffff 0%,
@@ -351,23 +410,14 @@ body[dir="ltr"] .fact {
     #c0d0e8 100%
   );
 
-  /* BEVEL */
   border-top: 1px solid rgba(255,255,255,0.95);
   border-left: 1px solid rgba(255,255,255,0.75);
 
-  /* VISIBLE SHADOW ON BLACK */
   box-shadow:
-  /* rim glow */
-  0 0 4px rgba(255,255,255,0.5),
-
-  /* brighter, visible shadow */
-  0 6px 12px rgba(60, 80, 120, 0.4),
-
-  /* wide soft colored shadow */
-  0 0 16px rgba(30, 60, 120, 0.3),
-
-  /* crisp bevel */
-  inset 0 -2px 0 rgba(180,195,220,1);
+    0 0 4px rgba(255,255,255,0.5),
+    0 6px 12px rgba(60, 80, 120, 0.4),
+    0 0 16px rgba(30, 60, 120, 0.3),
+    inset 0 -2px 0 rgba(180,195,220,1);
 }
 
 .slot[data-active="true"]::after {
@@ -376,9 +426,9 @@ body[dir="ltr"] .fact {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 10%;              /* bottom 10% of tile */
+  height: 10%;
   background-color: #0e1dee;
-  border-radius: inherit;  /* matches tile corners */
+  border-radius: inherit;
   animation: flicker 2s linear infinite;
 }
 
@@ -395,29 +445,31 @@ body[dir="ltr"] .fact {
   color: #000000;
 }
 
-/* Bigger font when a slot is filled */
 .slot[data-filled="true"] {
   font-size: calc(var(--slot-size) * 0.50);
   color: #000000;
 }
+
+
+/* =========================================================
+   BLUE LETTER TILES
+   ========================================================= */
 
 .letter {
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  /* FIXED: Set explicit sizing to prevent stretching */
   flex: 0 0 var(--slot-size);
   width: var(--slot-size);
   height: var(--slot-size);
   max-width: var(--slot-size);
   max-height: var(--slot-size);
 
-  margin: 2px; /* Creates 4px gap between tiles */
-  /* MATCH WHITE TILE CORNERS */
+  margin: 2px;
+
   border-radius: var(--radius);
 
-  /* BLUE GRADIENT */
   background: linear-gradient(
     165deg,
     #8fcfff 0%,
@@ -443,12 +495,15 @@ body[dir="ltr"] .fact {
   display: none;
 }
 
+
+/* Dark-blue placeholder remains visible */
 .letter.empty {
   background: rgba(0, 122, 255, 0.40);
   color: transparent;
   cursor: default;
   border: none;
-  visibility: visible; /* Ensure the tile remains visible */
+  visibility: visible;
+
   box-shadow:
     0 0 4px rgba(255,255,255,0.1),
     0 6px 12px rgba(60, 80, 120, 0.4),
@@ -456,7 +511,8 @@ body[dir="ltr"] .fact {
     inset 0 -2px 0 rgba(15, 65, 172, 0.411);
 }
 
-/* Larger font for active scramble tiles (blue) */
+
+/* Larger font for active scramble tiles */
 .letter:not(.empty) {
   font-size: calc(var(--slot-size) * 0.55);
 }
@@ -470,23 +526,26 @@ body[dir="ltr"] .fact {
   cursor: default !important;
 }
 
-/* Keep the tile background visible */
 .letter.hidden {
   color: transparent !important;
-  /* Ensure it looks like an "empty" tile */
   background: rgba(0, 122, 255, 0.40);
   cursor: default;
-  visibility: visible; /* Ensure it stays visible */
+  visibility: visible;
 }
+
+
+/* =========================================================
+   CONTROLS
+   ========================================================= */
 
 .controls {
   display: flex;
   gap: 8px;
-    justify-content: center;
+  justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   margin-top: 6px;
-  }
+}
 
 button.icon-button {
   width: 48px;
@@ -498,11 +557,11 @@ button.icon-button {
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  }
+}
 
 .button-icon {
-  width: 60%; /* Reduced size */
-  height: 60%; /* Reduced size */
+  width: 60%;
+  height: 60%;
   fill: currentColor;
 }
 
@@ -532,7 +591,11 @@ body[dir="rtl"] #nextBtn .button-icon {
   border: 0;
 }
 
-/* Clean up duplicate styles and ensure consistency */
+
+/* =========================================================
+   BUTTON COLORS
+   ========================================================= */
+
 #hintBtn {
   background: #1abc9c;
 }
@@ -553,7 +616,7 @@ body[dir="rtl"] #nextBtn .button-icon {
 
 button {
   padding: 10px 18px;
-  border-radius: var(--radius); /* Match icon-button border radius */
+  border-radius: var(--radius);
   border: none;
   color: white;
   font-size: 0.95rem;
@@ -573,6 +636,11 @@ button:disabled {
   pointer-events: none;
 }
 
+
+/* =========================================================
+   MESSAGE
+   ========================================================= */
+
 .message {
   position: absolute;
   top: 5px;
@@ -582,35 +650,45 @@ button:disabled {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: normal; /* Ensure it is not bold */
-  font-size: 1rem; /* Match clue size */
+  font-weight: normal;
+  font-size: 1rem;
   opacity: 0;
-  z-index: 10; /* Ensure it is above the clue */
+  z-index: 10;
   transition: opacity 0.3s ease-in-out;
-  gap: 8px; /* Match the gap from .clue */
-  pointer-events: none; /* Default to none */
+  gap: 8px;
+  pointer-events: none;
 }
 
 .message.show {
   opacity: 1;
-  pointer-events: auto; /* Only capture events when shown */
+  pointer-events: auto;
   visibility: visible;
 }
 
+
+/* =========================================================
+   WORD / LINE SPACING
+   ========================================================= */
+
 .word-gap {
   display: inline-block;
-  width: 20px;          /* controls horizontal spacing */
-  height: var(--slot-size); /* keeps it aligned with tiles */
+  width: 20px;
+  height: var(--slot-size);
 }
 
-/* Mobile adjustments */
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
 @media (max-width: 480px) {
   .app {
     width: calc(100% - 16px);
     padding: 12px;
   }
 
-  .slot, .letter {
+  .slot,
+  .letter {
     min-width: 32px;
     min-height: 32px;
   }
@@ -621,15 +699,20 @@ button:disabled {
     overflow-x: visible;
   }
 
-  .slot-line, .scramble-row {
+  .slot-line,
+  .scramble-row {
     gap: 6px;
   }
 }
 
-/* Win Dialog */
+
+/* =========================================================
+   WIN DIALOG
+   ========================================================= */
+
 .win-dialog {
   position: absolute;
-  top: 100px; /* Adjust to cover everything except logo */
+  top: 100px;
   left: 0;
   right: 0;
   bottom: 0;
@@ -671,9 +754,13 @@ body[dir="rtl"] .win-content button {
   font-family: 'Heebo', sans-serif !important;
 }
 
-#hintBtn:disabled {
-  background-color: #0d5e4f !important; /* A dark, muted forest green */
-  opacity: 0.5 !important;
-  filter: none; /* Remove filter if you use a direct background color */
-}
 
+/* =========================================================
+   DISABLED HINT BUTTON
+   ========================================================= */
+
+#hintBtn:disabled {
+  background-color: #0d5e4f !important;
+  opacity: 0.5 !important;
+  filter: none;
+}
