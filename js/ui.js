@@ -291,7 +291,7 @@ function onSlotClick(e) {
     // Fade out only the letter span
     letterSpan.animate(
       [{ opacity: 1 }, { opacity: 0 }],
-      { duration: 1000, easing: 'ease-out' }
+      { duration: 300, easing: 'ease-out' }
     ).onfinish = () => {
     // Restore tile immediately
       originalTile.textContent = letterBase;
@@ -335,7 +335,7 @@ function onLetterClick(e) {
   if (letterSpan) {
     letterSpan.animate(
       [{ opacity: 0 }, { opacity: 1 }],
-      { duration: 300, easing: 'ease-in-out' }
+      { duration: 1000, easing: 'ease-in-out' }
     );
 }
 
