@@ -807,14 +807,13 @@ function onEmptyLetterClick(e) {
    ========================================================= */
 
 function getUserAnswer() {
-  const slots = [
-    ...document.querySelectorAll(".slot")
-  ];
+  const slots = [...document.querySelectorAll(".slot")];
 
   return slots
-    .map(
-      s => toBaseHebrew(s.textContent)
-    )
+    .map(slot => {
+      if (slot.dataset.filled !== "true") return "";
+      return toBaseHebrew(slot.dataset.letter || "");
+    })
     .join("");
 }
 
