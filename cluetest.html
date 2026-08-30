@@ -1,256 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Hidden Clue Styles</title>
-  <style>
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #0f172a;
-      color: #e5e7eb;
-      margin: 0;
-      padding: 2rem;
-    }
+<meta charset="UTF-8">
+<title>Swipe to Reveal</title>
+<style>
+  body {
+    background: #0f172a;
+    color: #e5e7eb;
+    font-family: system-ui, sans-serif;
+    padding: 2rem;
+  }
 
-    h1 {
-      margin-bottom: 1.5rem;
-      font-size: 1.8rem;
-    }
+  .section {
+    background: #1f2937;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid #374151;
+    max-width: 420px;
+  }
 
-    .section {
-      background: #1f2937;
-      border-radius: 0.75rem;
-      padding: 1.25rem 1.5rem;
-      margin-bottom: 1.25rem;
-      border: 1px solid #374151;
-    }
+  .pill {
+    position: relative;
+    width: 100%;
+    height: 48px;
+    background: #111827;
+    border-radius: 999px;
+    overflow: hidden;
+    user-select: none;
+  }
 
-    .label {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #9ca3af;
-      margin-bottom: 0.5rem;
-    }
+  .pill-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+    font-size: 0.85rem;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
 
-    .clue-wrapper {
-      margin-top: 0.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
+  .knob {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 40px;
+    height: 40px;
+    background: #22c55e;
+    border-radius: 999px;
+    cursor: grab;
+    transition: background 0.2s ease;
+  }
 
-    .clue-title {
-      font-weight: 600;
-      color: #f9fafb;
-    }
+  .knob:active {
+    cursor: grabbing;
+    background: #16a34a;
+  }
 
-    .clue-text {
-      padding: 0.4rem 0.7rem;
-      border-radius: 0.5rem;
-      background: #111827;
-      display: inline-block;
-      min-width: 180px;
-    }
+  .clue {
+    margin-top: 1rem;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    background: #111827;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+  }
 
-    /* 1. Simple blur */
-    .blurred {
-      filter: blur(6px);
-      pointer-events: none;
-    }
-
-    .blur-on-hover {
-      filter: blur(6px);
-      transition: filter 0.2s ease;
-    }
-    .blur-on-hover:hover {
-      filter: blur(0);
-    }
-
-    /* 2. Pixelated / low-res effect */
-    .pixelated-container {
-      display: inline-block;
-      image-rendering: pixelated;
-      transform: scale(1.1);
-    }
-    .pixelated-text {
-      font-size: 0.9rem;
-      letter-spacing: 0.08em;
-    }
-
-    /* 3. Scrambled characters */
-    .scrambled {
-      letter-spacing: 0.15em;
-      opacity: 0.7;
-    }
-
-    /* 4. Overlay cover with hover reveal */
-    .overlay-wrapper {
-      position: relative;
-      display: inline-block;
-    }
-    .overlay-text {
-      opacity: 0;
-    }
-    .overlay-cover {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, #4b5563, #111827);
-      border-radius: 0.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #e5e7eb;
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      cursor: pointer;
-      transition: opacity 0.2s ease;
-    }
-    .overlay-wrapper:hover .overlay-cover {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    /* 5. Glitch / obfuscated text */
-    .glitch {
-      position: relative;
-      color: #9ca3af;
-      overflow: hidden;
-    }
-    .glitch::before,
-    .glitch::after {
-      content: attr(data-text);
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      clip-path: inset(0 0 50% 0);
-      opacity: 0.5;
-      mix-blend-mode: screen;
-    }
-    .glitch::before {
-      color: #22c55e;
-      transform: translate(-1px, -1px);
-    }
-    .glitch::after {
-      color: #3b82f6;
-      transform: translate(1px, 1px);
-    }
-
-    /* 6. Fade-in on click */
-    .fade-wrapper {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .fade-text {
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    .fade-text.visible {
-      opacity: 1;
-    }
-    .fade-button {
-      padding: 0.25rem 0.6rem;
-      border-radius: 999px;
-      border: none;
-      background: #22c55e;
-      color: #022c22;
-      font-size: 0.75rem;
-      font-weight: 600;
-      cursor: pointer;
-    }
-  </style>
+  .clue.visible {
+    opacity: 1;
+  }
+</style>
 </head>
 <body>
-  <h1>Hidden Clue Techniques</h1>
 
-  <!-- 1. Always blurred / blur on hover -->
-  <div class="section">
-    <div class="label">Technique 1: Blur</div>
-    <div class="clue-wrapper">
-      <span class="clue-title">Clue:</span>
-      <span class="clue-text blurred">A famous sci-fi movie about dreams.</span>
-    </div>
-    <div style="margin-top:0.5rem;font-size:0.8rem;color:#9ca3af;">
-      Variant: blur removed on hover
-    </div>
-    <div class="clue-wrapper" style="margin-top:0.25rem;">
-      <span class="clue-title">Clue:</span>
-      <span class="clue-text blur-on-hover">A famous sci-fi movie about dreams.</span>
-    </div>
+<div class="section">
+  <div class="pill" id="pill">
+    <div class="pill-label" id="pillLabel">Swipe to reveal</div>
+    <div class="knob" id="knob"></div>
   </div>
 
-  <!-- 2. Pixelated / low-res -->
-  <div class="section">
-    <div class="label">Technique 2: Pixelated</div>
-    <div class="clue-wrapper">
-      <span class="clue-title">Clue:</span>
-      <span class="clue-text pixelated-container">
-        <span class="pixelated-text">A famous sci-fi movie about dreams.</span>
-      </span>
-    </div>
+  <div class="clue" id="clue">
+    A famous sci-fi movie about dreams.
   </div>
+</div>
 
-  <!-- 3. Scrambled characters -->
-  <div class="section">
-    <div class="label">Technique 3: Scrambled characters</div>
-    <div class="clue-wrapper">
-      <span class="clue-title">Clue:</span>
-      <span class="clue-text scrambled">X fmxmso sc-fm mvvie aobut dmeras.</span>
-    </div>
-    <div style="margin-top:0.5rem;font-size:0.8rem;color:#9ca3af;">
-      You can animate this to slowly resolve into the real clue.
-    </div>
-  </div>
+<script>
+  const knob = document.getElementById('knob');
+  const pill = document.getElementById('pill');
+  const clue = document.getElementById('clue');
+  const pillLabel = document.getElementById('pillLabel');
 
-  <!-- 4. Overlay cover with hover reveal -->
-  <div class="section">
-    <div class="label">Technique 4: Overlay cover</div>
-    <div class="clue-wrapper">
-      <span class="clue-title">Clue:</span>
-      <span class="clue-text overlay-wrapper">
-        <span class="overlay-text">A famous sci-fi movie about dreams.</span>
-        <span class="overlay-cover">Tap to reveal</span>
-      </span>
-    </div>
-  </div>
+  let dragging = false;
+  let startX = 0;
 
-  <!-- 5. Glitch / obfuscated text -->
-  <div class="section">
-    <div class="label">Technique 5: Glitch / obfuscation</div>
-    <div class="clue-wrapper">
-      <span class="clue-title">Clue:</span>
-      <span class="clue-text glitch" data-text="A famous sci-fi movie about dreams.">
-        A famous sci-fi movie about dreams.
-      </span>
-    </div>
-    <div style="margin-top:0.5rem;font-size:0.8rem;color:#9ca3af;">
-      Combine with blur or opacity for stronger hiding.
-    </div>
-  </div>
+  knob.addEventListener('mousedown', (e) => {
+    dragging = true;
+    startX = e.clientX - knob.offsetLeft;
+  });
 
-  <!-- 6. Fade-in on click -->
-  <div class="section">
-    <div class="label">Technique 6: Fade-in on click</div>
-    <div class="clue-wrapper">
-      <span class="clue-title">Clue:</span>
-      <span class="clue-text fade-wrapper">
-        <button class="fade-button" id="revealBtn">Reveal</button>
-        <span class="fade-text" id="fadeClue">A famous sci-fi movie about dreams.</span>
-      </span>
-    </div>
-  </div>
+  document.addEventListener('mouseup', () => {
+    dragging = false;
+  });
 
-  <script>
-    // Fade-in on click
-    const revealBtn = document.getElementById('revealBtn');
-    const fadeClue = document.getElementById('fadeClue');
+  document.addEventListener('mousemove', (e) => {
+    if (!dragging) return;
 
-    revealBtn.addEventListener('click', () => {
-      fadeClue.classList.add('visible');
-    });
-  </script>
+    const pillRect = pill.getBoundingClientRect();
+    let newLeft = e.clientX - startX;
+
+    const maxLeft = pillRect.width - knob.offsetWidth - 4;
+    newLeft = Math.max(4, Math.min(newLeft, maxLeft));
+
+    knob.style.left = newLeft + 'px';
+
+    const progress = newLeft / maxLeft;
+
+    pillLabel.style.opacity = 1 - progress;
+
+    if (progress >= 0.98) {
+      clue.classList.add('visible');
+    }
+  });
+</script>
+
 </body>
 </html>
