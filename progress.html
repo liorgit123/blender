@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Stats Page</title>
+  <style>
+    :root {
+      --bg-color: #05060a;
+      --panel-color: #0b0f1a;
+      --accent-blue-light: #4fd4ff;
+      --accent-blue-dark: #1b6cff;
+      --text-main: #ffffff;
+      --text-muted: #a9b3c7;
+      --total-progress: 0; /* 0–100 */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #101528 0, #05060a 55%, #000000 100%);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .stats-container {
+      width: 360px;
+      max-width: 95vw;
+      background: linear-gradient(145deg, #05060a 0%, #0b0f1a 40%, #05060a 100%);
+      border-radius: 18px;
+      padding: 18px 18px 22px;
+      box-shadow:
+        0 0 25px rgba(0, 0, 0, 0.8),
+        0 0 40px rgba(79, 212, 255, 0.25);
+      border: 1px solid rgba(79, 212, 255, 0.25);
+    }
+
+    /* Header */
+
+    .stats-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 30% 30%, #4fd4ff 0, #1b6cff 40%, #05060a 100%);
+      box-shadow:
+        0 0 12px rgba(79, 212, 255, 0.8),
+        inset 0 0 10px rgba(5, 6, 10, 0.9);
+      position: relative;
+    }
+
+    .logo-icon::before,
+    .logo-icon::after {
+      content: "";
+      position: absolute;
+      inset: 6px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      border-style: dashed;
+    }
+
+    .logo-text-hebrew {
+      font-size: 18px;
+      letter-spacing: 0.06em;
+      color: var(--accent-blue-light);
+      text-shadow:
+        0 0 6px rgba(79, 212, 255, 0.9),
+        0 0 12px rgba(27, 108, 255, 0.7);
+    }
+
+    .stats-title {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--text-main);
+    }
+
+    .globe-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      position: relative;
+    }
+
+    .globe-icon::before,
+    .globe-icon::after {
+      content: "";
+      position: absolute;
+      inset: 4px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-style: dotted;
+    }
+
+    .globe-icon::after {
+      inset: 2px;
+      border-style: solid;
+      opacity: 0.5;
+    }
+
+    /* Total progress circle */
+
+    .total-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .total-circle {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background:
+        conic-gradient(
+          from -90deg,
+          var(--accent-blue-light) calc(var(--total-progress) * 1%),
+          rgba(255, 255, 255, 0.08) 0
+        );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow:
+        0 0 18px rgba(79, 212, 255, 0.6),
+        0 0 40px rgba(27, 108, 255, 0.35);
+    }
+
+    .total-circle::before {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #05060a 0, #0b0f1a 60%, #05060a 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .total-circle-content {
+      position: relative;
+      text-align: center;
+      z-index: 1;
+    }
+
+    .total-percent {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--accent-blue-light);
+      text-shadow:
+        0 0 8px rgba(79, 212, 255, 0.9),
+        0 0 16px rgba(27, 108, 255, 0.7);
+    }
+
+    .total-label {
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .total-bar-wrap {
+      width: 100%;
+      margin-top: 14px;
+    }
+
+    .total-bar-bg {
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      overflow: hidden;
+    }
+
+    .total-bar-fill {
+      height: 100%;
+      width: calc(var(--total-progress) * 1%);
+      background: linear-gradient(
+        90deg,
+        var(--accent-blue-light),
+        var(--accent-blue-dark)
+      );
+      box-shadow: 0 0 10px rgba(79, 212, 255, 0.8);
+    }
+
+    /* Categories */
+
+    .categories-section {
+      margin-top: 10px;
+    }
+
+    .categories-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+
+    .categories-title {
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .categories-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .category-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .category-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: #ffffff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    }
+
+    .icon-movies {
+      background: radial-gradient(circle at 30% 30%, #b46bff 0, #6a1bff 40%, #2a0b4a 100%);
+      box-shadow: 0 0 12px rgba(180, 107, 255, 0.8);
+    }
+
+    .icon-tv {
+      background: radial-gradient(circle at 30% 30%, #ffd86b 0, #ffb01b 40%, #4a2a0b 100%);
+      box-shadow: 0 0 12px rgba(255, 184, 27, 0.8);
+    }
+
+    .icon-music {
+      background: radial-gradient(circle at 30% 30%, #ff6ba3 0, #ff1b6b 40%, #4a0b2a 100%);
+      box-shadow: 0 0 12px rgba(255, 107, 163, 0.8);
+    }
+
+    .icon-cities {
+      background: radial-gradient(circle at 30% 30%, #6bff9a 0, #1bff5b 40%, #0b4a2a 100%);
+      box-shadow: 0 0 12px rgba(107, 255, 154, 0.8);
+    }
+
+    .category-main {
+      flex: 1;
+    }
+
+    .category-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 4px;
+    }
+
+    .category-name {
+      font-size: 13px;
+      color: var(--text-main);
+    }
+
+    .category-percent {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .category-bar-bg {
+      width: 100%;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      overflow: hidden;
+    }
+
+    .category-bar-fill {
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        var(--accent-blue-light),
+        var(--accent-blue-dark)
+      );
+      box-shadow: 0 0 8px rgba(79, 212, 255, 0.7);
+      width: 0%; /* placeholder, set per category */
+    }
+
+    /* Small glow at bottom */
+
+    .bottom-glow {
+      margin-top: 10px;
+      height: 4px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(79, 212, 255, 0.4) 0, transparent 60%);
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+  <div class="stats-container">
+    <!-- Header -->
+    <div class="stats-header">
+      <div class="logo-wrap">
+        <div class="logo-icon"></div>
+        <div class="logo-text-hebrew">גלאדר</div>
+      </div>
+      <div class="stats-title">STATS</div>
+      <div class="globe-icon"></div>
+    </div>
+
+    <!-- Total progress -->
+    <div class="total-section">
+      <div class="total-circle">
+        <div class="total-circle-content">
+          <!-- TOTAL PERCENT PLACEHOLDER -->
+          <div class="total-percent" id="totalPercent">32%</div>
+          <div class="total-label">TOTAL</div>
+        </div>
+      </div>
+      <div class="total-bar-wrap">
+        <div class="total-bar-bg">
+          <!-- TOTAL BAR FILL WIDTH VIA CSS VAR OR INLINE STYLE -->
+          <div class="total-bar-fill"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="categories-section">
+      <div class="categories-header">
+        <div class="categories-title">CATEGORIES</div>
+        <div class="categories-subtitle">Progress by category</div>
+      </div>
+
+      <!-- Movies -->
+      <div class="category-row">
+        <div class="category-icon icon-movies">🎬</div>
+        <div class="category-main">
+          <div class="category-top">
+            <!-- CATEGORY NAME PLACEHOLDER -->
+            <div class="category-name" id="catMoviesName">Movies</div>
+            <!-- CATEGORY PERCENT PLACEHOLDER -->
+            <div class="category-percent" id="catMoviesPercent">40%</div>
+          </div>
+          <div class="category-bar-bg">
+            <!-- SET WIDTH (e.g. style="width: 40%") -->
+            <div class="category-bar-fill" id="catMoviesBar" style="width: 40%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TV Shows -->
+      <div class="category-row">
+        <div class="category-icon icon-tv">📺</div>
+        <div class="category-main">
+          <div class="category-top">
+            <div class="category-name" id="catTvName">TV Shows</div>
+            <div class="category-percent" id="catTvPercent">60%</div>
+          </div>
+          <div class="category-bar-bg">
+            <div class="category-bar-fill" id="catTvBar" style="width: 60%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Music -->
+      <div class="category-row">
+        <div class="category-icon icon-music">🎵</div>
+        <div class="category-main">
+          <div class="category-top">
+            <div class="category-name" id="catMusicName">Music</div>
+            <div class="category-percent" id="catMusicPercent">0%</div>
+          </div>
+          <div class="category-bar-bg">
+            <div class="category-bar-fill" id="catMusicBar" style="width: 0%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cities -->
+      <div class="category-row">
+        <div class="category-icon icon-cities">🏙️</div>
+        <div class="category-main">
+          <div class="category-top">
+            <div class="category-name" id="catCitiesName">Cities</div>
+            <div class="category-percent" id="catCitiesPercent">20%</div>
+          </div>
+          <div class="category-bar-bg">
+            <div class="category-bar-fill" id="catCitiesBar" style="width: 20%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-glow"></div>
+  </div>
+
+  <!-- Example: update placeholders via JS (optional) -->
+  <script>
+    // Set total progress (0–100)
+    const totalValue = 32; // placeholder
+    document.documentElement.style.setProperty("--total-progress", totalValue);
+    document.getElementById("totalPercent").textContent = totalValue + "%";
+
+    // Example of updating one category:
+    // const moviesValue = 55;
+    // document.getElementById("catMoviesPercent").textContent = moviesValue + "%";
+    // document.getElementById("catMoviesBar").style.width = moviesValue + "%";
+  </script>
+</body>
+</html>
