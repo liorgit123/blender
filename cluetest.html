@@ -11,30 +11,28 @@
     padding: 2rem;
   }
 
+  .clue-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    max-width: 520px;
+  }
+
   .clue-label {
     font-size: 1rem;
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    white-space: nowrap;
   }
 
-  .clue-box {
-    background: #1f2937;
-    border: 1px solid #374151;
-    border-radius: 0.75rem;
-    padding: 1.25rem;
-    max-width: 480px;
-  }
-
-  /* Pill slider */
+  /* Thin pill slider */
   .pill {
     position: relative;
-    width: 100%;
-    height: 52px;
+    flex: 1;
+    height: 32px;
     background: #111827;
     border-radius: 999px;
     overflow: hidden;
     user-select: none;
-    margin-bottom: 1rem;
   }
 
   .pill-label {
@@ -44,22 +42,22 @@
     align-items: center;
     justify-content: center;
     color: #9ca3af;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     pointer-events: none;
     transition: opacity 0.2s ease;
   }
 
   .pill-label .arrow {
-    margin-right: 0.4rem;
-    font-size: 1rem;
+    margin-right: 0.35rem;
+    font-size: 0.9rem;
   }
 
   .knob {
     position: absolute;
-    top: 6px;
-    left: 6px;
-    width: 40px;
-    height: 40px;
+    top: 3px;
+    left: 3px;
+    width: 26px;
+    height: 26px;
     background: #22c55e;
     border-radius: 999px;
     cursor: grab;
@@ -67,6 +65,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 0.75rem;
     font-weight: 700;
     color: #022c22;
   }
@@ -76,14 +75,12 @@
     background: #16a34a;
   }
 
-  /* Hidden clue */
+  /* Revealed clue text (same line, appears after swipe) */
   .clue-text {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
     opacity: 0;
-    transition: opacity 0.4s ease;
-    background: #111827;
-    padding: 0.75rem 1rem;
-    border-radius: 0.5rem;
-    font-size: 0.95rem;
+    transition: opacity 0.3s ease;
   }
 
   .clue-text.visible {
@@ -93,10 +90,9 @@
 </head>
 <body>
 
-<div class="clue-label">Clue:</div>
+<div class="clue-row">
+  <div class="clue-label">Clue:</div>
 
-<div class="clue-box">
-  
   <!-- Swipe pill -->
   <div class="pill" id="pill">
     <div class="pill-label" id="pillLabel">
@@ -104,12 +100,10 @@
     </div>
     <div class="knob" id="knob">⇆</div>
   </div>
+</div>
 
-  <!-- Revealed clue -->
-  <div class="clue-text" id="clueText">
-    A famous sci-fi movie about dreams.
-  </div>
-
+<div class="clue-text" id="clueText">
+  A famous sci-fi movie about dreams.
 </div>
 
 <script>
@@ -121,34 +115,53 @@
   let dragging = false;
   let startX = 0;
 
-  knob.addEventListener('mousedown', (e) => {
+  function startDrag(clientX) {
     dragging = true;
-    startX = e.clientX - knob.offsetLeft;
-  });
+    startX = clientX - knob.offsetLeft;
+  }
 
-  document.addEventListener('mouseup', () => {
+  function endDrag() {
     dragging = false;
-  });
+  }
 
-  document.addEventListener('mousemove', (e) => {
+  function moveKnob(clientX) {
     if (!dragging) return;
 
     const pillRect = pill.getBoundingClientRect();
-    let newLeft = e.clientX - startX;
+    let newLeft = clientX - startX;
 
-    const maxLeft = pillRect.width - knob.offsetWidth - 6;
-    newLeft = Math.max(6, Math.min(newLeft, maxLeft));
+    const maxLeft = pillRect.width - knob.offsetWidth - 3;
+    newLeft = Math.max(3, Math.min(newLeft, maxLeft));
 
     knob.style.left = newLeft + 'px';
 
     const progress = newLeft / maxLeft;
-
     pillLabel.style.opacity = 1 - progress;
 
     if (progress >= 0.98) {
       clueText.classList.add('visible');
     }
+  }
+
+  // Mouse events
+  knob.addEventListener('mousedown', (e) => {
+    startDrag(e.clientX);
   });
+
+  document.addEventListener('mouseup', endDrag);
+  document.addEventListener('mousemove', (e) => moveKnob(e.clientX));
+
+  // Touch events
+  knob.addEventListener('touchstart', (e) => {
+    const touch = e.touches[0];
+    startDrag(touch.clientX);
+  }, { passive: true });
+
+  document.addEventListener('touchend', endDrag);
+  document.addEventListener('touchmove', (e) => {
+    const touch = e.touches[0];
+    moveKnob(touch.clientX);
+  }, { passive: true });
 </script>
 
 </body>
