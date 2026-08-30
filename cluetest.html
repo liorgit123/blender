@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Swipe to Reveal</title>
+<title>Swipe to Reveal Clue</title>
 <style>
   body {
     background: #0f172a;
@@ -11,22 +11,30 @@
     padding: 2rem;
   }
 
-  .section {
-    background: #1f2937;
-    padding: 1.5rem;
-    border-radius: 0.75rem;
-    border: 1px solid #374151;
-    max-width: 420px;
+  .clue-label {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
   }
 
+  .clue-box {
+    background: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    max-width: 480px;
+  }
+
+  /* Pill slider */
   .pill {
     position: relative;
     width: 100%;
-    height: 48px;
+    height: 52px;
     background: #111827;
     border-radius: 999px;
     overflow: hidden;
     user-select: none;
+    margin-bottom: 1rem;
   }
 
   .pill-label {
@@ -36,21 +44,31 @@
     align-items: center;
     justify-content: center;
     color: #9ca3af;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     pointer-events: none;
     transition: opacity 0.2s ease;
   }
 
+  .pill-label .arrow {
+    margin-right: 0.4rem;
+    font-size: 1rem;
+  }
+
   .knob {
     position: absolute;
-    top: 4px;
-    left: 4px;
+    top: 6px;
+    left: 6px;
     width: 40px;
     height: 40px;
     background: #22c55e;
     border-radius: 999px;
     cursor: grab;
     transition: background 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #022c22;
   }
 
   .knob:active {
@@ -58,37 +76,46 @@
     background: #16a34a;
   }
 
-  .clue {
-    margin-top: 1rem;
+  /* Hidden clue */
+  .clue-text {
     opacity: 0;
     transition: opacity 0.4s ease;
     background: #111827;
     padding: 0.75rem 1rem;
     border-radius: 0.5rem;
+    font-size: 0.95rem;
   }
 
-  .clue.visible {
+  .clue-text.visible {
     opacity: 1;
   }
 </style>
 </head>
 <body>
 
-<div class="section">
+<div class="clue-label">Clue:</div>
+
+<div class="clue-box">
+  
+  <!-- Swipe pill -->
   <div class="pill" id="pill">
-    <div class="pill-label" id="pillLabel">Swipe to reveal</div>
-    <div class="knob" id="knob"></div>
+    <div class="pill-label" id="pillLabel">
+      <span class="arrow">➜</span> Swipe to reveal
+    </div>
+    <div class="knob" id="knob">⇆</div>
   </div>
 
-  <div class="clue" id="clue">
+  <!-- Revealed clue -->
+  <div class="clue-text" id="clueText">
     A famous sci-fi movie about dreams.
   </div>
+
 </div>
 
 <script>
   const knob = document.getElementById('knob');
   const pill = document.getElementById('pill');
-  const clue = document.getElementById('clue');
+  const clueText = document.getElementById('clueText');
   const pillLabel = document.getElementById('pillLabel');
 
   let dragging = false;
@@ -109,8 +136,8 @@
     const pillRect = pill.getBoundingClientRect();
     let newLeft = e.clientX - startX;
 
-    const maxLeft = pillRect.width - knob.offsetWidth - 4;
-    newLeft = Math.max(4, Math.min(newLeft, maxLeft));
+    const maxLeft = pillRect.width - knob.offsetWidth - 6;
+    newLeft = Math.max(6, Math.min(newLeft, maxLeft));
 
     knob.style.left = newLeft + 'px';
 
@@ -119,7 +146,7 @@
     pillLabel.style.opacity = 1 - progress;
 
     if (progress >= 0.98) {
-      clue.classList.add('visible');
+      clueText.classList.add('visible');
     }
   });
 </script>
