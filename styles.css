@@ -241,7 +241,6 @@ body[dir="ltr"] .fact {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  cursor: pointer;
   user-select: none;
   transition: opacity 0.3s ease-in-out;
   outline: none;
@@ -261,10 +260,6 @@ body[dir="ltr"] .fact {
   position: relative;
   display: inline-block;
   color: #dce6ff;
-
-  transition:
-    filter 1.2s ease,
-    opacity 1.2s ease;
 }
 
 /*
@@ -274,45 +269,19 @@ body[dir="ltr"] .fact {
    the layout or size of the clue.
 */
 .clue-text::after {
-  content: "";
-  position: absolute;
-  z-index: 2;
-  pointer-events: none;
-
-  /* Slightly larger than the text */
-  inset: 1px 1px;
-
-  border-radius: 12px;
-
-  background:
-    radial-gradient(
-      ellipse at 20% 40%,
-      rgba(190, 200, 215, 0.72) 0%,
-      rgba(150, 160, 175, 0.58) 35%,
-      rgba(100, 110, 125, 0.42) 65%,
-      rgba(70, 80, 95, 0.25) 100%
-    );
-
-  filter: blur(3px);
-
-  opacity: 0;
-
-  transition:
-    opacity 1.2s ease,
-    transform 1.2s ease;
+  display: none;
 }
 
 /* Hidden / foggy state */
 .clue.blurred .clue-text {
-  color: transparent;
-  filter: blur(7px);
-  opacity: 0.9;
+  color: #dce6ff;
+  filter: none;
+  opacity: 1;
 }
 
 /* Visible fog */
 .clue.blurred .clue-text::after {
-  opacity: 1;
-  transform: scale(1.05);
+  display: none;
 }
 
 .clue-prefix {
@@ -654,7 +623,7 @@ button:disabled {
   font-size: 1rem;
   opacity: 0;
   z-index: 10;
-  transition: opacity 0.3s ease-in-out;
+  transition: opacity 0.8s ease-in-out;
   gap: 8px;
   pointer-events: none;
 }

@@ -137,17 +137,7 @@ function fadeTileBackIn(tile, letter) {
 
   const overlay = createBlueTileOverlay(tile, letter);
 
-  const animation = overlay.animate(
-    [
-      { opacity: 0 },
-      { opacity: 1 }
-    ],
-    {
-      duration: 500,
-      easing: "ease-out",
-      fill: "forwards"
-    }
-  );
+  const animation = animateScaleInSimple(overlay, 300);
 
   animation.onfinish = () => {
     /*
@@ -196,25 +186,15 @@ function renderQuestion(question) {
   categoryBox.textContent = "";
 
   if (clueContainer) {
-    clueContainer.classList.add("blurred");
-
-    clueContainer.onclick = () =>
-      clueContainer.classList.remove("blurred");
-
     clueContainer.innerHTML = "";
-
-    const prefixSpan = document.createElement("span");
-    prefixSpan.className = "clue-prefix";
-    prefixSpan.textContent = getLocalizedText("clue");
 
     const textSpan = document.createElement("span");
     textSpan.className = "clue-text";
-    textSpan.id = "clue-text";
-    textSpan.textContent = question.fact;
+      textSpan.id = "clue-text";
+      textSpan.textContent = question.fact;
 
-    clueContainer.appendChild(prefixSpan);
-    clueContainer.appendChild(textSpan);
-  }
+      clueContainer.appendChild(textSpan);
+    }
 
   document.getElementById("hintBtn").disabled = false;
 
@@ -557,33 +537,23 @@ function onSlotClick(e) {
 
   if (originalTile && letterSpan) {
 
-    // Fade the white-slot letter out
-    letterSpan.animate(
-      [
-        { opacity: 1 },
-        { opacity: 0 }
-      ],
-      {
-        duration: 300,
-        easing: "ease-out"
-      }
-    ).onfinish = () => {
+    // Start both animations in parallel
+    //const fadeOutAnimation = animateScaleOut(letterSpan, 3000);
 
-      // Keep the dark-blue tile underneath untouched
-      fadeTileBackIn(
-        originalTile,
-        letterBase
-      );
+    // Fade the tile back in (this function has its own animation)
+    fadeTileBackIn(
+      originalTile,
+      letterBase
+    );
 
-      // Clear white slot
-      slot.textContent = "";
-      slot.dataset.filled = "false";
-      slot.removeAttribute("data-letter");
+    // Clear white slot immediately
+    slot.textContent = "";
+    slot.dataset.filled = "false";
+    slot.removeAttribute("data-letter");
 
-      updateResetButtonState();
-      updateActiveSlot();
-    };
-  }
+  updateResetButtonState();
+    updateActiveSlot();
+}
 }
 
 
@@ -604,7 +574,7 @@ function onLetterClick(e) {
   let targetSlot =
     document.querySelector(
       ".slot[data-active='true']"
-    );
+      );
 
   if (
     !targetSlot ||
@@ -698,16 +668,8 @@ function onLetterClick(e) {
    * Fade the blue copy away.
    * The dark-blue tile is already underneath it.
    */
-  const animation = fadeTile.animate(
-    [
-      { opacity: 1 },
-      { opacity: 0 }
-    ],
-    {
-      duration: 500,
-      easing: "ease-out"
-    }
-  );
+  
+  const animation = animateScaleOut(fadeTile, 200);
 
   animation.onfinish = () => {
     fadeTile.remove();
@@ -723,16 +685,7 @@ function onLetterClick(e) {
     targetSlot.querySelector(".slot-text");
 
   if (letterSpan) {
-    letterSpan.animate(
-      [
-        { opacity: 0 },
-        { opacity: 1 }
-      ],
-      {
-        duration: 500,
-        easing: "ease-in-out"
-      }
-    );
+    animateScaleIn(letterSpan, 350);
   }
 
   updateActiveSlotAfterPlacement(
@@ -1117,3 +1070,4 @@ function shuffleArray(arr) {
 
   return a;
 }
+

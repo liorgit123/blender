@@ -237,11 +237,11 @@ function checkAnswer() {
     messageBox.innerHTML = `<span>${text}</span>`;
 
         messageBox.style.color = "#dce6ff";
-        messageBox.style.fontWeight = "normal"; // Ensure it is not bold
-        messageBox.style.fontSize = "1rem"; // Match clue size (approx 1rem)
-        messageBox.style.fontFamily = "inherit"; // Match clue font
-        messageBox.style.backgroundColor = "transparent"; // Background should be transparent to look same as clue
-        messageBox.style.zIndex = "20"; // Higher z-index to cover clue text
+    messageBox.style.fontWeight = "normal";
+    messageBox.style.fontSize = "1rem";
+    messageBox.style.fontFamily = "inherit";
+    messageBox.style.backgroundColor = "transparent";
+    messageBox.style.zIndex = "20";
         messageBox.style.pointerEvents = "auto";
         messageBox.style.visibility = "visible";
 
@@ -253,10 +253,6 @@ function checkAnswer() {
         messageBox.style.visibility = "hidden";
         factBox.classList.remove("hidden");
       }, 2000);
-    } else {
-        // If it's a success, we don't want to show the clue anymore,
-        // but we need to ensure the clue wrapper doesn't block interactions if needed
-        // The clue itself is hidden, but the wrapper is there.
     }
   }
 
@@ -371,16 +367,38 @@ async function showHint() {
 
     if (tiles.length > 0) {
       const tile = tiles[0];
+
+      // Create a visual copy for animation to ensure the tile itself can be made empty immediately
+      const fadeTile = tile.cloneNode(true);
+      const computedStyle = getComputedStyle(tile);
+
+      ["fontFamily", "fontSize", "fontWeight", "lineHeight", "letterSpacing", "textAlign", "color", "background", "backgroundColor", "border", "borderRadius", "boxShadow", "boxSizing", "padding"].forEach(prop => {
+        fadeTile.style[prop] = computedStyle[prop];
+      });
+
+      fadeTile.style.position = "fixed";
+      const rect = tile.getBoundingClientRect();
+      fadeTile.style.left = `${rect.left}px`;
+      fadeTile.style.top = `${rect.top}px`;
+      fadeTile.style.width = `${rect.width}px`;
+      fadeTile.style.height = `${rect.height}px`;
+      fadeTile.style.margin = "0";
+      fadeTile.style.zIndex = "1000";
+      fadeTile.style.pointerEvents = "none";
+
+      document.body.appendChild(fadeTile);
+
+      // Make original empty immediately
+        tile.classList.add("empty");
+      tile.textContent = "";
       tile.dataset.letter = letterBase;
       tile.dataset.locked = "true";
-        tile.textContent = "";
-        tile.classList.add("empty");
         tile.removeEventListener("click", onLetterClick);
         tile.style.cursor = "default";
-  }
 
-    // 2. Wait a moment to show that the tile is gone
-    await new Promise(resolve => setTimeout(resolve, 1));
+      // Animate out
+      animateScaleOut(fadeTile, 200).onfinish = () => fadeTile.remove();
+  }
 
     // 3. Then appear in the slot
     placeLetterInSlot(slot, letterBase);
@@ -388,19 +406,14 @@ async function showHint() {
 
     const letterSpan = slot.querySelector(".slot-text");
     if (letterSpan) {
-      letterSpan.animate(
-        [{ opacity: 0 }, { opacity: 1 }],
-        { duration: 300, easing: 'ease-out' }
-      );
+      animateScaleIn(letterSpan, 350);
   }
 
-    // 4. Wait a moment before moving to the next pair (disappear/appear)
-    await new Promise(resolve => setTimeout(resolve, 500));
+    // 4. Wait for animations to complete before moving to next
+    await new Promise(resolve => setTimeout(resolve, 350));
   }
 
   updateActiveSlot();
-  updateResetButtonState();
-
   // Re-enable clicking for tiles that are not "empty"
   const updatedTiles = document.querySelectorAll(".letter");
   updatedTiles.forEach(t => {
