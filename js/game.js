@@ -285,7 +285,7 @@ function checkAnswer() {
     slots.forEach((slot, index) => {
         setTimeout(() => {
             animateSuccessTile2(slot);
-        }, index * 50);
+        }, index * 200);
     });
 
     // Trigger fireworks after a delay to allow for the glow-n-bounce
