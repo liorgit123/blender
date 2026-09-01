@@ -129,7 +129,7 @@ function animateSuccessTile2(tile) {
       }
     ],
     {
-      duration: 420,
+      duration: 800,
       easing: "ease-out",
       fill: "forwards"
     }
