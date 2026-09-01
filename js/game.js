@@ -275,18 +275,23 @@ function checkAnswer() {
 
     showTemporaryMessage(successText, true);
 
-    // Original success logic kept for functionality
-    // factBox.innerHTML = `<span class="fact-check">✓</span>${getLocalizedText("correct")}`;
     hintBtn.disabled = true;
     document.getElementById("resetBtn").disabled = true;
-    // Keep it visible as per requirement
     setButtonLabel(document.getElementById("nextBtn"), getLocalizedText("next"));
-
-    // Ensure button is enabled when correct, unless it was disabled via checkWinCondition
     document.getElementById("nextBtn").disabled = false;
 
-    // Trigger fireworks
-    triggerFireworks();
+    // Apply glow-n-bounce
+  const slots = [...document.querySelectorAll(".slot")];
+    slots.forEach((slot, index) => {
+        setTimeout(() => {
+            animateSuccessTile(slot);
+        }, index * 50);
+    });
+
+    // Trigger fireworks after a delay to allow for the glow-n-bounce
+    setTimeout(() => {
+        triggerFireworks();
+    }, 500 + (slots.length * 50));
 
     // Mark as solved
     const solved = GameState.solved[GameState.language] || [];
@@ -307,14 +312,10 @@ function checkAnswer() {
       tile.removeEventListener("click", onLetterClick);
   });
 
-    // CRITICAL FIX: Ensure the clue wrapper does not capture events after success
-    // Actually, the clue container itself should be made unclickable or removed from layout if we don't want it to interfere.
-    // The current problem is the messageBox covering it might be misconfigured, or the clue container remains in the DOM structure with some event handlers.
-    // Let's explicitly disable the clue container's pointer events.
     document.getElementById("clue").style.pointerEvents = "none";
   } else {
     showTemporaryMessage(getLocalizedText("incorrect"));
-    }
+  }
 }
 
 async function showHint() {
