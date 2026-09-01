@@ -50,7 +50,7 @@ function triggerFireworks(intensity = "high") {
     // If low intensity, force red. Otherwise use random colors
     particle.style.backgroundColor = intensity === "high"
         ? colors[Math.floor(Math.random() * colors.length)]
-        : "#FF0000";
+        : "#0FFF50";
 
       particle.style.left = `${x}px`;
       particle.style.top = `${y}px`;
