@@ -97,3 +97,43 @@ function animateSuccessTile(tile) {
   );
 }
 
+function animateSuccessTile2(tile) {
+  if (!tile) return;
+
+  tile.animate(
+    [
+      {
+        transform: "scale(1)",
+        boxShadow: "0 0 0 rgba(40,120,255,0)"
+      },
+      {
+        transform: "scale(1.18)",   // BIGGER bounce
+        boxShadow: `
+          0 0 12px rgba(80,160,255,0.9),
+          0 0 26px rgba(30,110,255,0.7)
+        `
+      },
+      {
+        transform: "scale(0.92)",   // UNDERSHOOT for real bounce
+        boxShadow: `
+          0 0 8px rgba(80,160,255,0.6),
+          0 0 18px rgba(30,110,255,0.4)
+        `
+      },
+      {
+        transform: "scale(1)",
+        boxShadow: `
+          0 0 6px rgba(80,160,255,0.4),
+          0 0 12px rgba(30,110,255,0.3)
+        `
+      }
+    ],
+    {
+      duration: 420,
+      easing: "ease-out",
+      fill: "forwards"
+    }
+  );
+}
+
+
