@@ -31,7 +31,7 @@ function animateScaleIn(element, duration = 300) {
     [
       { transform: 'scale(0.5)', opacity: 0, offset: 0 },
       { transform: 'scale(1.3)', opacity: 1, offset: 0.7 }, // Overshoot at 70% of duration
-      { transform: 'scale(1)', opacity: 1, offset: 1 }      // Settle at 100%
+      { transform: 'scale(1)', opacity: 1, offset: 1 }      // Settle at 100()
     ],
     {
       duration: duration,
@@ -71,21 +71,21 @@ function animateSuccessTile(tile) {
     [
       {
         transform: "scale(1)",
-        boxShadow: "0 0 0 rgba(40,120,255,0)"
+        boxShadow: "0 0 0 rgba(0, 240, 255, 0)"
       },
       {
         transform: "scale(1.1)",
         boxShadow: `
-          0 0 10px rgba(80,160,255,1),
-          0 0 28px rgba(30,110,255,.9),
-          0 0 45px rgba(0,70,255,.6)
+          0 0 12px rgba(0, 240, 255, 0.9),
+          0 0 28px rgba(0, 240, 255, 0.6),
+          0 0 45px rgba(0, 150, 255, 0.4)
         `
       },
       {
         transform: "scale(1)",
         boxShadow: `
-          0 0 7px rgba(80,160,255,.8),
-          0 0 18px rgba(30,110,255,.6)
+          0 0 15px rgba(0, 240, 255, 0.7),
+          0 0 35px rgba(0, 240, 255, 0.5)
         `
       }
     ],
@@ -104,27 +104,28 @@ function animateSuccessTile2(tile) {
     [
       {
         transform: "scale(1)",
-        boxShadow: "0 0 0 rgba(40,120,255,0)"
+        boxShadow: "0 0 0 rgba(0, 240, 255, 0)"
       },
       {
         transform: "scale(1.18)",   // BIGGER bounce
         boxShadow: `
-          0 0 12px rgba(80,160,255,0.9),
-          0 0 26px rgba(30,110,255,0.7)
+          0 0 15px rgba(0, 240, 255, 0.8),
+          0 0 35px rgba(0, 240, 255, 0.6),
+          0 0 60px rgba(0, 150, 255, 0.4)
         `
       },
       {
         transform: "scale(0.92)",   // UNDERSHOOT for real bounce
         boxShadow: `
-          0 0 8px rgba(80,160,255,0.6),
-          0 0 18px rgba(30,110,255,0.4)
+          0 0 10px rgba(0, 240, 255, 0.6),
+          0 0 25px rgba(0, 240, 255, 0.4)
         `
       },
       {
         transform: "scale(1)",
         boxShadow: `
-          0 0 6px rgba(80,160,255,0.4),
-          0 0 12px rgba(30,110,255,0.3)
+          0 0 20px rgba(0, 240, 255, 0.7),
+          0 0 45px rgba(0, 240, 255, 0.5)
         `
       }
     ],
@@ -135,5 +136,4 @@ function animateSuccessTile2(tile) {
     }
   );
 }
-
 

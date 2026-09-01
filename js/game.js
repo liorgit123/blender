@@ -234,9 +234,11 @@ function checkAnswer() {
     factBox.classList.add("hidden");
 
     // Create new content just for the message, no prefix
-    messageBox.innerHTML = `<span>${text}</span>`;
+    const successColor = '#00F0FF'; // Matching the animation glow
+    const failColor = '#FF073A';   // Neon Red
+    messageBox.innerHTML = `<span style="display: inline-block; font-size: 1rem; font-weight: ${isSuccess ? 'bold' : 'normal'}; color: ${isSuccess ? successColor : failColor}; text-shadow: 0 0 10px ${isSuccess ? 'rgba(0, 240, 255, 0.7)' : 'rgba(255, 7, 58, 0.7)'};">${text}</span>`;
 
-        messageBox.style.color = "#dce6ff";
+    messageBox.style.color = "transparent";
     messageBox.style.fontWeight = "normal";
     messageBox.style.fontSize = "1rem";
     messageBox.style.fontFamily = "inherit";
@@ -285,13 +287,14 @@ function checkAnswer() {
     slots.forEach((slot, index) => {
         setTimeout(() => {
             animateSuccessTile2(slot);
-        }, index * 200);
+        }, index * 80);
     });
 
     // Trigger fireworks after a delay to allow for the glow-n-bounce
     setTimeout(() => {
-        triggerFireworks();
-    }, 500 + (slots.length * 50));
+        const intensity = GameState.hintLevel === 0 ? "high" : "low";
+        triggerFireworks(intensity);
+    }, 50 + (slots.length * 80));
 
     // Mark as solved
     const solved = GameState.solved[GameState.language] || [];
@@ -301,7 +304,7 @@ function checkAnswer() {
       GameState.solved[GameState.language] = solved;
       localStorage.setItem("solvedLevels", JSON.stringify(GameState.solved));
       updateCounter();
-  }
+}
 
     // Disable active marker
     document.querySelectorAll(".slot").forEach(s => s.dataset.active = "false");
