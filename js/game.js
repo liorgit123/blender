@@ -284,7 +284,7 @@ function checkAnswer() {
   const slots = [...document.querySelectorAll(".slot")];
     slots.forEach((slot, index) => {
         setTimeout(() => {
-            animateSuccessTile(slot);
+            animateSuccessTile2(slot);
         }, index * 50);
     });
 
