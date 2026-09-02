@@ -735,7 +735,7 @@ body[dir="rtl"] .win-content button {
 }
 
 .success-breath {
-  animation: successBreath 2.4s ease-in-out infinite;
+  animation: successBreath 1s ease-in-out infinite;
 }
 
 @keyframes successBreath {
