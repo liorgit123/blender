@@ -733,3 +733,14 @@ body[dir="rtl"] .win-content button {
   opacity: 0.5 !important;
   filter: none;
 }
+
+.success-breath {
+  animation: successBreath 2.2s ease-in-out infinite;
+}
+
+@keyframes successBreath {
+  0% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.03); }
+  100% { opacity: 0.85; transform: scale(1); }
+}
+
