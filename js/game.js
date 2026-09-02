@@ -296,7 +296,7 @@ function checkAnswer() {
         if (GameState.hintLevel === 0) {
           triggerFireworks("high");
         }
-    }, 50 + (slots.length * 80));
+    }, 50 + (slots.length * 120));
 
     // Mark as solved
     const solved = GameState.solved[GameState.language] || [];
