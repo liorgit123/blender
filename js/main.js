@@ -41,6 +41,20 @@ window.addEventListener("DOMContentLoaded", async () => {
     langBtn.addEventListener("click", switchLanguage);
   }
 
+  const logo = document.querySelector(".logo");
+  if (logo) {
+    let timer;
+    logo.addEventListener("mousedown", () => {
+      timer = setTimeout(resetProgress, 3000);
+    });
+    logo.addEventListener("mouseup", () => clearTimeout(timer));
+    logo.addEventListener("mouseleave", () => clearTimeout(timer));
+    logo.addEventListener("touchstart", () => {
+      timer = setTimeout(resetProgress, 3000);
+    });
+    logo.addEventListener("touchend", () => clearTimeout(timer));
+  }
+
   updateResetButtonState();
 });
 

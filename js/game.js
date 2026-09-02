@@ -15,6 +15,13 @@ const GameState = {
 
 let languageMessageTimer = null;
 
+function resetProgress() {
+  const solved = JSON.parse(localStorage.getItem("solvedLevels") || "{}");
+  delete solved[GameState.language];
+  localStorage.setItem("solvedLevels", JSON.stringify(solved));
+  window.location.reload();
+}
+
 function setLayoutDirection() {
   const dir = GameState.language === "en" ? "ltr" : "rtl";
   document.body.dir = dir;
@@ -35,10 +42,6 @@ function getLocalizedText(key) {
     case "remaining": return isEnglish ? "REMAINING" : "נשארו";
     case "counter": return isEnglish ? "solved {solved} out of {total}" : "נפתרו {solved} מתוך {total}";
     case "notAll": return isEnglish ? "Not all letters have been placed." : "לא כל האותיות הונחו במקומן.";
-    case "correct": return isEnglish ? "Well done - solved without hints!" : "כל הכבוד - פתרת ללא עזרה!";
-    case "correctLevel1": return isEnglish ? "Good job - correct answer" : "יפה מאוד - תשובה נכונה";
-    case "correctLevel2": return isEnglish ? "Good job - correct answer" : "יפה מאוד - תשובה נכונה";
-    case "correctLevel3": return isEnglish ? "Good job - correct answer" : "יפה מאוד - תשובה נכונה";
     case "incorrect": return isEnglish ? "Not quite - keep trying" : "לא מדויק - המשיכו לנסות";
     case "hint": return isEnglish ? "Hint" : "רמז";
     case "reveal": return isEnglish ? "Reveal" : "גלה";
@@ -236,7 +239,7 @@ function checkAnswer() {
     // Create new content just for the message, no prefix
     const successColor = '#00F0FF'; // Matching the animation glow
     const failColor = '#FF073A';   // Neon Red
-    messageBox.innerHTML = `<span style="display: inline-block; font-size: 1rem; font-weight: ${isSuccess ? 'bold' : 'normal'}; color: ${isSuccess ? successColor : failColor}; text-shadow: 0 0 10px ${isSuccess ? 'rgba(0, 240, 255, 0.7)' : 'rgba(255, 7, 58, 0.7)'};">${text}</span>`;
+    messageBox.innerHTML = `<span style="display: inline-block; font-size: 1rem; font-weight: ${isSuccess ? 'normal' : 'normal'}; color: ${isSuccess ? successColor : failColor}; text-shadow: 0 0 10px ${isSuccess ? 'rgba(0, 240, 255, 0.7)' : 'rgba(255, 7, 58, 0.7)'};">${text}</span>`;
 
     messageBox.style.color = "transparent";
     messageBox.style.fontWeight = "normal";
@@ -266,13 +269,11 @@ function checkAnswer() {
   if (user === target) {
     let successText;
     if (GameState.hintLevel === 0) {
-      successText = getLocalizedText("correct");
+      successText = GameState.language === "en" ? "Well done - solved without hints!" : "כל הכבוד - פתרת ללא רמזים!";
     } else if (GameState.hintLevel === 1) {
-      successText = getLocalizedText("correctLevel1");
-  } else if (GameState.hintLevel === 2) {
-      successText = getLocalizedText("correctLevel2");
+      successText = GameState.language === "en" ? "Nice work - solved with one hint" : "יפה מאוד - פתרת עם רמז אחד";
     } else {
-      successText = getLocalizedText("correctLevel3");
+      successText = GameState.language === "en" ? "Good job - solved with two hints" : "עבודה טובה - פתרת עם שני רמזים";
     }
 
     showTemporaryMessage(successText, true);

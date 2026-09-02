@@ -115,11 +115,14 @@
   </div>
 
   <script>
-    document.getElementById("resetBtn").onclick = () => {
+    function resetProgress() {
       const solved = JSON.parse(localStorage.getItem("solvedLevels") || "{}");
       delete solved["en"];
       localStorage.setItem("solvedLevels", JSON.stringify(solved));
       window.location.replace("index.html");
+    }
+    document.getElementById("resetBtn").onclick = () => {
+      resetProgress();
     };
 
     document.getElementById("langBtn").onclick = () => {
