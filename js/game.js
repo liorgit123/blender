@@ -276,8 +276,6 @@ function checkAnswer() {
       successText = GameState.language === "en" ? "Good job - solved with two hints" : "עבודה טובה - פתרת עם שני רמזים";
     }
 
-    showTemporaryMessage(successText, true);
-
     hintBtn.disabled = true;
     document.getElementById("resetBtn").disabled = true;
     setButtonLabel(document.getElementById("nextBtn"), getLocalizedText("next"));
@@ -293,6 +291,7 @@ function checkAnswer() {
 
     // Trigger fireworks after a delay to allow for the glow-n-bounce
     setTimeout(() => {
+        showTemporaryMessage(successText, true);
         if (GameState.hintLevel === 0) {
           triggerFireworks("high");
         }
