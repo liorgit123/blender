@@ -735,44 +735,44 @@ body[dir="rtl"] .win-content button {
 }
 
 .success-breath {
-  animation: successGlow 2.4s ease-in-out infinite;
+  animation: successGlow 2.2s ease-in-out infinite;
 }
 
 @keyframes successGlow {
   0% {
-    opacity: 0.85;
+    opacity: 0.65;
     text-shadow:
-      0 0 6px rgba(0,240,255,0.4),
-      0 0 12px rgba(0,240,255,0.25),
-      0 0 18px rgba(0,240,255,0.15);
+      0 0 4px rgba(0,240,255,0.4),
+      0 0 8px rgba(0,240,255,0.3),
+      0 0 12px rgba(0,240,255,0.2);
   }
   25% {
-    opacity: 0.92;
+    opacity: 0.85;
     text-shadow:
-      0 0 10px rgba(0,240,255,0.55),
-      0 0 18px rgba(0,240,255,0.35),
-      0 0 26px rgba(0,240,255,0.25);
+      0 0 10px rgba(0,240,255,0.6),
+      0 0 18px rgba(0,240,255,0.45),
+      0 0 26px rgba(0,240,255,0.35);
   }
   50% {
     opacity: 1;
     text-shadow:
-      0 0 14px rgba(0,240,255,0.9),
-      0 0 26px rgba(0,240,255,0.6),
-      0 0 34px rgba(0,240,255,0.45);
+      0 0 18px rgba(0,240,255,1),
+      0 0 32px rgba(0,240,255,0.85),
+      0 0 48px rgba(0,240,255,0.7);
   }
   75% {
-    opacity: 0.92;
-    text-shadow:
-      0 0 10px rgba(0,240,255,0.55),
-      0 0 18px rgba(0,240,255,0.35),
-      0 0 26px rgba(0,240,255,0.25);
-  }
-  100% {
     opacity: 0.85;
     text-shadow:
-      0 0 6px rgba(0,240,255,0.4),
-      0 0 12px rgba(0,240,255,0.25),
-      0 0 18px rgba(0,240,255,0.15);
+      0 0 10px rgba(0,240,255,0.6),
+      0 0 18px rgba(0,240,255,0.45),
+      0 0 26px rgba(0,240,255,0.35);
+  }
+  100% {
+    opacity: 0.65;
+    text-shadow:
+      0 0 4px rgba(0,240,255,0.4),
+      0 0 8px rgba(0,240,255,0.3),
+      0 0 12px rgba(0,240,255,0.2);
   }
 }
 
