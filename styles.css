@@ -735,13 +735,20 @@ body[dir="rtl"] .win-content button {
 }
 
 .success-breath {
-  animation: successBreath 1s ease-in-out infinite;
+  animation: successBreath 2.4s ease-in-out infinite;
 }
 
 @keyframes successBreath {
-  0% { opacity: 0.85; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.03); }
-  100% { opacity: 0.85; transform: scale(1); }
+  0%   { opacity: 0.70; }
+  10%  { opacity: 0.78; }
+  20%  { opacity: 0.86; }
+  30%  { opacity: 0.93; }
+  40%  { opacity: 1.00; }
+  50%  { opacity: 0.93; }
+  60%  { opacity: 0.86; }
+  70%  { opacity: 0.78; }
+  80%  { opacity: 0.72; }
+  90%  { opacity: 0.68; }
+  100% { opacity: 0.70; }
 }
-
 
