@@ -8,48 +8,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css?v=66">
-
-  <style>
-    /* שכבת חלקיקים */
-    .particles {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 0; /* מאחורי המשחק */
-    }
-
-    .particles span {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: rgba(120,160,255,0.45);
-      border-radius: 50%;
-      filter: blur(1px);
-      animation: fall 6s linear infinite;
-    }
-
-    @keyframes fall {
-      0% {
-        transform: translateY(-10vh) scale(1);
-        opacity: 0;
-      }
-      20% {
-        opacity: 0.8;
-      }
-      100% {
-        transform: translateY(110vh) scale(0.8);
-        opacity: 0;
-      }
-    }
-  </style>
 </head>
-
 <body dir="rtl">
-
-  <!-- שכבת חלקיקים -->
-  <div class="particles"></div>
-
   <div class="app">
     <button id="langBtn" class="lang-toggle" type="button" aria-label="Language">
       <img src="images/lang1.svg" alt="" aria-hidden="true">
@@ -66,10 +26,10 @@
     <div id="scramble" class="scramble"></div>
 
     <div id="clue-wrapper" style="position: relative; width: 100%; min-height: 50px;">
-      <div id="messageBox" class="message"></div>
-      <div id="clue" class="clue">
-        <span class="clue-text" id="clue-text"></span>
-      </div>
+    <div id="messageBox" class="message"></div>
+    <div id="clue" class="clue">
+      <span class="clue-text" id="clue-text"></span>
+    </div>
     </div>
 
     <div class="controls">
@@ -85,27 +45,8 @@
         <img class="button-icon" src="images/skip1.svg" alt="" aria-hidden="true">
         <span class="button-label visually-hidden">דלג</span>
       </button>
-    </div>
   </div>
-
-  <script>
-    // יצירת חלקיקים אקראיים
-    const container = document.querySelector('.particles');
-
-    for (let i = 0; i < 28; i++) {
-      const p = document.createElement('span');
-
-      const size = Math.random() * 4 + 2; // תערובת גדלים
-      p.style.width = size + 'px';
-      p.style.height = size + 'px';
-
-      p.style.left = Math.random() * 100 + 'vw';
-      p.style.animationDelay = Math.random() * 5 + 's';
-      p.style.opacity = Math.random() * 0.7;
-
-      container.appendChild(p);
-    }
-  </script>
+  </div>
 
   <script src="js/game.js?v=66"></script>
   <script src="js/animations.js?v=66"></script>
