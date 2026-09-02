@@ -293,7 +293,7 @@ function checkAnswer() {
     // Trigger fireworks after a delay to allow for the glow-n-bounce
     setTimeout(() => {
         if (GameState.hintLevel === 0) {
-          triggerFireworks(intensity);
+          triggerFireworks("high");
         }
     }, 50 + (slots.length * 80));
 
