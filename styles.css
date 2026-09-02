@@ -735,13 +735,13 @@ body[dir="rtl"] .win-content button {
 }
 
 .success-breath {
-  animation: successHeartbeat 0.9s ease-in-out infinite;
+  animation: successBreath 1s ease-in-out infinite;
 }
 
-@keyframes successHeartbeat {
-  0%   { transform: scale(1); }
-  25%  { transform: scale(1.12); }
-  40%  { transform: scale(1); }
-  60%  { transform: scale(1.12); }
-  100% { transform: scale(1); }
+@keyframes successBreath {
+  0% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.03); }
+  100% { opacity: 0.85; transform: scale(1); }
+}
+
 
