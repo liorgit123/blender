@@ -252,6 +252,13 @@ function checkAnswer() {
 
         messageBox.classList.add("show");
 
+    // הוספת הנשימה בלופ רק בהצלחה
+    if (isSuccess) {
+      messageBox.classList.add("success-breath");
+    } else {
+      messageBox.classList.remove("success-breath");
+    }
+    
     if (!isSuccess) {
       setTimeout(() => {
         messageBox.classList.remove("show");
