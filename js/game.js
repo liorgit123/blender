@@ -339,7 +339,7 @@ async function showHint() {
   if (GameState.hintLevel === 1) {
     count = Math.max(1, Math.ceil(slots.length * 0.2));
   } else if (GameState.hintLevel === 2) {
-    count = Math.max(1, Math.ceil(slots.length * 0.3));
+    count = Math.max(1, Math.ceil(slots.length * 0.2));
     hintBtn.disabled = true;
     hintBtn.style.backgroundColor = "#333";
     hintBtn.style.opacity = "0.6";
