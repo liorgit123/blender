@@ -285,8 +285,19 @@ function checkAnswer() {
 
     hintBtn.disabled = true;
     document.getElementById("resetBtn").disabled = true;
-    setButtonLabel(document.getElementById("nextBtn"), getLocalizedText("next"));
-    document.getElementById("nextBtn").disabled = false;
+
+    // setButtonLabel(document.getElementById("nextBtn"), getLocalizedText("next"));
+    // document.getElementById("nextBtn").disabled = false;
+
+    // next-attention start
+    const nextBtn = document.getElementById("nextBtn");
+    setButtonLabel(nextBtn, getLocalizedText("next"));
+    nextBtn.disabled = false;
+    nextBtn.classList.remove("next-attention");
+    setTimeout(() => {
+      nextBtn.classList.add("next-attention");
+    }, 1000);
+    // next-attention end
 
     // Apply glow-n-bounce
   const slots = [...document.querySelectorAll(".slot")];
