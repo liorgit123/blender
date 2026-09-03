@@ -244,9 +244,9 @@ function checkAnswer() {
   function showTemporaryMessage(text, isSuccess = false) {
     factBox.classList.add("hidden");
 
-    // Create new content just for the message, no prefix
-    const successColor = '#00F0FF'; // Matching the animation glow
-    const failColor = '#FF073A';   // Neon Red
+    const successColor = '#00F0FF';
+    const failColor = '#FF073A';
+
     messageBox.innerHTML = `<span style="display: inline-block; font-size: 1rem; font-weight: ${isSuccess ? 'normal' : 'normal'}; color: ${isSuccess ? successColor : failColor}; text-shadow: 0 0 10px ${isSuccess ? 'rgba(0, 240, 255, 0.7)' : 'rgba(255, 7, 58, 0.7)'};">${text}</span>`;
 
     messageBox.style.color = "transparent";
@@ -255,20 +255,19 @@ function checkAnswer() {
     messageBox.style.fontFamily = "inherit";
     messageBox.style.backgroundColor = "transparent";
     messageBox.style.zIndex = "20";
-        messageBox.style.pointerEvents = "auto";
-        messageBox.style.visibility = "visible";
+    messageBox.style.pointerEvents = "auto";
+    messageBox.style.visibility = "visible";
 
-        messageBox.classList.add("show");
+    messageBox.classList.add("show");
 
-    // הוספת הנשימה בלופ רק בהצלחה
     if (isSuccess) {
       messageBox.classList.remove("success-breath");
-      void messageBox.offsetWidth; // Force animation restart
+      void messageBox.offsetWidth;
       messageBox.classList.add("success-breath");
     } else {
       messageBox.classList.remove("success-breath");
     }
-    
+
     if (!isSuccess) {
       setTimeout(() => {
         messageBox.classList.remove("show");
@@ -285,70 +284,90 @@ function checkAnswer() {
 
   if (user === target) {
     let successText;
+
     if (GameState.hintLevel === 0) {
-      successText = GameState.language === "en" ? "Well done - solved without hints!" : "כל הכבוד - פתרת ללא רמזים!";
+      successText = GameState.language === "en"
+        ? "Well done - solved without hints!"
+        : "כל הכבוד - פתרת ללא רמזים!";
     } else if (GameState.hintLevel === 1) {
-      successText = GameState.language === "en" ? "Nice work - solved with only one hint" : "יפה מאוד - פתרת עם רמז אחד בלבד";
+      successText = GameState.language === "en"
+        ? "Nice work - solved with only one hint"
+        : "יפה מאוד - פתרת עם רמז אחד בלבד";
     } else {
-      successText = GameState.language === "en" ? "Good job - solved with two hints" : "עבודה טובה - פתרת עם שני רמזים";
+      successText = GameState.language === "en"
+        ? "Good job - solved with two hints"
+        : "עבודה טובה - פתרת עם שני רמזים";
     }
 
     hintBtn.disabled = true;
     document.getElementById("resetBtn").disabled = true;
 
-    // setButtonLabel(document.getElementById("nextBtn"), getLocalizedText("next"));
-    // document.getElementById("nextBtn").disabled = false;
-
-    // next-attention start
+    // Disable NEXT during the success animation
     const nextBtn = document.getElementById("nextBtn");
     setButtonLabel(nextBtn, getLocalizedText("next"));
-    nextBtn.disabled = false;
+    nextBtn.disabled = true;
     nextBtn.classList.remove("next-attention");
+
+    // Cancel any previously scheduled NEXT nudge
     if (nextAttentionTimer) {
       clearTimeout(nextAttentionTimer);
-    }
-    nextAttentionTimer = setTimeout(() => {
-      nextBtn.classList.add("next-attention");
       nextAttentionTimer = null;
-    }, (GameState.hintLevel === 0 ? 3000 : 2000));
-    // next-attention end
+    }
 
     // Apply glow-n-bounce
-  const slots = [...document.querySelectorAll(".slot")];
+    const slots = [...document.querySelectorAll(".slot")];
+
     slots.forEach((slot, index) => {
-        setTimeout(() => {
-            animateSuccessTile2(slot);
-        }, index * 120);
+      setTimeout(() => {
+        animateSuccessTile2(slot);
+      }, index * 120);
     });
 
-    // Trigger fireworks after a delay to allow for the glow-n-bounce
+    const animationEndTime = 50 + (slots.length * 120);
+
+    // Show success message after glow-n-bounce
     setTimeout(() => {
-        showTemporaryMessage(successText, true);
-        if (GameState.hintLevel === 0) {
-          triggerFireworks("high");
-        }
-    }, 50 + (slots.length * 120));
+      showTemporaryMessage(successText, true);
+
+      if (GameState.hintLevel === 0) {
+        triggerFireworks("high");
+      }
+
+      // Enable NEXT after the success animation/message starts
+      nextBtn.disabled = false;
+
+      // Start NEXT attention timer only after button is enabled
+      nextAttentionTimer = setTimeout(() => {
+        nextBtn.classList.add("next-attention");
+        nextAttentionTimer = null;
+      }, (GameState.hintLevel === 0 ? 3000 : 2000));
+
+    }, animationEndTime);
 
     // Mark as solved
     const solved = GameState.solved[GameState.language] || [];
-    const questionId = GameState.current.id; // Using the id we assigned
+    const questionId = GameState.current.id;
+
     if (!solved.includes(questionId)) {
       solved.push(questionId);
       GameState.solved[GameState.language] = solved;
       localStorage.setItem("solvedLevels", JSON.stringify(GameState.solved));
       updateCounter();
-}
+    }
 
     // Disable active marker
-    document.querySelectorAll(".slot").forEach(s => s.dataset.active = "false");
+    document.querySelectorAll(".slot").forEach(s => {
+      s.dataset.active = "false";
+    });
 
     document.querySelectorAll(".letter").forEach(tile => {
-        tile.style.cursor = "default";
+      tile.style.cursor = "default";
       tile.classList.add("disabled");
       tile.removeEventListener("click", onLetterClick);
-  });
+    });
 
     document.getElementById("clue").style.pointerEvents = "none";
+
   } else {
     showTemporaryMessage(getLocalizedText("incorrect"));
   }
