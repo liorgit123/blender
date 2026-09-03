@@ -203,6 +203,8 @@ function resetButtons() {
   const resetBtn = document.getElementById("resetBtn");
   const nextBtn = document.getElementById("nextBtn");
 
+  nextBtn.classList.remove("next-attention");
+
   hintBtn.disabled = false;
   hintBtn.style.backgroundColor = "";
   hintBtn.style.opacity = "";
