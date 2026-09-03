@@ -203,6 +203,10 @@ function resetButtons() {
   const resetBtn = document.getElementById("resetBtn");
   const nextBtn = document.getElementById("nextBtn");
 
+  if (nextAttentionTimer) {
+    clearTimeout(nextAttentionTimer);
+    nextAttentionTimer = null;
+  }
   nextBtn.classList.remove("next-attention");
 
   hintBtn.disabled = false;
@@ -226,6 +230,8 @@ function resetButtons() {
 
   setButtonLabel(nextBtn, getLocalizedText("skip"));
 }
+
+let nextAttentionTimer = null;
 
 function checkAnswer() {
   const user = getUserAnswer();
@@ -298,8 +304,12 @@ function checkAnswer() {
     setButtonLabel(nextBtn, getLocalizedText("next"));
     nextBtn.disabled = false;
     nextBtn.classList.remove("next-attention");
-    setTimeout(() => {
+    if (nextAttentionTimer) {
+      clearTimeout(nextAttentionTimer);
+    }
+    nextAttentionTimer = setTimeout(() => {
       nextBtn.classList.add("next-attention");
+      nextAttentionTimer = null;
     }, (GameState.hintLevel === 0 ? 3000 : 2000));
     // next-attention end
 
