@@ -302,7 +302,7 @@ function checkAnswer() {
     hintBtn.disabled = true;
     document.getElementById("resetBtn").disabled = true;
 
-    // Disable NEXT during the success animation
+    // Disable NEXT during the entire success animation
     const nextBtn = document.getElementById("nextBtn");
     setButtonLabel(nextBtn, getLocalizedText("next"));
     nextBtn.disabled = true;
@@ -333,14 +333,17 @@ function checkAnswer() {
         triggerFireworks("high");
       }
 
-      // Enable NEXT after the success animation/message starts
-      nextBtn.disabled = false;
+      // Wait for success-breath animation to finish (0.4s × 2 = 800ms)
+      setTimeout(() => {
+        nextBtn.disabled = false;
 
-      // Start NEXT attention timer only after button is enabled
-      nextAttentionTimer = setTimeout(() => {
-        nextBtn.classList.add("next-attention");
-        nextAttentionTimer = null;
-      }, (GameState.hintLevel === 0 ? 3000 : 2000));
+        // Start NEXT nudge 2 seconds after enabling
+        nextAttentionTimer = setTimeout(() => {
+          nextBtn.classList.add("next-attention");
+          nextAttentionTimer = null;
+        }, 2000);
+
+      }, 800);
 
     }, animationEndTime);
 
