@@ -298,7 +298,7 @@ function checkAnswer() {
     nextBtn.classList.remove("next-attention");
     setTimeout(() => {
       nextBtn.classList.add("next-attention");
-    }, 2200);
+    }, (GameState.hintLevel === 0 ? 3000 : 2000));
     // next-attention end
 
     // Apply glow-n-bounce
