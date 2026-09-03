@@ -736,18 +736,16 @@ body[dir="rtl"] .win-content button {
 }
 
 .success-breath {
-  animation: successBreath 0.9s ease-in-out 2;
+  animation: successBreath 0.6s ease-in-out 3;
 }
 
 @keyframes successBreath {
   0%, 100% {
     transform: scale(1);
-    filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.35));
   }
 
   50% {
-    transform: scale(1.08) translateY(-2px);
-    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.75));
+    transform: scale(1.03);
   }
 }
 
