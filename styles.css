@@ -740,13 +740,11 @@ body[dir="rtl"] .win-content button {
 
 @keyframes successBreath {
   0%, 100% {
-    /* opacity: 0.9; */
     transform: scale(1);
-    filter: drop-shadow(0 0 0px rgba(255, 215, 0, 0));
+    filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.35));
   }
 
   50% {
-    /* opacity: 1; */
     transform: scale(1.08) translateY(-2px);
     filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.75));
   }
