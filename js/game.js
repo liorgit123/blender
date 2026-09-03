@@ -282,7 +282,7 @@ function checkAnswer() {
     if (GameState.hintLevel === 0) {
       successText = GameState.language === "en" ? "Well done - solved without hints!" : "כל הכבוד - פתרת ללא רמזים!";
     } else if (GameState.hintLevel === 1) {
-      successText = GameState.language === "en" ? "Nice work - solved with one hint" : "יפה מאוד - פתרת עם רמז אחד";
+      successText = GameState.language === "en" ? "Nice work - solved with only one hint" : "יפה מאוד - פתרת עם רמז אחד בלבד";
     } else {
       successText = GameState.language === "en" ? "Good job - solved with two hints" : "עבודה טובה - פתרת עם שני רמזים";
     }
