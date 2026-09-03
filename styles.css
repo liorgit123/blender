@@ -751,3 +751,29 @@ body[dir="rtl"] .win-content button {
     filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.75));
   }
 }
+
+.next-attention {
+  animation: nextNudge 2.2s ease-in-out infinite;
+}
+
+@keyframes nextNudge {
+  0%, 70%, 100% {
+    transform: translateY(0) scale(1);
+  }
+
+  76% {
+    transform: translateY(4px) scale(1.04);
+  }
+
+  82% {
+    transform: translateY(-2px) scale(1.02);
+  }
+
+  88% {
+    transform: translateY(2px) scale(1.03);
+  }
+
+  94% {
+    transform: translateY(0) scale(1);
+  }
+}
