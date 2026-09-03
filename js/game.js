@@ -296,7 +296,7 @@ function checkAnswer() {
     nextBtn.classList.remove("next-attention");
     setTimeout(() => {
       nextBtn.classList.add("next-attention");
-    }, 1000);
+    }, 1800);
     // next-attention end
 
     // Apply glow-n-bounce
