@@ -343,7 +343,7 @@ function checkAnswer() {
           nextAttentionTimer = null;
         }, 2000);
 
-      }, 800);
+      }, 1800);
 
     }, animationEndTime);
 
