@@ -1,4 +1,6 @@
 body {
+  position: relative;
+  isolation: isolate;
   font-family: 'Inter', sans-serif;
   background: #000000;
   color: #f1f5ff;
@@ -24,10 +26,11 @@ body[dir="rtl"] {
 
 .app {
   position: relative;
+  z-index: 1;
   box-sizing: border-box;
   width: min(375px, calc(100% -32px));
   margin: 20px auto;
-  background: #000000;
+  background: rgba(0, 0, 0, 0.5);
   color: #f1f5ff;
   --slot-size: 40px;
   border-radius: 16px;
@@ -163,7 +166,7 @@ h1 {
 .category {
   min-height: 24px;
   margin-bottom: 20px;
-  color: #b8d4ff;
+  color: #f8fafc;
 }
 
 .category-prefix {
@@ -232,7 +235,7 @@ body[dir="ltr"] .fact {
   min-height: 30px;
   margin: 10px 0 0 0;
   padding: 10px 14px;
-  color: #dce6ff;
+  color: #f8fafc;
   background: transparent;
   border: none;
   border-radius: 5px;
@@ -259,7 +262,7 @@ body[dir="ltr"] .fact {
 .clue-text {
   position: relative;
   display: inline-block;
-  color: #dce6ff;
+  color: #f8fafc;
 }
 
 /*
@@ -392,26 +395,39 @@ body[dir="ltr"] .fact {
 .slot[data-active="true"]::after {
   content: "";
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 10%;
-  background-color: #0e1dee;
+  inset: -2px;
+  border: 2px solid #00b8f0;
   border-radius: inherit;
-  animation: flicker 2s linear infinite;
+  box-shadow: 0 0 9px rgba(0, 184, 240, 0.75);
+  pointer-events: none;
+  animation: activeSlotPulse 2s ease-in-out infinite;
 }
 
-@keyframes flicker {
-  0%   { opacity: 0.5; }
-  25%  { opacity: 0.3; }
-  50%  { opacity: 0.5; }
-  75%  { opacity: 0.3; }
-  100% { opacity: 0.5; }
+@keyframes activeSlotPulse {
+  0%, 100% {
+    opacity: 0.65;
+    box-shadow: 0 0 7px rgba(0, 184, 240, 0.6);
+  }
+
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 15px rgba(0, 184, 240, 0.95);
+  }
 }
 
 .slot[data-locked="true"] {
   background: #b0b4ba;
   color: #000000;
+}
+
+.slot[data-solved="true"] {
+  background: linear-gradient(
+    165deg,
+    #ffffff 0%,
+    #f0f4ff 35%,
+    #d6e2f5 70%,
+    #c0d0e8 100%
+  );
 }
 
 .slot[data-filled="true"] {
@@ -484,6 +500,36 @@ body[dir="ltr"] .fact {
 /* Larger font for active scramble tiles */
 .letter:not(.empty) {
   font-size: calc(var(--slot-size) * 0.55);
+}
+
+.letter.idle-nudge:not(.empty):not(.disabled) {
+  animation: idleTileNudge 500ms ease-in-out both;
+}
+
+@keyframes idleTileNudge {
+  0%, 100% {
+    box-shadow:
+      0 0 4px rgba(255,255,255,0.5),
+      0 6px 12px rgba(60, 80, 120, 0.4),
+      0 0 16px rgba(30, 60, 120, 0.3),
+      inset 0 -2px 0 rgba(25, 129, 199, 0.411);
+  }
+
+  45% {
+    box-shadow:
+      0 0 8px rgba(150, 220, 255, 0.8),
+      0 6px 14px rgba(60, 80, 120, 0.45),
+      0 0 22px rgba(30, 150, 220, 0.42),
+      inset 0 -2px 0 rgba(25, 129, 199, 0.5);
+  }
+
+  72% {
+    box-shadow:
+      0 0 5px rgba(255,255,255,0.6),
+      0 6px 12px rgba(60, 80, 120, 0.4),
+      0 0 17px rgba(30, 120, 200, 0.32),
+      inset 0 -2px 0 rgba(25, 129, 199, 0.43);
+  }
 }
 
 .letter.disabled {
@@ -737,6 +783,24 @@ body[dir="rtl"] .win-content button {
 
 .success-breath {
   animation: successBreath 0.6s ease-in-out 3;
+}
+
+.slot.shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-4px);
+  }
+
+  20%, 40%, 60%, 80% {
+    transform: translateX(4px);
+  }
 }
 
 @keyframes successBreath {

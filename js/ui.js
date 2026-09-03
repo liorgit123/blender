@@ -156,6 +156,43 @@ function fadeTileBackIn(tile, letter) {
   };
 }
 
+let idleTileTimer = null;
+let idleAnimationTimer = null;
+
+function stopIdleTileBreathing() {
+  clearTimeout(idleTileTimer);
+  clearTimeout(idleAnimationTimer);
+  idleTileTimer = null;
+  idleAnimationTimer = null;
+
+  document.querySelectorAll(".letter.idle-nudge").forEach(tile => {
+    tile.classList.remove("idle-nudge");
+    tile.style.animationDelay = "";
+  });
+}
+
+function scheduleIdleTileBreathing() {
+  stopIdleTileBreathing();
+
+  idleTileTimer = setTimeout(() => {
+    const tiles = [...document.querySelectorAll(".letter")]
+      .filter(tile =>
+        !tile.classList.contains("empty") &&
+        !tile.classList.contains("disabled")
+      );
+
+    tiles.forEach((tile, index) => {
+      tile.style.animationDelay = `${index * 75}ms`;
+      tile.classList.add("idle-nudge");
+    });
+
+    idleAnimationTimer = setTimeout(() => {
+      stopIdleTileBreathing();
+      scheduleIdleTileBreathing();
+    }, Math.max(500, tiles.length * 75 + 500));
+  }, 5000);
+}
+
 
 /* =========================================================
    RENDER QUESTION
@@ -282,6 +319,8 @@ function renderQuestion(question) {
 
     scrambleBox.appendChild(row);
   });
+
+  scheduleIdleTileBreathing();
 }
 
 
@@ -292,11 +331,13 @@ function renderQuestion(question) {
 function handleTileClick(e) {
   const tile = e.currentTarget;
 
+  scheduleIdleTileBreathing();
+
   if (tile.classList.contains("empty")) {
-    onEmptyLetterClick(e);
-  } else {
-    onLetterClick(e);
+    return;
   }
+
+  onLetterClick(e);
 }
 
 
@@ -506,6 +547,8 @@ function isGameWon() {
 
 function onSlotClick(e) {
   const slot = e.currentTarget;
+
+  scheduleIdleTileBreathing();
 
   if (
     isGameWon() ||
@@ -793,6 +836,7 @@ function clearBoardForHint() {
       slot.removeAttribute("data-letter");
     }
   });
+    updateResetButtonState();
 
   updateActiveSlot();
 
@@ -825,6 +869,8 @@ function clearBoardForHint() {
 
 
 function resetPlacement() {
+  stopIdleTileBreathing();
+
   const slots = [
     ...document.querySelectorAll(".slot")
   ];
@@ -833,46 +879,64 @@ function resetPlacement() {
     ...document.querySelectorAll(".letter")
   ];
 
-  slots.forEach(slot => {
-    if (
+  const placedLetters = slots
+    .filter(slot =>
       slot.dataset.filled === "true" &&
       slot.dataset.locked !== "true"
-    ) {
+    )
+    .map(slot => ({
+      slot,
+      letter: slot.dataset.letter
+    }));
+
+  if (placedLetters.length === 0) {
+    scheduleIdleTileBreathing();
+    updateResetButtonState();
+    return;
+  }
+
+  const resetBtn = document.getElementById("resetBtn");
+  resetBtn.disabled = true;
+
+  const reservedTiles = new Set();
+
+  tiles.forEach(tile => {
+    tile.style.pointerEvents = "none";
+  });
+
+  placedLetters.forEach(({ slot, letter }, index) => {
+    const originalTile = tiles.find(tile =>
+      !reservedTiles.has(tile) &&
+      tile.classList.contains("empty") &&
+      (tile.dataset.base === letter || tile.dataset.letter === letter)
+    );
+
+    if (originalTile) {
+      reservedTiles.add(originalTile);
+    }
+
+    setTimeout(() => {
       slot.textContent = "";
       slot.dataset.filled = "false";
       slot.removeAttribute("data-letter");
-    }
+      updateActiveSlot();
+
+      if (originalTile) {
+        fadeTileBackIn(originalTile, letter);
+      }
+    }, index * 55);
   });
 
   updateActiveSlot();
 
-  tiles.forEach(tile => {
-    if (
-      tile.dataset.letter &&
-      tile.dataset.locked !== "true"
-    ) {
-      tile.textContent =
-        tile.dataset.letter;
+  setTimeout(() => {
+    tiles.forEach(tile => {
+      tile.style.pointerEvents = "auto";
+    });
+    scheduleIdleTileBreathing();
+    updateResetButtonState();
+  }, (placedLetters.length - 1) * 55 + 320);
 
-      tile.removeAttribute(
-        "data-letter"
-      );
-
-      tile.classList.remove(
-        "empty",
-        "disabled"
-      );
-
-      tile.style.cursor = "grab";
-
-      tile.addEventListener(
-        "click",
-        onLetterClick
-      );
-    }
-  });
-
-  updateResetButtonState();
 }
 
 

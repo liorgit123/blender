@@ -244,10 +244,10 @@ function checkAnswer() {
   function showTemporaryMessage(text, isSuccess = false) {
     factBox.classList.add("hidden");
 
-    const successColor = '#00F0FF';
+    const successColor = '#B7FF4A';
     const failColor = '#FF073A';
 
-    messageBox.innerHTML = `<span style="display: inline-block; font-size: 1rem; font-weight: ${isSuccess ? 'normal' : 'normal'}; color: ${isSuccess ? successColor : failColor}; text-shadow: 0 0 10px ${isSuccess ? 'rgba(0, 240, 255, 0.7)' : 'rgba(255, 7, 58, 0.7)'};">${text}</span>`;
+    messageBox.innerHTML = `<span style="display: inline-block; font-size: 1rem; font-weight: ${isSuccess ? 'normal' : 'normal'}; color: ${isSuccess ? successColor : failColor}; text-shadow: 0 0 10px ${isSuccess ? 'rgba(183, 255, 74, 0.7)' : 'rgba(255, 7, 58, 0.7)'};">${text}</span>`;
 
     messageBox.style.color = "transparent";
     messageBox.style.fontWeight = "normal";
@@ -361,6 +361,8 @@ function checkAnswer() {
     // Disable active marker
     document.querySelectorAll(".slot").forEach(s => {
       s.dataset.active = "false";
+      s.dataset.locked = "true";
+      s.dataset.solved = "true";
     });
 
     document.querySelectorAll(".letter").forEach(tile => {
@@ -373,10 +375,24 @@ function checkAnswer() {
 
   } else {
     showTemporaryMessage(getLocalizedText("incorrect"));
+
+    const slots = [...document.querySelectorAll(".slot")]
+      .filter(slot => slot.dataset.filled === "true");
+
+    slots.forEach(slot => {
+      slot.classList.remove("shake");
+      void slot.offsetWidth;
+      slot.classList.add("shake");
+    });
+
+    setTimeout(() => {
+      slots.forEach(slot => slot.classList.remove("shake"));
+    }, 500);
   }
 }
 
 async function showHint() {
+  stopIdleTileBreathing();
   GameState.hintLevel++;
   const hintBtn = document.getElementById("hintBtn");
   const slots = [...document.querySelectorAll(".slot")];
@@ -478,6 +494,7 @@ async function showHint() {
   updatedTiles.forEach(t => {
     t.style.pointerEvents = "auto";
   });
+  scheduleIdleTileBreathing();
 }
 
 function revealCount(count) {
