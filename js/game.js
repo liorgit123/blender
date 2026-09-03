@@ -254,6 +254,8 @@ function checkAnswer() {
 
     // הוספת הנשימה בלופ רק בהצלחה
     if (isSuccess) {
+      messageBox.classList.remove("success-breath");
+      void messageBox.offsetWidth; // Force animation restart
       messageBox.classList.add("success-breath");
     } else {
       messageBox.classList.remove("success-breath");
@@ -296,7 +298,7 @@ function checkAnswer() {
     nextBtn.classList.remove("next-attention");
     setTimeout(() => {
       nextBtn.classList.add("next-attention");
-    }, 1800);
+    }, 2200);
     // next-attention end
 
     // Apply glow-n-bounce
