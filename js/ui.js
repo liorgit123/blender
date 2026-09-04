@@ -179,7 +179,8 @@ function scheduleIdleTileBreathing() {
       .filter(tile =>
         !tile.classList.contains("empty") &&
         !tile.classList.contains("disabled")
-      );
+      )
+      .sort(() => Math.random() - 0.5);
 
     tiles.forEach((tile, index) => {
       tile.style.animationDelay = `${index * 75}ms`;
@@ -192,7 +193,6 @@ function scheduleIdleTileBreathing() {
     }, Math.max(500, tiles.length * 75 + 500));
   }, 5000);
 }
-
 
 /* =========================================================
    RENDER QUESTION
