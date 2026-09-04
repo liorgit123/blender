@@ -503,7 +503,7 @@ body[dir="ltr"] .fact {
 }
 
 .letter.idle-nudge:not(.empty):not(.disabled) {
-  animation: idleTileNudge 500ms ease-in-out both;
+  animation: idleTileNudge 800ms ease-in-out both;
 }
 
 @keyframes idleTileNudge {
