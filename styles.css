@@ -548,6 +548,11 @@ body[dir="ltr"] .fact {
   visibility: visible;
 }
 
+body[dir="ltr"] .slot,
+body[dir="ltr"] .letter {
+  font-family: 'Poppins', sans-serif;
+}
+
 
 /* =========================================================
    CONTROLS
