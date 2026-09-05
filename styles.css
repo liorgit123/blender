@@ -464,7 +464,7 @@ body[dir="ltr"] .fact {
 
   color: #072046;
   font-size: calc(var(--slot-size) * 0.55);
-  font-weight: 400;
+  font-weight: 700;
   cursor: grab;
   user-select: none;
 
