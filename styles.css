@@ -116,7 +116,7 @@ body[dir="rtl"] .lang-message {
 [dir="rtl"] .counter {
   left: 10px;
   right: auto;
-  font-family: 'Heebo', sans-serif;
+  font-family: 'Rubik', sans-serif;
   align-items: flex-start;
 }
 
@@ -152,7 +152,7 @@ h1 {
   text-align: center;
   font-size: 3.2rem;
   line-height: 0.92;
-  font-family: 'Heebo', sans-serif;
+  font-family: 'Rubik', sans-serif;
   color: #ffffff;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -763,11 +763,11 @@ button:disabled {
 }
 
 body[dir="rtl"] .win-content {
-  font-family: 'Heebo', sans-serif;
+  font-family: 'Rubik', sans-serif;
 }
 
 body[dir="rtl"] .win-content button {
-  font-family: 'Heebo', sans-serif !important;
+  font-family: 'Rubik', sans-serif !important;
 }
 
 
