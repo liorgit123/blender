@@ -17,7 +17,7 @@ body {
 }
 
 body[dir="rtl"] {
-  font-family: 'Rubik', sans-serif;
+  font-family: 'Cardo', sans-serif;
 }
 
 :root {
@@ -116,7 +116,7 @@ body[dir="rtl"] .lang-message {
 [dir="rtl"] .counter {
   left: 10px;
   right: auto;
-  font-family: 'Rubik', sans-serif;
+  font-family: 'Cardo', sans-serif;
   align-items: flex-start;
 }
 
@@ -152,7 +152,7 @@ h1 {
   text-align: center;
   font-size: 3.2rem;
   line-height: 0.92;
-  font-family: 'Rubik', sans-serif;
+  font-family: 'Cardo', sans-serif;
   color: #ffffff;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -768,11 +768,11 @@ button:disabled {
 }
 
 body[dir="rtl"] .win-content {
-  font-family: 'Rubik', sans-serif;
+  font-family: 'Cardo', sans-serif;
 }
 
 body[dir="rtl"] .win-content button {
-  font-family: 'Rubik', sans-serif !important;
+  font-family: 'Cardo', sans-serif !important;
 }
 
 
