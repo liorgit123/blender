@@ -787,6 +787,10 @@ body[dir="rtl"] .win-content button {
   font-family: var(--font-text-he) !important;
 }
 
+body[dir="ltr"] .win-content button {
+  font-family: var(--font-text-en) !important;
+}
+
 
 /* =========================================================
    DISABLED HINT BUTTON
