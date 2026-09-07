@@ -5,193 +5,376 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Google Fonts — Hebrew + English</title>
+  <title>Font Comparison</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <!-- Hebrew + Latin Google Fonts -->
-
-  <link href="https://fonts.googleapis.com/css2?family=Alef:wght@400;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Bellefair&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Cardo:wght@400;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Cascadia+Code:wght@200..700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=David+Libre:wght@400;500;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300..900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Gveret+Levin&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Handjet:wght@100..900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Libertinus+Serif:wght@400;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@100;300;400;500;700;800;900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Miriam+Libre:wght@400;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Rashi+Hebrew:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@100..900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@100..900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans+Hebrew:wght@300..800&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Playpen+Sans+Hebrew:wght@100..800&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Secular+One&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Solitreo&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Suez+One&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Tinos:wght@400;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;700&family=Fredoka:wght@400;700&family=M+PLUS+Rounded+1c:wght@400;700&family=Secular+One&display=swap" rel="stylesheet">
 
   <style>
-
     * {
       box-sizing: border-box;
     }
 
     body {
       margin: 0;
-      padding: 25px;
-      background: #f3f3f3;
-      color: #222;
+      padding: 30px 15px 60px;
+      background: #000;
+      color: #fff;
       font-family: Arial, sans-serif;
     }
 
-    h1 {
-      text-align: center;
-      margin: 10px 0 35px;
+    .sample {
+      max-width: 900px;
+      margin: 0 auto 70px;
     }
 
-    .font {
-      background: white;
-      max-width: 1100px;
-      margin: 0 auto 20px;
-      padding: 20px 25px;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,.08);
-    }
-
-    .font-name {
+    .font-title {
       direction: ltr;
       text-align: left;
       font-family: Arial, sans-serif;
-      font-size: 18px;
-      font-weight: bold;
-      color: #555;
+      font-size: 16px;
+      color: #888;
       margin-bottom: 18px;
     }
 
-    .row {
-      font-size: 32px;
-      line-height: 1.5;
-      margin: 8px 0;
+    .section {
+      margin-bottom: 35px;
     }
 
-    .label {
-      display: inline-block;
-      width: 180px;
-      font-family: Arial, sans-serif;
-      font-size: 15px;
-      color: #888;
-      vertical-align: middle;
+    /* הודעות - תמיד רגיל */
+    .message {
+      font-size: 30px;
+      font-weight: 400;
+      line-height: 1.3;
+      text-align: center;
+      margin-bottom: 18px;
     }
 
-    .hebrew {
+    .tiles {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
       direction: rtl;
-      text-align: right;
+      margin-bottom: 20px;
+    }
+
+    /* האותיות בתוך הצורות - תמיד בולד */
+    .tile,
+    .circle {
+      width: 58px;
+      height: 58px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 34px;
+      font-weight: 700;
+    }
+
+    .tile {
+      background: #fff;
+      color: #000;
+      border-radius: 11px;
+    }
+
+    .circle {
+      background: #8ed8ff;
+      color: #000;
+      border-radius: 50%;
     }
 
     .english {
       direction: ltr;
-      text-align: left;
     }
 
-    .separator {
+    .english .tiles {
+      direction: ltr;
+    }
+
+    .english .message {
+      text-align: center;
+    }
+
+    .divider {
       height: 1px;
-      background: #eee;
-      margin: 14px 0;
+      background: #333;
+      margin: 50px auto;
+      max-width: 700px;
     }
 
+    /*
+      הפונטים.
+      הפונט חל על כל הבלוק, כולל ההודעות והאותיות.
+    */
+
+    .assistant {
+      font-family: "Assistant", sans-serif;
+    }
+
+    .fredoka {
+      font-family: "Fredoka", sans-serif;
+    }
+
+    .mplus {
+      font-family: "M PLUS Rounded 1c", sans-serif;
+    }
+
+    .secular {
+      font-family: "Secular One", sans-serif;
+    }
   </style>
 </head>
 
 <body>
 
-<h1>Google Fonts — Hebrew + English</h1>
 
-<div id="fonts"></div>
+  <!-- ==================== ASSISTANT ==================== -->
 
-<script>
+  <div class="sample assistant">
 
-const fonts = [
-  "Alef",
-  "Amatic SC",
-  "Arimo",
-  "Assistant",
-  "Bellefair",
-  "Cardo",
-  "Cascadia Code",
-  "David Libre",
-  "Frank Ruhl Libre",
-  "Fredoka",
-  "Gveret Levin",
-  "Handjet",
-  "Heebo",
-  "Libertinus Serif",
-  "M PLUS Rounded 1c",
-  "Miriam Libre",
-  "Noto Rashi Hebrew",
-  "Noto Sans Hebrew",
-  "Noto Serif Hebrew",
-  "Open Sans Hebrew",
-  "Playpen Sans Hebrew",
-  "Secular One",
-  "Solitreo",
-  "Suez One",
-  "Tinos",
-  "Varela Round"
-];
+    <div class="font-title">Assistant</div>
 
-const container = document.getElementById("fonts");
+    <!-- עברית -->
+    <div class="section">
 
-fonts.forEach(font => {
+      <div class="message">
+        כל הכבוד - פתרת ללא רמזים
+      </div>
 
-  const block = document.createElement("div");
-  block.className = "font";
+      <div class="tiles">
+        <div class="tile">מ</div>
+        <div class="tile">ח</div>
+        <div class="tile">ו</div>
+        <div class="tile">ג</div>
+        <div class="tile">ה</div>
+      </div>
 
-  block.innerHTML = `
-    <div class="font-name">
-      שם הפונט: ${font}
+      <div class="tiles">
+        <div class="circle">ש</div>
+        <div class="circle">י</div>
+        <div class="circle">פ</div>
+        <div class="circle">ו</div>
+        <div class="circle">ר</div>
+      </div>
+
     </div>
 
-    <div class="row hebrew"
-         style="font-family:'${font}', sans-serif; font-weight:400;">
-      <span class="label">עברית רגיל:</span>
-      אבגדהוזחטיכלמנסעפצקרשת
+    <!-- English -->
+    <div class="section english">
+
+      <div class="message">
+        Great job - solved without hints
+      </div>
+
+      <div class="tiles">
+        <div class="tile">B</div>
+        <div class="tile">R</div>
+        <div class="tile">A</div>
+        <div class="tile">V</div>
+        <div class="tile">E</div>
+      </div>
+
+      <div class="tiles">
+        <div class="circle">S</div>
+        <div class="circle">H</div>
+        <div class="circle">A</div>
+        <div class="circle">R</div>
+        <div class="circle">P</div>
+      </div>
+
     </div>
 
-    <div class="row hebrew"
-         style="font-family:'${font}', sans-serif; font-weight:700;">
-      <span class="label">עברית בולד:</span>
-      אבגדהוזחטיכלמנסעפצקרשת
+  </div>
+
+
+  <div class="divider"></div>
+
+
+  <!-- ==================== FREDOKA ==================== -->
+
+  <div class="sample fredoka">
+
+    <div class="font-title">Fredoka</div>
+
+    <!-- עברית -->
+    <div class="section">
+
+      <div class="message">
+        כל הכבוד - פתרת ללא רמזים
+      </div>
+
+      <div class="tiles">
+        <div class="tile">מ</div>
+        <div class="tile">ח</div>
+        <div class="tile">ו</div>
+        <div class="tile">ג</div>
+        <div class="tile">ה</div>
+      </div>
+
+      <div class="tiles">
+        <div class="circle">ש</div>
+        <div class="circle">י</div>
+        <div class="circle">פ</div>
+        <div class="circle">ו</div>
+        <div class="circle">ר</div>
+      </div>
+
     </div>
 
-    <div class="separator"></div>
+    <!-- English -->
+    <div class="section english">
 
-    <div class="row english"
-         style="font-family:'${font}', sans-serif; font-weight:400;">
-      <span class="label">אנגלית רגיל:</span>
-      ABCDEFGHIJKLMNOPQRSTUVWXYZ
+      <div class="message">
+        Great job - solved without hints
+      </div>
+
+      <div class="tiles">
+        <div class="tile">B</div>
+        <div class="tile">R</div>
+        <div class="tile">A</div>
+        <div class="tile">V</div>
+        <div class="tile">E</div>
+      </div>
+
+      <div class="tiles">
+        <div class="circle">S</div>
+        <div class="circle">H</div>
+        <div class="circle">A</div>
+        <div class="circle">R</div>
+        <div class="circle">P</div>
+      </div>
+
     </div>
 
-    <div class="row english"
-         style="font-family:'${font}', sans-serif; font-weight:700;">
-      <span class="label">אנגלית בולד:</span>
-      ABCDEFGHIJKLMNOPQRSTUVWXYZ
+  </div>
+
+
+  <div class="divider"></div>
+
+
+  <!-- ==================== M PLUS ROUNDED 1C ==================== -->
+
+  <div class="sample mplus">
+
+    <div class="font-title">M PLUS Rounded 1c</div>
+
+    <!-- עברית -->
+    <div class="section">
+
+      <div class="message">
+        כל הכבוד - פתרת ללא רמזים
+      </div>
+
+      <div class="tiles">
+        <div class="tile">מ</div>
+        <div class="tile">ח</div>
+        <div class="tile">ו</div>
+        <div class="tile">ג</div>
+        <div class="tile">ה</div>
+      </div>
+
+      <div class="tiles">
+        <div class="circle">ש</div>
+        <div class="circle">י</div>
+        <div class="circle">פ</div>
+        <div class="circle">ו</div>
+        <div class="circle">ר</div>
+      </div>
+
     </div>
-  `;
 
-  container.appendChild(block);
-});
+    <!-- English -->
+    <div class="section english">
 
-</script>
+      <div class="message">
+        Great job - solved without hints
+      </div>
+
+      <div class="tiles">
+        <div class="tile">B</div>
+        <div class="tile">R</div>
+        <div class="tile">A</div>
+        <div class="tile">V</div>
+        <div class="tile">E</div>
+      </div>
+
+      <div class="tiles">
+        <div class="circle">S</div>
+        <div class="circle">H</div>
+        <div class="circle">A</div>
+        <div class="circle">R</div>
+        <div class="circle">P</div>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="divider"></div>
+
+
+  <!-- ==================== SECULAR ONE ==================== -->
+
+  <div class="sample secular">
+
+    <div class="font-title">Secular One</div>
+
+    <!-- עברית -->
+    <div class="section">
+
+      <div class="message">
+        כל הכבוד - פתרת ללא רמזים
+      </div>
+
+      <div class="tiles">
+        <div class="tile">מ</div>
+        <div class="tile">ח</div>
+        <div class="tile">ו</div>
+        <div class="tile">ג</div>
+        <div class="tile">ה</div>
+      </div>
+
+      <div class="tiles">
+        <div class="circle">ש</div>
+        <div class="circle">י</div>
+        <div class="circle">פ</div>
+        <div class="circle">ו</div>
+        <div class="circle">ר</div>
+      </div>
+
+    </div>
+
+    <!-- English -->
+    <div class="section english">
+
+      <div class="message">
+        Great job - solved without hints
+      </div>
+
+      <div class="tiles">
+        <div class="tile">B</div>
+        <div class="tile">R</div>
+        <div class="tile">A</div>
+        <div class="tile">V</div>
+        <div class="tile">E</div>
+      </div>
+
+      <div class="tiles">
+        <div class="circle">S</div>
+        <div class="circle">H</div>
+        <div class="circle">A</div>
+        <div class="circle">R</div>
+        <div class="circle">P</div>
+      </div>
+
+    </div>
+
+  </div>
 
 </body>
 </html>
