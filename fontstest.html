@@ -1,0 +1,207 @@
+```html
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Rubik Fonts — Hebrew & English</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- All Rubik families with Hebrew + Latin support -->
+  <link href="https://fonts.googleapis.com/css2?
+  family=Rubik:wght@400;700
+  &family=Rubik+Doodle+Shadow
+  &family=Rubik+Scribble
+  &family=Rubik+Doodle+Triangles
+  &family=Rubik+Maps
+  &family=Rubik+Broken+Fax
+  &family=Rubik+Glitch
+  &family=Rubik+Lines
+  &family=Rubik+Bubbles
+  &family=Rubik+Moonrocks
+  &family=Rubik+Dirt
+  &family=Rubik+Iso
+  &family=Rubik+Pixels
+  &family=Rubik+Wet+Paint
+  &family=Rubik+Beastly
+  &family=Rubik+Distressed
+  &family=Rubik+Vinyl
+  &family=Rubik+80s+Fade
+  &family=Rubik+Gemstones
+  &family=Rubik+Spray+Paint
+  &family=Rubik+Storm
+  &family=Rubik+Microbe
+  &family=Rubik+Puddles
+  &family=Rubik+Marker+Hatch
+  &family=Rubik+Burned
+  &family=Rubik+Maze
+  &display=swap"
+  rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 25px;
+      background: #f3f3f3;
+      color: #222;
+      font-family: Arial, sans-serif;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 10px 0 35px;
+    }
+
+    .font {
+      background: white;
+      max-width: 1100px;
+      margin: 0 auto 20px;
+      padding: 20px 25px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .font-name {
+      direction: ltr;
+      text-align: left;
+      font-family: Arial, sans-serif;
+      font-size: 18px;
+      font-weight: bold;
+      color: #555;
+      margin-bottom: 18px;
+    }
+
+    .row {
+      font-size: 32px;
+      line-height: 1.5;
+      margin: 8px 0;
+    }
+
+    .label {
+      display: inline-block;
+      width: 180px;
+      font-family: Arial, sans-serif;
+      font-size: 15px;
+      color: #888;
+      vertical-align: middle;
+    }
+
+    .hebrew {
+      direction: rtl;
+      text-align: right;
+    }
+
+    .english {
+      direction: ltr;
+      text-align: left;
+    }
+
+    .normal {
+      font-weight: 400;
+    }
+
+    .bold {
+      font-weight: 700;
+    }
+
+    .separator {
+      height: 1px;
+      background: #eee;
+      margin: 14px 0;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>Rubik Fonts</h1>
+
+<div id="fonts"></div>
+
+<script>
+
+const fonts = [
+  "Rubik",
+  "Rubik Doodle Shadow",
+  "Rubik Scribble",
+  "Rubik Doodle Triangles",
+  "Rubik Maps",
+  "Rubik Broken Fax",
+  "Rubik Glitch",
+  "Rubik Lines",
+  "Rubik Bubbles",
+  "Rubik Moonrocks",
+  "Rubik Dirt",
+  "Rubik Iso",
+  "Rubik Pixels",
+  "Rubik Wet Paint",
+  "Rubik Beastly",
+  "Rubik Distressed",
+  "Rubik Vinyl",
+  "Rubik 80s Fade",
+  "Rubik Gemstones",
+  "Rubik Spray Paint",
+  "Rubik Storm",
+  "Rubik Microbe",
+  "Rubik Puddles",
+  "Rubik Marker Hatch",
+  "Rubik Burned",
+  "Rubik Maze"
+];
+
+const container = document.getElementById("fonts");
+
+fonts.forEach(font => {
+
+  const cssFont = `"${font}", sans-serif`;
+
+  const block = document.createElement("div");
+  block.className = "font";
+
+  block.innerHTML = `
+    <div class="font-name">
+      שם הפונט: ${font}
+    </div>
+
+    <div class="row hebrew normal"
+         style="font-family:${cssFont};">
+      <span class="label">עברית רגיל:</span>
+      אבגדהוזחטיכלמנסעפצקרשת
+    </div>
+
+    <div class="row hebrew bold"
+         style="font-family:${cssFont};">
+      <span class="label">עברית בולד:</span>
+      אבגדהוזחטיכלמנסעפצקרשת
+    </div>
+
+    <div class="separator"></div>
+
+    <div class="row english normal"
+         style="font-family:${cssFont};">
+      <span class="label">אנגלית רגיל:</span>
+      ABCDEFGHIJKLMNOPQRSTUVWXYZ
+    </div>
+
+    <div class="row english bold"
+         style="font-family:${cssFont};">
+      <span class="label">אנגלית בולד:</span>
+      ABCDEFGHIJKLMNOPQRSTUVWXYZ
+    </div>
+  `;
+
+  container.appendChild(block);
+});
+
+</script>
+
+</body>
+</html>
+```
