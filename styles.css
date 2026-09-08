@@ -180,8 +180,6 @@ h1 {
   justify-content: center;
   gap: 6px;
   color: rgba(217, 244, 160, 0.75);
-  border-top: 1px solid rgba(156, 203, 69, 0.28);
-  border-bottom: 1px solid rgba(156, 203, 69, 0.28);
   line-height: 1;
   box-sizing: border-box;
   text-align: center;
@@ -190,7 +188,7 @@ h1 {
 
 .category-icon {
   flex: 0 0 auto;
-  font-size: 1.9em;
+  font-size: 2.7em;
   line-height: 1;
   vertical-align: middle;
   margin-inline-end: 0;
@@ -200,8 +198,8 @@ h1 {
 
 .category-value {
   font-weight: 600;
-  font-size: 1.1rem;
-  letter-spacing: 0.08em;
+  font-size: 1.5rem;
+  letter-spacing: 0.04em;
   line-height: 1;
   color: inherit;
 }
