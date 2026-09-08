@@ -1,8 +1,8 @@
 :root {
   --font-tiles-en: 'Secular One', sans-serif;
-  --font-text-en: 'Fredoka', sans-serif;
+  --font-text-en: 'Rubik', sans-serif;
   --font-tiles-he: 'Secular One', sans-serif;
-  --font-text-he: 'Fredoka', sans-serif;
+  --font-text-he: 'Rubik', sans-serif;
 }
 
 body {
@@ -171,17 +171,39 @@ h1 {
 }
 
 .category {
-  min-height: 24px;
-  margin-bottom: 20px;
-  color: #10B981;
+  width: fit-content;
+  min-height: 22px;
+  margin: 0 auto 18px;
+  padding: 3px 14px 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: rgba(217, 244, 160, 0.75);
+  border-top: 1px solid rgba(156, 203, 69, 0.28);
+  border-bottom: 1px solid rgba(156, 203, 69, 0.28);
+  line-height: 1;
+  box-sizing: border-box;
+  text-align: center;
+  white-space: nowrap;
 }
 
-.category-prefix {
-  font-weight: bold;
+.category-icon {
+  flex: 0 0 auto;
+  font-size: 1.9em;
+  line-height: 1;
+  vertical-align: middle;
+  margin-inline-end: 0;
+  font-variation-settings: "FILL" 0, "wght" 500, "GRAD" 0, "opsz" 20;
+  color: inherit;
 }
 
 .category-value {
-  font-weight: normal;
+  font-weight: 600;
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  color: inherit;
 }
 
 .fact {

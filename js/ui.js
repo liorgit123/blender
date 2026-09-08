@@ -239,9 +239,10 @@ function renderQuestion(question) {
 
   const clean = question.answer.replace(/\s+/g, "");
   const letters = segmentText(clean);
+  const categoryIcon = question.icon || "category";
 
   categoryBox.innerHTML = `
-    <span class="category-prefix">${getLocalizedText("category")}</span>
+    <span class="material-symbols-rounded category-icon" aria-hidden="true">${categoryIcon}</span>
     <span class="category-value">${question.category}</span>
   `;
 

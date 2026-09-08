@@ -1,27 +1,32 @@
 [
   {
-    "category": "movies",
+    "category": "Movies",
+    "icon": "movie",
     "answer": "FIGHT CLUB",
     "fact": "Movie was released in 1999"
   },
   {
-    "category": "movies",
+    "category": "Movies",
+    "icon": "movie",
     "answer": "SPEED",
     "fact": "Movie was released in 1994"
   },
   {
-    "category": "movies",
+    "category": "Movies",
+    "icon": "movie",
     "answer": "FINDING NEMO",
     "fact": "Movie was released in 2003"
   },
   {
-    "category": "stam",
-    "answer": "ONE DAY AWAY",
-    "fact": "Movie was released in 2000"
+    "category": "Bands & Artists",
+    "icon": "mic",
+    "answer": "DEEP PURPLE",
+    "fact": "Band was formed in 1968"
   },
   {
-    "category": "stam",
-    "answer": "OUT OF SPACE",
-    "fact": "Movie was released in 2000"
+    "category": "Bands & Artists",
+    "icon": "mic",
+    "answer": "LADY GAGA",
+    "fact": "Born in 1986"
   }
 ]
