@@ -423,22 +423,19 @@ body[dir="ltr"] .fact {
   content: "";
   position: absolute;
   inset: -1px;
-  border: 2px solid #00b8f0;
+  border: 2px solid #d96b6b;
   border-radius: inherit;
-  box-shadow: 0 0 9px rgba(0, 184, 240, 0.75);
   pointer-events: none;
-  animation: activeSlotPulse 2s ease-in-out infinite;
+  animation: activeSlotBlink 1.5s ease-in-out infinite;
 }
 
-@keyframes activeSlotPulse {
+@keyframes activeSlotBlink {
   0%, 100% {
-    opacity: 0.65;
-    box-shadow: 0 0 7px rgba(0, 184, 240, 0.6);
+    opacity: 0.15;
   }
 
   50% {
     opacity: 1;
-    box-shadow: 0 0 15px rgba(0, 184, 240, 0.95);
   }
 }
 
