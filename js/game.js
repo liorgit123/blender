@@ -113,7 +113,7 @@ function selectStartingQuestion() {
 }
 
 async function loadQuestions() {
-  const fileName = GameState.language === "en" ? "questions-en.json?v=18" : "questions-he.json?v=18";
+  const fileName = GameState.language === "en" ? "questions-en.json?v=99" : "questions-he.json?v=99";
   const res = await fetch(`data/${fileName}`);
   if (!res.ok) {
     throw new Error(`Failed to load ${fileName}`);
