@@ -13,6 +13,8 @@ const GameState = {
   solved: JSON.parse(localStorage.getItem("solvedLevels") || "{}")
 };
 
+const LAST_PLAYED_LEVELS_KEY = "lastPlayedLevels";
+
 let languageMessageTimer = null;
 
 function resetProgress() {
@@ -85,21 +87,53 @@ function updateCounter() {
     </div>
   `;
 }
+
+function getUnsolvedQuestions() {
+  const solved = GameState.solved[GameState.language] || [];
+  return GameState.questions.filter(question => !solved.includes(question.id));
+}
+
+function setCurrentQuestion(question) {
+  GameState.current = question;
+  GameState.currentIndex = GameState.questions.findIndex(item => item.id === question.id);
+  GameState.hintLevel = 0;
+
+  const lastPlayed = JSON.parse(localStorage.getItem(LAST_PLAYED_LEVELS_KEY) || "{}");
+  lastPlayed[GameState.language] = question.id;
+  localStorage.setItem(LAST_PLAYED_LEVELS_KEY, JSON.stringify(lastPlayed));
+}
+
+function selectStartingQuestion() {
+  const unsolvedQuestions = getUnsolvedQuestions();
+  if (unsolvedQuestions.length === 0) return null;
+
+  const lastPlayed = JSON.parse(localStorage.getItem(LAST_PLAYED_LEVELS_KEY) || "{}");
+  const savedQuestion = unsolvedQuestions.find(question => question.id === lastPlayed[GameState.language]);
+  return savedQuestion || unsolvedQuestions[Math.floor(Math.random() * unsolvedQuestions.length)];
+}
+
 async function loadQuestions() {
-  const fileName = GameState.language === "en" ? "questions-en.json?v=17" : "questions-he.json?v=17";
+  const fileName = GameState.language === "en" ? "questions-en.json?v=18" : "questions-he.json?v=18";
   const res = await fetch(`data/${fileName}`);
   if (!res.ok) {
     throw new Error(`Failed to load ${fileName}`);
   }
   const data = await res.json();
-  // Assign unique IDs to questions if they don't have them
-  GameState.questions = data.map((q, index) => ({ ...q, id: q.id || index }));
+  GameState.questions = data;
+
+  const solved = GameState.solved[GameState.language] || [];
+  const questionIds = new Set(GameState.questions.map(question => question.id));
+  const currentSolved = solved.filter(id => questionIds.has(id));
+  if (currentSolved.length !== solved.length) {
+    GameState.solved[GameState.language] = currentSolved;
+    localStorage.setItem("solvedLevels", JSON.stringify(GameState.solved));
+  }
+
   updateCounter();
 }
 
 function checkWinCondition() {
-    const solved = GameState.solved[GameState.language] || [];
-  const unsolvedQuestions = GameState.questions.filter(q => !solved.includes(q.id));
+  const unsolvedQuestions = getUnsolvedQuestions();
 
   if (unsolvedQuestions.length === 0) {
     window.location.href = GameState.language === "en" ? "win_en.html" : "win_he.html";
@@ -133,10 +167,7 @@ async function switchLanguage() {
 
   if (unsolvedQuestions.length === 0) return;
 
-  GameState.currentIndex = Math.floor(Math.random() * unsolvedQuestions.length);
-  GameState.current = unsolvedQuestions[GameState.currentIndex];
-  GameState.currentIndex = GameState.questions.findIndex(q => q.id === GameState.current.id);
-  GameState.hintLevel = 0;
+  setCurrentQuestion(selectStartingQuestion());
 
   void document.body.offsetWidth;
   renderQuestion(GameState.current);
@@ -149,10 +180,8 @@ function nextQuestion() {
 
   if (GameState.questions.length === 0) return;
 
-    const solved = GameState.solved[GameState.language] || [];
-
   // Filter questions that are NOT in the solved list
-  const unsolvedQuestions = GameState.questions.filter(q => !solved.includes(q.id));
+  const unsolvedQuestions = getUnsolvedQuestions();
 
   // If no unsolved questions, show win dialog
   if (unsolvedQuestions.length === 0) {
@@ -176,10 +205,7 @@ function nextQuestion() {
     nextQuestion = unsolvedQuestions[Math.floor(Math.random() * unsolvedQuestions.length)];
   }
 
-  GameState.current = nextQuestion;
-  GameState.currentIndex = GameState.questions.findIndex(q => q.id === GameState.current.id);
-
-  GameState.hintLevel = 0;
+  setCurrentQuestion(nextQuestion);
 
   void document.body.offsetWidth;
   renderQuestion(GameState.current);

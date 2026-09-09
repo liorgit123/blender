@@ -15,17 +15,13 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   if (GameState.questions.length === 0) return;
 
-  const solved = GameState.solved[GameState.language] || [];
-  const unsolvedQuestions = GameState.questions.filter(q => !solved.includes(q.id));
+  const unsolvedQuestions = getUnsolvedQuestions();
 
   if (unsolvedQuestions.length === 0) {
     // Should be caught by checkWinCondition, but good to be safe
     return;
   }
-  GameState.currentIndex = Math.floor(Math.random() * unsolvedQuestions.length);
-  GameState.current = unsolvedQuestions[GameState.currentIndex];
-  GameState.currentIndex = GameState.questions.findIndex(q => q.id === GameState.current.id);
-  GameState.hintLevel = 0;
+  setCurrentQuestion(selectStartingQuestion());
 
   renderQuestion(GameState.current);
   resetButtons();

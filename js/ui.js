@@ -190,7 +190,7 @@ function scheduleIdleTileBreathing() {
     idleAnimationTimer = setTimeout(() => {
       stopIdleTileBreathing();
       scheduleIdleTileBreathing();
-    }, Math.max(500, tiles.length * 75 + 500));
+    }, Math.max(1000, tiles.length * 75 + 1000));
   }, 5000);
 }
 
