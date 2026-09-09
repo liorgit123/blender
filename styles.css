@@ -422,16 +422,16 @@ body[dir="ltr"] .fact {
   border: 2px solid #d96b6b;
   border-radius: inherit;
   pointer-events: none;
-  animation: activeSlotBlink 1.2s ease-in-out infinite;
+  animation: activeSlotColor 2s ease-in-out infinite;
 }
 
-@keyframes activeSlotBlink {
+@keyframes activeSlotColor {
   0%, 100% {
-    opacity: 0.15;
+    border-color: #9b1c1c;
   }
 
   50% {
-    opacity: 1;
+    border-color: #ff5555;
   }
 }
 
