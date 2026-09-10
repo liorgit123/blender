@@ -83,7 +83,8 @@ function updateCounter() {
 
   counterEl.innerHTML = `
     <div class="counter-content">
-      <strong>${percentage}%</strong> (${solved.length}/${total})
+      <strong>${percentage}%</strong>
+      <span class="counter-total">${solved.length}/${total}</span>
     </div>
   `;
 }

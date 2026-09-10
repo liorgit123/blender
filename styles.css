@@ -52,7 +52,7 @@ body[dir="rtl"] {
 /* Force globe to the RIGHT in ALL languages */
 .lang-toggle {
   position: absolute;
-  top: 2px;
+  top: 5px;
   right: 10px;
   left: auto;
   background: transparent;
@@ -129,6 +129,12 @@ body[dir="rtl"] .lang-message {
 
 .counter-content strong {
   font-weight: bold;
+}
+
+.counter-total {
+  display: block;
+  font-size: 0.8rem;
+  color: rgba(214, 226, 240, 0.78);
 }
 
 .counter-line.solved {
