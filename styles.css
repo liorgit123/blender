@@ -37,7 +37,7 @@ body[dir="rtl"] {
   box-sizing: border-box;
   width: min(375px, calc(100% -32px));
   margin: 20px auto;
-  background: none;
+  background: rgba(0, 0, 0, 0.5);
   color: #f1f5ff;
   --slot-size: 40px;
   border-radius: 16px;
