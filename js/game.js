@@ -4,13 +4,51 @@ function normalizeHebrewText(text) {
   return Array.from(text).map(toBaseHebrew).join("");
 }
 
+const LEVEL_PROGRESS_KEY = "levelProgress";
+const LEGACY_SOLVED_KEY = "solvedLevels";
+const LEGACY_HINT_KEY = "hintProgress";
+
+function loadLevelProgress() {
+  const levelProgress = JSON.parse(localStorage.getItem(LEVEL_PROGRESS_KEY) || "{}");
+  const solved = JSON.parse(localStorage.getItem(LEGACY_SOLVED_KEY) || "{}");
+  const hintProgress = JSON.parse(localStorage.getItem(LEGACY_HINT_KEY) || "{}");
+
+  Object.entries(solved).forEach(([language, questionIds]) => {
+    const languageProgress = levelProgress[language] || {};
+    questionIds.forEach(questionId => {
+      languageProgress[questionId] = {
+        ...(languageProgress[questionId] || {}),
+        is_solved: true
+      };
+    });
+    levelProgress[language] = languageProgress;
+  });
+
+  Object.entries(hintProgress).forEach(([language, questions]) => {
+    const languageProgress = levelProgress[language] || {};
+    Object.entries(questions).forEach(([questionId, progress]) => {
+      languageProgress[questionId] = {
+        ...(languageProgress[questionId] || {}),
+        hintCount: progress.hintCount || 0,
+        revealedIndexes: progress.revealedIndexes || []
+      };
+    });
+    levelProgress[language] = languageProgress;
+  });
+
+  localStorage.setItem(LEVEL_PROGRESS_KEY, JSON.stringify(levelProgress));
+  localStorage.removeItem(LEGACY_SOLVED_KEY);
+  localStorage.removeItem(LEGACY_HINT_KEY);
+  return levelProgress;
+}
+
 const GameState = {
   questions: [],
   currentIndex: 0,
   current: null,
   hintLevel: 0,
   language: localStorage.getItem("gameLanguage") || "he",
-  solved: JSON.parse(localStorage.getItem("solvedLevels") || "{}")
+  levelProgress: loadLevelProgress()
 };
 
 const LAST_PLAYED_LEVELS_KEY = "lastPlayedLevels";
@@ -18,9 +56,8 @@ const LAST_PLAYED_LEVELS_KEY = "lastPlayedLevels";
 let languageMessageTimer = null;
 
 function resetProgress() {
-  const solved = JSON.parse(localStorage.getItem("solvedLevels") || "{}");
-  delete solved[GameState.language];
-  localStorage.setItem("solvedLevels", JSON.stringify(solved));
+  delete GameState.levelProgress[GameState.language];
+  localStorage.setItem(LEVEL_PROGRESS_KEY, JSON.stringify(GameState.levelProgress));
   window.location.reload();
 }
 
@@ -77,27 +114,61 @@ function updateCounter() {
   const counterEl = document.getElementById("counter");
   if (!counterEl) return;
 
-  const solved = GameState.solved[GameState.language] || [];
+  const solved = Object.values(GameState.levelProgress[GameState.language] || {})
+    .filter(progress => progress.is_solved).length;
   const total = GameState.questions.length;
-  const percentage = total > 0 ? Math.round((solved.length / total) * 100) : 0;
+  const percentage = total > 0 ? Math.round((solved / total) * 100) : 0;
+  const counterState = `${solved}/${total}/${percentage}`;
+
+  if (counterEl.dataset.counterState === counterState) return;
+
+  const shouldAnimate = counterEl.dataset.counterState !== undefined;
+  counterEl.dataset.counterState = counterState;
 
   counterEl.innerHTML = `
-    <div class="counter-content">
+    <div class="counter-content${shouldAnimate ? " counter-updated" : ""}" style="--progress: ${percentage}%">
       <strong>${percentage}%</strong>
-      <span class="counter-total">${solved.length}/${total}</span>
+      <span class="counter-total">${solved}/${total}</span>
     </div>
   `;
 }
 
 function getUnsolvedQuestions() {
-  const solved = GameState.solved[GameState.language] || [];
-  return GameState.questions.filter(question => !solved.includes(question.id));
+  const languageProgress = GameState.levelProgress[GameState.language] || {};
+  return GameState.questions.filter(question => !languageProgress[question.id]?.is_solved);
+}
+
+function getHintProgressForQuestion(question) {
+  return GameState.levelProgress[GameState.language]?.[question.id] || {
+    hintCount: 0,
+    revealedIndexes: []
+  };
+}
+
+function getHintProgress() {
+  return getHintProgressForQuestion(GameState.current);
+}
+
+function saveHintProgress(revealedIndexes) {
+  const languageProgress = GameState.levelProgress[GameState.language] || {};
+  const previous = languageProgress[GameState.current.id] || {
+    hintCount: 0,
+    revealedIndexes: []
+  };
+
+  languageProgress[GameState.current.id] = {
+    ...previous,
+    hintCount: GameState.hintLevel,
+    revealedIndexes: [...new Set([...previous.revealedIndexes, ...revealedIndexes])]
+  };
+  GameState.levelProgress[GameState.language] = languageProgress;
+  localStorage.setItem(LEVEL_PROGRESS_KEY, JSON.stringify(GameState.levelProgress));
 }
 
 function setCurrentQuestion(question) {
   GameState.current = question;
   GameState.currentIndex = GameState.questions.findIndex(item => item.id === question.id);
-  GameState.hintLevel = 0;
+  GameState.hintLevel = getHintProgressForQuestion(question).hintCount;
 
   const lastPlayed = JSON.parse(localStorage.getItem(LAST_PLAYED_LEVELS_KEY) || "{}");
   lastPlayed[GameState.language] = question.id;
@@ -113,21 +184,38 @@ function selectStartingQuestion() {
   return savedQuestion || unsolvedQuestions[Math.floor(Math.random() * unsolvedQuestions.length)];
 }
 
+function capitalizeFirstCharacter(text) {
+  return text ? text.charAt(0).toUpperCase() + text.slice(1) : text;
+}
+
+function capitalizeWords(text) {
+  return text ? text.replace(/\b[a-z]/g, character => character.toUpperCase()) : text;
+}
+
 async function loadQuestions() {
-  const fileName = GameState.language === "en" ? "questions-en.json?v=99" : "questions-he.json?v=99";
+  const fileName = GameState.language === "en" ? "questions-en.json?v=100" : "questions-he.json?v=100";
   const res = await fetch(`data/${fileName}`);
   if (!res.ok) {
     throw new Error(`Failed to load ${fileName}`);
   }
   const data = await res.json();
-  GameState.questions = data;
+  GameState.questions = GameState.language === "en"
+    ? data.map(question => ({
+        ...question,
+        category: capitalizeWords(question.category),
+        fact: capitalizeFirstCharacter(question.fact),
+        answer: question.answer.toUpperCase()
+      }))
+    : data;
 
-  const solved = GameState.solved[GameState.language] || [];
   const questionIds = new Set(GameState.questions.map(question => question.id));
-  const currentSolved = solved.filter(id => questionIds.has(id));
-  if (currentSolved.length !== solved.length) {
-    GameState.solved[GameState.language] = currentSolved;
-    localStorage.setItem("solvedLevels", JSON.stringify(GameState.solved));
+  const languageProgress = GameState.levelProgress[GameState.language] || {};
+  const currentProgress = Object.fromEntries(
+    Object.entries(languageProgress).filter(([id]) => questionIds.has(id))
+  );
+  if (Object.keys(currentProgress).length !== Object.keys(languageProgress).length) {
+    GameState.levelProgress[GameState.language] = currentProgress;
+    localStorage.setItem(LEVEL_PROGRESS_KEY, JSON.stringify(GameState.levelProgress));
   }
 
   updateCounter();
@@ -163,8 +251,7 @@ async function switchLanguage() {
 
   if (GameState.questions.length === 0) return;
 
-    const solved = GameState.solved[GameState.language] || [];
-  const unsolvedQuestions = GameState.questions.filter(q => !solved.includes(q.id));
+  const unsolvedQuestions = getUnsolvedQuestions();
 
   if (unsolvedQuestions.length === 0) return;
 
@@ -251,8 +338,7 @@ function resetButtons() {
   updateResetButtonState();
 
   // Disable next button if only one unsolved question is left
-    const solved = GameState.solved[GameState.language] || [];
-  const unsolvedQuestions = GameState.questions.filter(q => !solved.includes(q.id));
+  const unsolvedQuestions = getUnsolvedQuestions();
   nextBtn.disabled = unsolvedQuestions.length <= 1;
 
   setButtonLabel(nextBtn, getLocalizedText("skip"));
@@ -360,9 +446,10 @@ function checkAnswer() {
         triggerFireworks("high");
       }
 
-      // Wait for success-breath animation to finish (0.4s × 2 = 800ms)
+      // Wait for success-breath animation to finish (0.6s × 3 = 1800ms)
       setTimeout(() => {
         nextBtn.disabled = false;
+        updateCounter();
 
         // Start NEXT nudge 2 seconds after enabling
         nextAttentionTimer = setTimeout(() => {
@@ -375,15 +462,14 @@ function checkAnswer() {
     }, animationEndTime);
 
     // Mark as solved
-    const solved = GameState.solved[GameState.language] || [];
     const questionId = GameState.current.id;
-
-    if (!solved.includes(questionId)) {
-      solved.push(questionId);
-      GameState.solved[GameState.language] = solved;
-      localStorage.setItem("solvedLevels", JSON.stringify(GameState.solved));
-      updateCounter();
-    }
+    const languageProgress = GameState.levelProgress[GameState.language] || {};
+    languageProgress[questionId] = {
+      ...(languageProgress[questionId] || {}),
+      is_solved: true
+    };
+    GameState.levelProgress[GameState.language] = languageProgress;
+    localStorage.setItem(LEVEL_PROGRESS_KEY, JSON.stringify(GameState.levelProgress));
 
     // Disable active marker
     document.querySelectorAll(".slot").forEach(s => {
@@ -456,6 +542,7 @@ async function showHint() {
     .filter(i => i !== null);
 
   const toReveal = shuffleArray(emptyIndices).slice(0, count);
+  saveHintProgress(toReveal);
 
   for (let i = 0; i < toReveal.length; i++) {
     const idx = toReveal[i];

@@ -321,7 +321,53 @@ function renderQuestion(question) {
     scrambleBox.appendChild(row);
   });
 
+  restoreSavedHints();
   scheduleIdleTileBreathing();
+}
+
+function restoreSavedHints() {
+  const progress = getHintProgress();
+  const slots = [...document.querySelectorAll(".slot")];
+  const letters = segmentText(GameState.current.answer.replace(/\s+/g, ""));
+
+  progress.revealedIndexes
+    .filter(index => Number.isInteger(index) && index >= 0 && index < slots.length)
+    .forEach(index => {
+      const slot = slots[index];
+      const letterBase = toBaseHebrew(letters[index]);
+      const tile = [...document.querySelectorAll(".letter")].find(candidate =>
+        !candidate.classList.contains("empty") && candidate.dataset.base === letterBase
+      );
+
+      if (!tile || slot.dataset.filled === "true") return;
+
+      tile.classList.add("empty");
+      tile.textContent = "";
+      tile.dataset.letter = letterBase;
+      tile.dataset.locked = "true";
+      tile.style.cursor = "default";
+      tile.removeEventListener("click", handleTileClick);
+      tile.removeEventListener("click", onLetterClick);
+
+      placeLetterInSlot(slot, letterBase);
+      slot.dataset.locked = "true";
+    });
+
+  updateActiveSlot();
+
+  const hintBtn = document.getElementById("hintBtn");
+  const resetBtn = document.getElementById("resetBtn");
+  if (progress.hintCount >= 2) {
+    hintBtn.disabled = true;
+    hintBtn.style.backgroundColor = "#333";
+    hintBtn.style.opacity = "0.6";
+    hintBtn.style.cursor = "default";
+  }
+  if (progress.hintCount >= 3) {
+    resetBtn.disabled = true;
+    resetBtn.style.visibility = "hidden";
+    setButtonLabel(document.getElementById("nextBtn"), getLocalizedText("next"));
+  }
 }
 
 

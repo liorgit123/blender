@@ -149,9 +149,9 @@
     }
 
     function resetProgress() {
-      const solved = JSON.parse(localStorage.getItem("solvedLevels") || "{}");
-      delete solved["he"];
-      localStorage.setItem("solvedLevels", JSON.stringify(solved));
+      const levelProgress = JSON.parse(localStorage.getItem("levelProgress") || "{}");
+      delete levelProgress["he"];
+      localStorage.setItem("levelProgress", JSON.stringify(levelProgress));
       window.location.replace("index.html");
     }
 

@@ -1,37 +1,37 @@
 [
   {
     "id": "a3f9c1e4",
-    "category": "Movies",
+    "category": "movies",
     "icon": "movie",
-    "answer": "FIGHT CLUB",
+    "answer": "fight club",
     "fact": "Movie was released in 1999"
   },
   {
     "id": "c91e4f0b",
-    "category": "Movies",
+    "category": "movies",
     "icon": "movie",
-    "answer": "SPEED",
+    "answer": "speed",
     "fact": "Movie was released in 1994"
   },
   {
     "id": "f0d3b9c1",
-    "category": "Movies",
+    "category": "movies",
     "icon": "movie",
-    "answer": "FINDING NEMO",
+    "answer": "finding nemo",
     "fact": "Movie was released in 2003"
   },
   {
     "id": "9b2e4c1f",
-    "category": "Bands & Artists",
+    "category": "bands & artists",
     "icon": "mic",
-    "answer": "DEEP PURPLE",
+    "answer": "deep purple",
     "fact": "Band was formed in 1968"
   },
   {
     "id": "e7c1a9f0",
-    "category": "Bands & Artists",
+    "category": "bands & artists",
     "icon": "mic",
-    "answer": "LADY GAGA",
+    "answer": "lady gaga",
     "fact": "Born in 1986"
   }
 ]
