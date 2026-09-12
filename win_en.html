@@ -117,8 +117,11 @@
   <script>
     function resetProgress() {
       const levelProgress = JSON.parse(localStorage.getItem("levelProgress") || "{}");
+      const landmarkProgress = JSON.parse(localStorage.getItem("landmarkProgress") || "{}");
       delete levelProgress["en"];
+      delete landmarkProgress["en"];
       localStorage.setItem("levelProgress", JSON.stringify(levelProgress));
+      localStorage.setItem("landmarkProgress", JSON.stringify(landmarkProgress));
       window.location.replace("index.html");
     }
     document.getElementById("resetBtn").onclick = () => {

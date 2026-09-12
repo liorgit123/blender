@@ -7,6 +7,8 @@ function normalizeHebrewText(text) {
 const LEVEL_PROGRESS_KEY = "levelProgress";
 const LEGACY_SOLVED_KEY = "solvedLevels";
 const LEGACY_HINT_KEY = "hintProgress";
+const LANDMARKS = [10, 25, 50, 75, 90];
+const LANDMARK_STATE_KEY = "landmarkProgress";
 
 function loadLevelProgress() {
   const levelProgress = JSON.parse(localStorage.getItem(LEVEL_PROGRESS_KEY) || "{}");
@@ -56,8 +58,11 @@ const LAST_PLAYED_LEVELS_KEY = "lastPlayedLevels";
 let languageMessageTimer = null;
 
 function resetProgress() {
+  const landmarkProgress = JSON.parse(localStorage.getItem(LANDMARK_STATE_KEY) || "{}");
   delete GameState.levelProgress[GameState.language];
+  delete landmarkProgress[GameState.language];
   localStorage.setItem(LEVEL_PROGRESS_KEY, JSON.stringify(GameState.levelProgress));
+  localStorage.setItem(LANDMARK_STATE_KEY, JSON.stringify(landmarkProgress));
   window.location.reload();
 }
 
@@ -136,6 +141,51 @@ function updateCounter() {
 function getUnsolvedQuestions() {
   const languageProgress = GameState.levelProgress[GameState.language] || {};
   return GameState.questions.filter(question => !languageProgress[question.id]?.is_solved);
+}
+
+function getSolvedCount() {
+  return Object.values(GameState.levelProgress[GameState.language] || {})
+    .filter(progress => progress.is_solved).length;
+}
+
+function getProgressPercentage() {
+  const total = GameState.questions.length;
+  return total > 0 ? Math.round((getSolvedCount() / total) * 100) : 0;
+}
+
+function queueReachedLandmarks() {
+  const landmarkProgress = JSON.parse(localStorage.getItem(LANDMARK_STATE_KEY) || "{}");
+  const languageState = landmarkProgress[GameState.language] || {
+    celebrated: [],
+    pending: []
+  };
+  const percentage = getProgressPercentage();
+
+  languageState.pending = [...new Set([
+    ...languageState.pending,
+    ...LANDMARKS.filter(mark =>
+      mark <= percentage &&
+      !languageState.celebrated.includes(mark) &&
+      !languageState.pending.includes(mark)
+    )
+  ])].sort((first, second) => first - second);
+
+  landmarkProgress[GameState.language] = languageState;
+  localStorage.setItem(LANDMARK_STATE_KEY, JSON.stringify(landmarkProgress));
+}
+
+function showPendingLandmark() {
+  const landmarkProgress = JSON.parse(localStorage.getItem(LANDMARK_STATE_KEY) || "{}");
+  const languageState = landmarkProgress[GameState.language];
+  const landmark = languageState?.pending?.[0];
+  if (!landmark) return false;
+
+  languageState.pending.shift();
+  languageState.celebrated.push(landmark);
+  landmarkProgress[GameState.language] = languageState;
+  localStorage.setItem(LANDMARK_STATE_KEY, JSON.stringify(landmarkProgress));
+  window.location.href = `landmark.html?percent=${landmark}&language=${GameState.language}`;
+  return true;
 }
 
 function getHintProgressForQuestion(question) {
@@ -246,6 +296,8 @@ async function switchLanguage() {
   // Now check if all levels are solved
   if (checkWinCondition()) return;
 
+  if (showPendingLandmark()) return;
+
   setLayoutDirection();
       updateCounter();
 
@@ -292,6 +344,8 @@ function nextQuestion() {
   } else {
     nextQuestion = unsolvedQuestions[Math.floor(Math.random() * unsolvedQuestions.length)];
   }
+
+  if (showPendingLandmark()) return;
 
   setCurrentQuestion(nextQuestion);
 
@@ -470,6 +524,7 @@ function checkAnswer() {
     };
     GameState.levelProgress[GameState.language] = languageProgress;
     localStorage.setItem(LEVEL_PROGRESS_KEY, JSON.stringify(GameState.levelProgress));
+    queueReachedLandmarks();
 
     // Disable active marker
     document.querySelectorAll(".slot").forEach(s => {

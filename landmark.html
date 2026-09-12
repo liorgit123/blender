@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Progress Milestone</title>
+  <link rel="stylesheet" href="styles.css?v=100">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300..700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      align-items: center;
+      background: radial-gradient(circle at center, #071b1b 0, #000 62%);
+    }
+
+    .landmark-page {
+      width: min(100% - 32px, 420px);
+      text-align: center;
+    }
+
+    .landmark-progress {
+      --progress: 0%;
+      width: 190px;
+      height: 190px;
+      margin: 0 auto 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      position: relative;
+      border-radius: 50%;
+      background: conic-gradient(
+        #1abc9c var(--progress),
+        rgba(255, 255, 255, 0.28) var(--progress)
+      );
+      color: #fff;
+      animation: landmarkRingIn 900ms ease-out both;
+    }
+
+    .landmark-progress::before {
+      content: "";
+      position: absolute;
+      inset: 9px;
+      border-radius: 50%;
+      background: #05060a;
+    }
+
+    .landmark-progress strong,
+    .landmark-total {
+      position: relative;
+      z-index: 1;
+      animation: landmarkTextIn 700ms ease-out both;
+    }
+
+    .landmark-progress strong {
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .landmark-total {
+      color: rgba(214, 226, 240, 0.9);
+      font-size: 1rem;
+      line-height: 1;
+      animation-delay: 120ms;
+    }
+
+    .landmark-message {
+      margin: 0 auto 28px;
+      color: #b8d4ff;
+      font-size: clamp(1.2rem, 5vw, 1.6rem);
+      line-height: 1.3;
+    }
+
+    @keyframes landmarkRingIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.86);
+        filter: drop-shadow(0 0 0 rgba(26, 188, 156, 0));
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: drop-shadow(0 0 18px rgba(26, 188, 156, 0.35));
+      }
+    }
+
+    @keyframes landmarkTextIn {
+      0% {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .landmark-progress,
+      .landmark-progress strong,
+      .landmark-total {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body dir="ltr">
+  <main class="landmark-page">
+    <div id="landmarkProgress" class="landmark-progress" aria-label="Progress milestone">
+      <strong id="landmarkPercent">0%</strong>
+      <span id="landmarkTotal" class="landmark-total">0/0</span>
+    </div>
+    <p id="landmarkMessage" class="landmark-message"></p>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const percentage = Number(params.get("percent"));
+    const language = params.get("language") === "he" ? "he" : "en";
+    const progressKey = "levelProgress";
+    const progressEl = document.getElementById("landmarkProgress");
+    const percentEl = document.getElementById("landmarkPercent");
+    const totalEl = document.getElementById("landmarkTotal");
+    const messageEl = document.getElementById("landmarkMessage");
+
+    document.documentElement.lang = language;
+    document.body.dir = language === "he" ? "rtl" : "ltr";
+    messageEl.textContent = language === "he"
+      ? `כל הכבוד - פתרת ${percentage}% מהשלבים!`
+      : `Congratulations - you solved ${percentage}% of the levels!`;
+
+    function animateProgress(solved, total) {
+      const start = performance.now();
+      const duration = 1800;
+
+      function frame(now) {
+        const progress = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const currentPercent = Math.round(percentage * eased);
+        progressEl.style.setProperty("--progress", `${currentPercent}%`);
+        percentEl.textContent = `${currentPercent}%`;
+        if (progress < 1) {
+          requestAnimationFrame(frame);
+        } else {
+          totalEl.textContent = `${solved}/${total}`;
+        }
+      }
+
+      requestAnimationFrame(frame);
+    }
+
+    async function initialize() {
+      const fileName = language === "en" ? "questions-en.json?v=100" : "questions-he.json?v=100";
+      const response = await fetch(`data/${fileName}`);
+      const questions = await response.json();
+      const levelProgress = JSON.parse(localStorage.getItem(progressKey) || "{}");
+      const languageProgress = levelProgress[language] || {};
+      const solved = questions.filter(question => languageProgress[question.id]?.is_solved).length;
+
+      totalEl.textContent = `${solved}/${questions.length}`;
+      animateProgress(solved, questions.length);
+    }
+
+    setTimeout(() => {
+      localStorage.setItem("gameLanguage", language);
+      window.location.replace("index.html");
+    }, 4000);
+
+    initialize().catch(() => {
+      totalEl.textContent = "0/0";
+      animateProgress(0, 0);
+    });
+  </script>
+</body>
+</html>

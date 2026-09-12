@@ -21,6 +21,8 @@ window.addEventListener("DOMContentLoaded", async () => {
     // Should be caught by checkWinCondition, but good to be safe
     return;
   }
+  if (showPendingLandmark()) return;
+
   setCurrentQuestion(selectStartingQuestion());
 
   renderQuestion(GameState.current);
