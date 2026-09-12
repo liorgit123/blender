@@ -33,5 +33,326 @@
     "icon": "mic",
     "answer": "lady gaga",
     "fact": "Born in 1986"
+  },
+
+  /* --- MOVIES (25) --- */
+
+  {
+    "id": "b1c4e8a2",
+    "category": "movies",
+    "icon": "movie",
+    "answer": "the matrix",
+    "fact": "Movie was released in 1999"
+  },
+  {
+    "id": "d4e9a2f7",
+    "category": "movies",
+    "icon": "movie",
+    "answer": "inception",
+    "fact": "Movie was released in 2010"
+  },
+  {
+    "id": "f8a1c3d2",
+    "category": "movies",
+    "icon": "movie",
+    "answer": "the godfather",
+    "fact": "Movie was released in 1972"
+  },
+  {
+    "id": "c2f9e1b4",
+    "category": "movies",
+    "icon": "movie",
+    "answer": "the dark knight",
+    "fact": "Movie was released in 2008"
+  },
+  {
+    "id": "e3b7c9a1",
+    "category": "movies",
+    "icon": "movie",
+    "answer": "pulp fiction",
+    "fact": "Movie was released in 1994"
+  },
+  {
+    "id": "a9d2f1c8",
+    "category": "movies",
+    "icon": "movie",
+    "answer": "titanic",
+    "fact": "Movie was released in 1997"
+  },
+  {
+    "id": "f2c8a7e1",
+    "category": "movies",
+    "icon": "movie",
+    "answer": "avatar",
+    "fact": "Movie was released in 2009"
+  },
+  {
+    "id": "b7e1f9c3",
+    "category": "movies",
+    "icon": "movie",
+    "answer": "gladiator",
+    "fact": "Movie was released in 2000"
+  },
+  {
+    "id": "c8a3f1e7",
+    "category": "movies",
+    "icon": "movie",
+    "answer": "jurassic park",
+    "fact": "Movie was released in 1993"
+  },
+  {
+    "id": "e1f7c4a9",
+    "category": "movies",
+    "icon": "movie",
+    "answer": "star wars",
+    "fact": "Movie was released in 1977"
+  },
+  {
+    "id": "d3b9e7f1",
+    "category": "movies",
+    "icon": "movie",
+    "answer": "forrest gump",
+    "fact": "Movie was released in 1994"
+  },
+  {
+    "id": "f9c1a4e3",
+    "category": "movies",
+    "icon": "movie",
+    "answer": "the lion king",
+    "fact": "Movie was released in 1994"
+  },
+  {
+    "id": "a4e7f2c9",
+    "category": "movies",
+    "icon": "movie",
+    "answer": "interstellar",
+    "fact": "Movie was released in 2014"
+  },
+  {
+    "id": "c7f1b2e8",
+    "category": "movies",
+    "icon": "movie",
+    "answer": "the shawshank redemption",
+    "fact": "Movie was released in 1994"
+  },
+  {
+    "id": "e9a3c7f2",
+    "category": "movies",
+    "icon": "movie",
+    "answer": "back to the future",
+    "fact": "Movie was released in 1985"
+  },
+  {
+    "id": "b3f8e1c7",
+    "category": "movies",
+    "icon": "movie",
+    "answer": "rocky",
+    "fact": "Movie was released in 1976"
+  },
+  {
+    "id": "d8c1f7a3",
+    "category": "movies",
+    "icon": "movie",
+    "answer": "the terminator",
+    "fact": "Movie was released in 1984"
+  },
+  {
+    "id": "f3a7c9e1",
+    "category": "movies",
+    "icon": "movie",
+    "answer": "mad max fury road",
+    "fact": "Movie was released in 2015"
+  },
+  {
+    "id": "a8e1f3c7",
+    "category": "movies",
+    "icon": "movie",
+    "answer": "the avengers",
+    "fact": "Movie was released in 2012"
+  },
+  {
+    "id": "c1f9e3b8",
+    "category": "movies",
+    "icon": "movie",
+    "answer": "toy story",
+    "fact": "Movie was released in 1995"
+  },
+  {
+    "id": "e4b1c7f9",
+    "category": "movies",
+    "icon": "movie",
+    "answer": "the big lebowski",
+    "fact": "Movie was released in 1998"
+  },
+  {
+    "id": "d7f3a1c8",
+    "category": "movies",
+    "icon": "movie",
+    "answer": "goodfellas",
+    "fact": "Movie was released in 1990"
+  },
+  {
+    "id": "f6c2e9a1",
+    "category": "movies",
+    "icon": "movie",
+    "answer": "the silence of the lambs",
+    "fact": "Movie was released in 1991"
+  },
+  {
+    "id": "b9e7f1c2",
+    "category": "movies",
+    "icon": "movie",
+    "answer": "the departed",
+    "fact": "Movie was released in 2006"
+  },
+  {
+    "id": "c4a8f2e7",
+    "category": "movies",
+    "icon": "movie",
+    "answer": "la la land",
+    "fact": "Movie was released in 2016"
+  },
+
+  /* --- BANDS & ARTISTS (20) --- */
+
+  {
+    "id": "e2f9c1b7",
+    "category": "bands & artists",
+    "icon": "mic",
+    "answer": "the beatles",
+    "fact": "Band was formed in 1960"
+  },
+  {
+    "id": "a7c3e9f1",
+    "category": "bands & artists",
+    "icon": "mic",
+    "answer": "queen",
+    "fact": "Band was formed in 1970"
+  },
+  {
+    "id": "c9f1a3e7",
+    "category": "bands & artists",
+    "icon": "mic",
+    "answer": "metallica",
+    "fact": "Band was formed in 1981"
+  },
+  {
+    "id": "f1b7e3c9",
+    "category": "bands & artists",
+    "icon": "mic",
+    "answer": "nirvana",
+    "fact": "Band was formed in 1987"
+  },
+  {
+    "id": "d2e8c1f7",
+    "category": "bands & artists",
+    "icon": "mic",
+    "answer": "madonna",
+    "fact": "Born in 1958"
+  },
+  {
+    "id": "b8c1f7e2",
+    "category": "bands & artists",
+    "icon": "mic",
+    "answer": "michael jackson",
+    "fact": "Born in 1958"
+  },
+  {
+    "id": "e7f3a1c4",
+    "category": "bands & artists",
+    "icon": "mic",
+    "answer": "beyonce",
+    "fact": "Born in 1981"
+  },
+  {
+    "id": "c3a9f1e8",
+    "category": "bands & artists",
+    "icon": "mic",
+    "answer": "coldplay",
+    "fact": "Band was formed in 1996"
+  },
+  {
+    "id": "f4e1c7a9",
+    "category": "bands & artists",
+    "icon": "mic",
+    "answer": "radiohead",
+    "fact": "Band was formed in 1985"
+  },
+  {
+    "id": "a1f9c3e7",
+    "category": "bands & artists",
+    "icon": "mic",
+    "answer": "pink floyd",
+    "fact": "Band was formed in 1965"
+  },
+  {
+    "id": "d9e3b7f1",
+    "category": "bands & artists",
+    "icon": "mic",
+    "answer": "the rolling stones",
+    "fact": "Band was formed in 1962"
+  },
+  {
+    "id": "b4f1e8c3",
+    "category": "bands & artists",
+    "icon": "mic",
+    "answer": "u2",
+    "fact": "Band was formed in 1976"
+  },
+  {
+    "id": "c6a1f9e3",
+    "category": "bands & artists",
+    "icon": "mic",
+    "answer": "bruno mars",
+    "fact": "Born in 1985"
+  },
+  {
+    "id": "e8f2c1b4",
+    "category": "bands & artists",
+    "icon": "mic",
+    "answer": "ed sheeran",
+    "fact": "Born in 1991"
+  },
+  {
+    "id": "f7c9a3e1",
+    "category": "bands & artists",
+    "icon": "mic",
+    "answer": "the weeknd",
+    "fact": "Born in 1990"
+  },
+  {
+    "id": "a6e1f3c8",
+    "category": "bands & artists",
+    "icon": "mic",
+    "answer": "ac dc",
+    "fact": "Band was formed in 1973"
+  },
+  {
+    "id": "d1f9c7e3",
+    "category": "bands & artists",
+    "icon": "mic",
+    "answer": "guns n roses",
+    "fact": "Band was formed in 1985"
+  },
+  {
+    "id": "b2e7f1c9",
+    "category": "bands & artists",
+    "icon": "mic",
+    "answer": "foo fighters",
+    "fact": "Band was formed in 1994"
+  },
+  {
+    "id": "c5a9e3f7",
+    "category": "bands & artists",
+    "icon": "mic",
+    "answer": "taylor swift",
+    "fact": "Born in 1989"
+  },
+  {
+    "id": "e9c1f7a2",
+    "category": "bands & artists",
+    "icon": "mic",
+    "answer": "prince",
+    "fact": "Born in 1958"
   }
 ]
