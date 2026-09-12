@@ -34,9 +34,6 @@
     "answer": "lady gaga",
     "fact": "Born in 1986"
   },
-
-  /* --- MOVIES (25) --- */
-
   {
     "id": "b1c4e8a2",
     "category": "movies",
@@ -212,9 +209,6 @@
     "answer": "la la land",
     "fact": "Movie was released in 2016"
   },
-
-  /* --- BANDS & ARTISTS (20) --- */
-
   {
     "id": "e2f9c1b7",
     "category": "bands & artists",
