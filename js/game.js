@@ -10,6 +10,54 @@ const LEGACY_HINT_KEY = "hintProgress";
 const LANDMARKS = [10, 25, 50, 75, 90];
 const LANDMARK_STATE_KEY = "landmarkProgress";
 
+function calculateDifficulty(answer) {
+  const normalized = answer.normalize("NFC");
+  const letters = Array.from(normalized)
+    .filter(char => /\p{L}/u.test(char))
+    .map(char => char.toLocaleLowerCase());
+  const totalLetters = letters.length;
+
+  if (totalLetters === 0) return 0;
+
+  const frequencies = new Map();
+  for (const letter of letters) {
+    frequencies.set(letter, (frequencies.get(letter) || 0) + 1);
+  }
+
+  const uniqueLetters = frequencies.size;
+  const lengthScore = Math.log2(totalLetters);
+  let entropy = 0;
+
+  for (const count of frequencies.values()) {
+    const p = count / totalLetters;
+    entropy -= p * Math.log2(p);
+  }
+
+  let repetitionBonus = 0;
+  for (const count of frequencies.values()) {
+    if (count > 1) repetitionBonus += Math.pow(count - 1, 2);
+  }
+
+  const words = normalized
+    .split(/[\s-]+/)
+    .map(word => word.replace(/[^\p{L}]/gu, ""))
+    .filter(Boolean);
+  let wordStructureBonus = 0;
+
+  if (words.length > 1) {
+    wordStructureBonus += words.length - 1;
+    const lengths = words.map(word => Array.from(word).length);
+    const average = lengths.reduce((sum, length) => sum + length, 0) / lengths.length;
+    const variance = lengths.reduce(
+      (sum, length) => sum + Math.pow(length - average, 2),
+      0
+    ) / lengths.length;
+    wordStructureBonus += Math.sqrt(variance);
+  }
+
+  return lengthScore + entropy + uniqueLetters - repetitionBonus - wordStructureBonus;
+}
+
 function loadLevelProgress() {
   const levelProgress = JSON.parse(localStorage.getItem(LEVEL_PROGRESS_KEY) || "{}");
   const solved = JSON.parse(localStorage.getItem(LEGACY_SOLVED_KEY) || "{}");
@@ -50,7 +98,8 @@ const GameState = {
   current: null,
   hintLevel: 0,
   language: localStorage.getItem("gameLanguage") || "he",
-  levelProgress: loadLevelProgress()
+  levelProgress: loadLevelProgress(),
+  difficultyById: {}
 };
 
 const LAST_PLAYED_LEVELS_KEY = "lastPlayedLevels";
@@ -143,6 +192,12 @@ function getUnsolvedQuestions() {
   return GameState.questions.filter(question => !languageProgress[question.id]?.is_solved);
 }
 
+function getRandomQuestionPool() {
+  return getUnsolvedQuestions()
+    .sort((first, second) => GameState.difficultyById[first.id] - GameState.difficultyById[second.id])
+    .slice(0, 10);
+}
+
 function getSolvedCount() {
   return Object.values(GameState.levelProgress[GameState.language] || {})
     .filter(progress => progress.is_solved).length;
@@ -231,7 +286,8 @@ function selectStartingQuestion() {
 
   const lastPlayed = JSON.parse(localStorage.getItem(LAST_PLAYED_LEVELS_KEY) || "{}");
   const savedQuestion = unsolvedQuestions.find(question => question.id === lastPlayed[GameState.language]);
-  return savedQuestion || unsolvedQuestions[Math.floor(Math.random() * unsolvedQuestions.length)];
+  const randomPool = getRandomQuestionPool();
+  return savedQuestion || randomPool[Math.floor(Math.random() * randomPool.length)];
 }
 
 function capitalizeFirstCharacter(text) {
@@ -243,7 +299,7 @@ function capitalizeWords(text) {
 }
 
 async function loadQuestions() {
-  const fileName = GameState.language === "en" ? "questions-en.json?v=102" : "questions-he.json?v=100";
+  const fileName = GameState.language === "en" ? "questions-en.json?v=100" : "questions-he.json?v=100";
   const res = await fetch(`data/${fileName}`);
   if (!res.ok) {
     throw new Error(`Failed to load ${fileName}`);
@@ -257,6 +313,9 @@ async function loadQuestions() {
         answer: question.answer.toUpperCase()
       }))
     : data;
+  GameState.difficultyById = Object.fromEntries(
+    GameState.questions.map(question => [question.id, calculateDifficulty(question.answer)])
+  );
 
   const questionIds = new Set(GameState.questions.map(question => question.id));
   const languageProgress = GameState.levelProgress[GameState.language] || {};
@@ -320,8 +379,8 @@ function nextQuestion() {
 
   if (GameState.questions.length === 0) return;
 
-  // Filter questions that are NOT in the solved list
-  const unsolvedQuestions = getUnsolvedQuestions();
+  // Filter questions that are NOT in the solved list, then keep the 10 easiest.
+  const unsolvedQuestions = getRandomQuestionPool();
 
   // If no unsolved questions, show win dialog
   if (unsolvedQuestions.length === 0) {
