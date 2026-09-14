@@ -42,20 +42,6 @@
     "fact": "Movie was released in 1999"
   },
   {
-    "id": "d4e9a2f7",
-    "category": "movies",
-    "icon": "movie",
-    "answer": "inception",
-    "fact": "Movie was released in 2010"
-  },
-  {
-    "id": "f8a1c3d2",
-    "category": "movies",
-    "icon": "movie",
-    "answer": "the godfather",
-    "fact": "Movie was released in 1972"
-  },
-  {
     "id": "c2f9e1b4",
     "category": "movies",
     "icon": "movie",
@@ -82,13 +68,6 @@
     "icon": "movie",
     "answer": "avatar",
     "fact": "Movie was released in 2009"
-  },
-  {
-    "id": "b7e1f9c3",
-    "category": "movies",
-    "icon": "movie",
-    "answer": "gladiator",
-    "fact": "Movie was released in 2000"
   },
   {
     "id": "c8a3f1e7",
@@ -119,46 +98,11 @@
     "fact": "Movie was released in 1994"
   },
   {
-    "id": "a4e7f2c9",
-    "category": "movies",
-    "icon": "movie",
-    "answer": "interstellar",
-    "fact": "Movie was released in 2014"
-  },
-  {
-    "id": "c7f1b2e8",
-    "category": "movies",
-    "icon": "movie",
-    "answer": "the shawshank redemption",
-    "fact": "Movie was released in 1994"
-  },
-  {
-    "id": "e9a3c7f2",
-    "category": "movies",
-    "icon": "movie",
-    "answer": "back to the future",
-    "fact": "Movie was released in 1985"
-  },
-  {
     "id": "b3f8e1c7",
     "category": "movies",
     "icon": "movie",
     "answer": "rocky",
     "fact": "Movie was released in 1976"
-  },
-  {
-    "id": "d8c1f7a3",
-    "category": "movies",
-    "icon": "movie",
-    "answer": "the terminator",
-    "fact": "Movie was released in 1984"
-  },
-  {
-    "id": "f3a7c9e1",
-    "category": "movies",
-    "icon": "movie",
-    "answer": "mad max fury road",
-    "fact": "Movie was released in 2015"
   },
   {
     "id": "a8e1f3c7",
@@ -180,20 +124,6 @@
     "icon": "movie",
     "answer": "the big lebowski",
     "fact": "Movie was released in 1998"
-  },
-  {
-    "id": "d7f3a1c8",
-    "category": "movies",
-    "icon": "movie",
-    "answer": "goodfellas",
-    "fact": "Movie was released in 1990"
-  },
-  {
-    "id": "f6c2e9a1",
-    "category": "movies",
-    "icon": "movie",
-    "answer": "the silence of the lambs",
-    "fact": "Movie was released in 1991"
   },
   {
     "id": "b9e7f1c2",
@@ -222,13 +152,6 @@
     "icon": "mic",
     "answer": "queen",
     "fact": "Band was formed in 1970"
-  },
-  {
-    "id": "c9f1a3e7",
-    "category": "bands & artists",
-    "icon": "mic",
-    "answer": "metallica",
-    "fact": "Band was formed in 1981"
   },
   {
     "id": "f1b7e3c9",
@@ -266,32 +189,11 @@
     "fact": "Band was formed in 1996"
   },
   {
-    "id": "f4e1c7a9",
-    "category": "bands & artists",
-    "icon": "mic",
-    "answer": "radiohead",
-    "fact": "Band was formed in 1985"
-  },
-  {
     "id": "a1f9c3e7",
     "category": "bands & artists",
     "icon": "mic",
     "answer": "pink floyd",
     "fact": "Band was formed in 1965"
-  },
-  {
-    "id": "d9e3b7f1",
-    "category": "bands & artists",
-    "icon": "mic",
-    "answer": "the rolling stones",
-    "fact": "Band was formed in 1962"
-  },
-  {
-    "id": "b4f1e8c3",
-    "category": "bands & artists",
-    "icon": "mic",
-    "answer": "u2",
-    "fact": "Band was formed in 1976"
   },
   {
     "id": "c6a1f9e3",
@@ -313,20 +215,6 @@
     "icon": "mic",
     "answer": "the weeknd",
     "fact": "Born in 1990"
-  },
-  {
-    "id": "a6e1f3c8",
-    "category": "bands & artists",
-    "icon": "mic",
-    "answer": "ac dc",
-    "fact": "Band was formed in 1973"
-  },
-  {
-    "id": "d1f9c7e3",
-    "category": "bands & artists",
-    "icon": "mic",
-    "answer": "guns n roses",
-    "fact": "Band was formed in 1985"
   },
   {
     "id": "b2e7f1c9",
