@@ -32,7 +32,7 @@ function calculateDifficulty(answer) {
   // New simplified difficulty formula:
   // (TotalLetters - 1.5 * WordCount) * 100 + random(0–50)
   const baseScore = totalLetters - 1.5 * wordCount;
-  const randomBonus = Math.floor(Math.random() * 51); // 0–50
+  const randomBonus = Math.floor(Math.random() * 201); // 0
 
   return Math.round(baseScore * 100 + randomBonus);
 }
