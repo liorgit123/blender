@@ -278,7 +278,7 @@ function capitalizeWords(text) {
 }
 
 async function loadQuestions() {
-  const fileName = GameState.language === "en" ? "questions-en.json?v=100" : "questions-he.json?v=100";
+  const fileName = GameState.language === "en" ? "questions-en.json?v=111" : "questions-he.json?v=111";
   const res = await fetch(`data/${fileName}`);
   if (!res.ok) {
     throw new Error(`Failed to load ${fileName}`);
