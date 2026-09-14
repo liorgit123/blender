@@ -12,50 +12,29 @@ const LANDMARK_STATE_KEY = "landmarkProgress";
 
 function calculateDifficulty(answer) {
   const normalized = answer.normalize("NFC");
+
+  // Extract letters only (case-insensitive)
   const letters = Array.from(normalized)
     .filter(char => /\p{L}/u.test(char))
     .map(char => char.toLocaleLowerCase());
-  const totalLetters = letters.length;
 
+  const totalLetters = letters.length;
   if (totalLetters === 0) return 0;
 
-  const frequencies = new Map();
-  for (const letter of letters) {
-    frequencies.set(letter, (frequencies.get(letter) || 0) + 1);
-  }
-
-  const uniqueLetters = frequencies.size;
-  const lengthScore = Math.log2(totalLetters);
-  let entropy = 0;
-
-  for (const count of frequencies.values()) {
-    const p = count / totalLetters;
-    entropy -= p * Math.log2(p);
-  }
-
-  let repetitionBonus = 0;
-  for (const count of frequencies.values()) {
-    if (count > 1) repetitionBonus += Math.pow(count - 1, 2);
-  }
-
+  // Count words (letters only inside each word)
   const words = normalized
     .split(/[\s-]+/)
     .map(word => word.replace(/[^\p{L}]/gu, ""))
     .filter(Boolean);
-  let wordStructureBonus = 0;
 
-  if (words.length > 1) {
-    wordStructureBonus += words.length - 1;
-    const lengths = words.map(word => Array.from(word).length);
-    const average = lengths.reduce((sum, length) => sum + length, 0) / lengths.length;
-    const variance = lengths.reduce(
-      (sum, length) => sum + Math.pow(length - average, 2),
-      0
-    ) / lengths.length;
-    wordStructureBonus += Math.sqrt(variance);
-  }
+  const wordCount = words.length;
 
-  return lengthScore + entropy + uniqueLetters - repetitionBonus - wordStructureBonus;
+  // New simplified difficulty formula:
+  // (TotalLetters - 1.5 * WordCount) * 100 + random(0–50)
+  const baseScore = totalLetters - 1.5 * wordCount;
+  const randomBonus = Math.floor(Math.random() * 51); // 0–50
+
+  return Math.round(baseScore * 100 + randomBonus);
 }
 
 function loadLevelProgress() {
