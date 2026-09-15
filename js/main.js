@@ -5,6 +5,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   document.addEventListener("contextmenu", (e) => e.preventDefault());
   try {
     setLayoutDirection();
+    updateCoinBalance();
     await loadQuestions();
   } catch (e) {
     alert("לא ניתן לטעון את השאלות: " + e.message);

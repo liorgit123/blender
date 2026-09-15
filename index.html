@@ -20,6 +20,10 @@
     <button id="langBtn" class="lang-toggle" type="button" aria-label="Language">
       <img src="images/lang1.svg" alt="" aria-hidden="true">
     </button>
+    <div id="coinBalance" class="coin-balance" aria-live="polite">
+      <span class="coin-symbol" aria-hidden="true"></span>
+      <span id="coinAmount">50</span>
+    </div>
     <span id="langMessage" class="lang-message" role="status" aria-live="polite"></span>
 
     <div id="counter" class="counter"></div>
@@ -39,10 +43,15 @@
     </div>
 
     <div class="controls">
-      <button id="hintBtn" class="icon-button" aria-label="רמז">
-        <img class="button-icon" src="images/bulb1.svg" alt="" aria-hidden="true">
-        <span class="button-label visually-hidden">רמז</span>
-      </button>
+      <div class="hint-control">
+        <button id="hintBtn" class="icon-button" aria-label="רמז">
+          <img class="button-icon" src="images/bulb1.svg" alt="" aria-hidden="true">
+          <span class="button-label visually-hidden">רמז</span>
+        </button>
+        <span class="hint-fee" aria-label="10 coins">
+          <span class="coin-symbol" aria-hidden="true"></span><span class="hint-fee-amount">10</span>
+        </span>
+      </div>
       <button id="resetBtn" class="icon-button" aria-label="אפס">
         <img class="button-icon" src="images/reset1.svg" alt="" aria-hidden="true">
         <span class="button-label visually-hidden">אפס</span>

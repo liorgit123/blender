@@ -363,6 +363,8 @@ function restoreSavedHints() {
     hintBtn.style.opacity = "0.6";
     hintBtn.style.cursor = "default";
   }
+  updateHintAvailability();
+  updateHintFee();
   if (progress.hintCount >= 3) {
     resetBtn.disabled = true;
     resetBtn.style.visibility = "hidden";

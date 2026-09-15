@@ -9,6 +9,10 @@ const LEGACY_SOLVED_KEY = "solvedLevels";
 const LEGACY_HINT_KEY = "hintProgress";
 const LANDMARKS = [10, 25, 50, 75, 90];
 const LANDMARK_STATE_KEY = "landmarkProgress";
+const COINS_KEY = "gameCoins";
+const STARTING_COINS = 50;
+const SOLVE_COIN_REWARD = 10;
+const HINT_COIN_COST = 10;
 
 function calculateDifficulty(answer) {
   const normalized = answer.normalize("NFC");
@@ -85,12 +89,61 @@ const LAST_PLAYED_LEVELS_KEY = "lastPlayedLevels";
 
 let languageMessageTimer = null;
 
+function getCoins() {
+  const coinsByLanguage = JSON.parse(localStorage.getItem(COINS_KEY) || "{}");
+  if (!Number.isFinite(coinsByLanguage[GameState.language])) {
+    coinsByLanguage[GameState.language] = STARTING_COINS;
+    localStorage.setItem(COINS_KEY, JSON.stringify(coinsByLanguage));
+  }
+  return coinsByLanguage[GameState.language];
+}
+
+function changeCoins(amount, updateDisplay = true) {
+  const coinsByLanguage = JSON.parse(localStorage.getItem(COINS_KEY) || "{}");
+  const currentCoins = Number.isFinite(coinsByLanguage[GameState.language])
+    ? coinsByLanguage[GameState.language]
+    : STARTING_COINS;
+  coinsByLanguage[GameState.language] = currentCoins + amount;
+  localStorage.setItem(COINS_KEY, JSON.stringify(coinsByLanguage));
+  if (updateDisplay) updateCoinBalance(amount > 0 ? "gain" : "loss");
+}
+
+function updateCoinBalance(animationType = "none") {
+  const amount = document.getElementById("coinAmount");
+  if (!amount) return;
+
+  const balance = document.getElementById("coinBalance");
+  const nextValue = String(getCoins());
+  const previousValue = amount.dataset.coinValue;
+  const shouldAnimate = previousValue !== undefined && previousValue !== nextValue;
+  amount.dataset.coinValue = nextValue;
+  amount.textContent = nextValue;
+  updateHintAvailability();
+
+  if (shouldAnimate) {
+    amount.classList.remove("coin-amount-updated");
+    void amount.offsetWidth;
+    amount.classList.add("coin-amount-updated");
+
+    if (balance) {
+      balance.classList.remove("coin-balance-gain");
+      if (animationType === "gain") {
+        void balance.offsetWidth;
+        balance.classList.add("coin-balance-gain");
+      }
+    }
+  }
+}
+
 function resetProgress() {
   const landmarkProgress = JSON.parse(localStorage.getItem(LANDMARK_STATE_KEY) || "{}");
   delete GameState.levelProgress[GameState.language];
   delete landmarkProgress[GameState.language];
+  const coinsByLanguage = JSON.parse(localStorage.getItem(COINS_KEY) || "{}");
+  delete coinsByLanguage[GameState.language];
   localStorage.setItem(LEVEL_PROGRESS_KEY, JSON.stringify(GameState.levelProgress));
   localStorage.setItem(LANDMARK_STATE_KEY, JSON.stringify(landmarkProgress));
+  localStorage.setItem(COINS_KEY, JSON.stringify(coinsByLanguage));
   window.location.reload();
 }
 
@@ -307,6 +360,7 @@ async function loadQuestions() {
   }
 
   updateCounter();
+  updateCoinBalance();
 }
 
 function checkWinCondition() {
@@ -404,6 +458,35 @@ function setButtonLabel(button, label) {
   button.setAttribute("aria-label", label);
 }
 
+function updateHintFee() {
+  const hintBtn = document.getElementById("hintBtn");
+  const hintFee = document.querySelector(".hint-fee");
+  if (hintBtn && hintFee) hintFee.hidden = hintBtn.disabled;
+}
+
+function updateHintAvailability() {
+  const hintBtn = document.getElementById("hintBtn");
+  if (!hintBtn) return;
+
+  hintBtn.classList.toggle("insufficient-funds", getCoins() <= 0 && !hintBtn.disabled);
+  if (getCoins() > 0 || hintBtn.disabled) return;
+
+  hintBtn.disabled = false;
+  hintBtn.style.backgroundColor = "";
+  hintBtn.style.opacity = "";
+  hintBtn.style.cursor = "";
+  updateHintFee();
+}
+
+function blinkCoinBalance() {
+  const balance = document.getElementById("coinBalance");
+  if (!balance) return;
+
+  balance.classList.remove("coin-balance-insufficient");
+  void balance.offsetWidth;
+  balance.classList.add("coin-balance-insufficient");
+}
+
 function resetButtons() {
   const hintBtn = document.getElementById("hintBtn");
   const resetBtn = document.getElementById("resetBtn");
@@ -419,8 +502,11 @@ function resetButtons() {
   hintBtn.style.backgroundColor = "";
   hintBtn.style.opacity = "";
   hintBtn.style.cursor = "";
+  hintBtn.classList.remove("insufficient-funds");
   setButtonLabel(hintBtn, getLocalizedText("hint"));
   hintBtn.style.visibility = "visible";
+  updateHintAvailability();
+  updateHintFee();
 
   // Update Reset button: visible, but disabled if no tiles are placed
   resetBtn.style.visibility = "visible";
@@ -505,6 +591,7 @@ function checkAnswer() {
     }
 
     hintBtn.disabled = true;
+    updateHintFee();
     document.getElementById("resetBtn").disabled = true;
 
     // Disable NEXT during the entire success animation
@@ -542,6 +629,7 @@ function checkAnswer() {
       setTimeout(() => {
         nextBtn.disabled = false;
         updateCounter();
+        updateCoinBalance("gain");
 
         // Start NEXT nudge 2 seconds after enabling
         nextAttentionTimer = setTimeout(() => {
@@ -560,6 +648,7 @@ function checkAnswer() {
       ...(languageProgress[questionId] || {}),
       is_solved: true
     };
+    changeCoins(SOLVE_COIN_REWARD, false);
     GameState.levelProgress[GameState.language] = languageProgress;
     localStorage.setItem(LEVEL_PROGRESS_KEY, JSON.stringify(GameState.levelProgress));
     queueReachedLandmarks();
@@ -598,6 +687,12 @@ function checkAnswer() {
 }
 
 async function showHint() {
+  if (getCoins() < HINT_COIN_COST) {
+    blinkCoinBalance();
+    return;
+  }
+
+  changeCoins(-HINT_COIN_COST);
   stopIdleTileBreathing();
   GameState.hintLevel++;
   const hintBtn = document.getElementById("hintBtn");
@@ -619,12 +714,14 @@ async function showHint() {
     hintBtn.style.backgroundColor = "#333";
     hintBtn.style.opacity = "0.6";
     hintBtn.style.cursor = "default";
+    updateHintFee();
   } else if (GameState.hintLevel === 3) {
     count = slots.length;
     hintBtn.disabled = true;
     document.getElementById("resetBtn").disabled = true;
     document.getElementById("resetBtn").style.visibility = "hidden";
     setButtonLabel(document.getElementById("nextBtn"), getLocalizedText("next"));
+    updateHintFee();
   }
 
   // Animate one by one
