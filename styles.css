@@ -114,14 +114,15 @@ body[dir="rtl"] .lang-toggle {
   align-items: center;
   height: 13px;
   line-height: 13px;
+  transform: translateY(2px);
 }
 
 .coin-amount-updated {
-  animation: coinAmountUpdate 2900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: coinAmountUpdate 1900ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .coin-balance-gain {
-  animation: coinBalanceGain 3200ms ease-out both;
+  animation: coinBalanceGain 2200ms ease-out both;
 }
 
 .coin-balance-insufficient {
