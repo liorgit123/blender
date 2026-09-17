@@ -113,7 +113,7 @@ body[dir="rtl"] .lang-toggle {
   display: inline-flex;
   align-items: center;
   height: 13px;
-  line-height: 1px;
+  line-height: 13px;
 }
 
 .coin-amount-updated {
