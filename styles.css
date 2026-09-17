@@ -114,6 +114,7 @@ body[dir="rtl"] .lang-toggle {
   align-items: center;
   height: 13px;
   line-height: 13px;
+  transform: translateY(2px);
 }
 
 .coin-amount-updated {
@@ -131,11 +132,11 @@ body[dir="rtl"] .lang-toggle {
 @keyframes coinAmountUpdate {
   from {
     opacity: 0.35;
-    transform: translateY(-2px);
+    transform: translateY(0px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(2px);
   }
 }
 
