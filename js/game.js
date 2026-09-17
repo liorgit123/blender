@@ -34,9 +34,9 @@ function calculateDifficulty(answer) {
   const wordCount = words.length;
 
   // New simplified difficulty formula:
-  // (TotalLetters - 1.5 * WordCount) * 100 + random(0–50)
+  // (TotalLetters - 1.5 * WordCount) * 100 + random(0–200)
   const baseScore = totalLetters - 1.5 * wordCount;
-  const randomBonus = Math.floor(Math.random() * 201); // 0
+  const randomBonus = Math.floor(Math.random() * 201); // 0-200
 
   return Math.round(baseScore * 100 + randomBonus);
 }
@@ -113,26 +113,55 @@ function updateCoinBalance(animationType = "none") {
   if (!amount) return;
 
   const balance = document.getElementById("coinBalance");
-  const nextValue = String(getCoins());
-  const previousValue = amount.dataset.coinValue;
-  const shouldAnimate = previousValue !== undefined && previousValue !== nextValue;
-  amount.dataset.coinValue = nextValue;
-  amount.textContent = nextValue;
-  updateHintAvailability();
+  const target = getCoins();
 
-  if (shouldAnimate) {
-    amount.classList.remove("coin-amount-updated");
-    void amount.offsetWidth;
-    amount.classList.add("coin-amount-updated");
+  // Cancel any previous counting animation
+  if (amount.coinAnimation) {
+    clearInterval(amount.coinAnimation);
+    amount.coinAnimation = null;
+  }
 
-    if (balance) {
-      balance.classList.remove("coin-balance-gain");
-      if (animationType === "gain") {
-        void balance.offsetWidth;
-        balance.classList.add("coin-balance-gain");
-      }
+  const displayed = Number(amount.dataset.coinValue ?? amount.textContent ?? target);
+  const start = Number.isFinite(displayed) ? displayed : target;
+
+  // Already at the target
+  if (start === target) {
+    amount.dataset.coinValue = String(target);
+    amount.textContent = String(target);
+    updateHintAvailability();
+    return;
+  }
+
+  // Trigger the normal coin-balance animation
+  amount.classList.remove("coin-amount-updated");
+  void amount.offsetWidth;
+  amount.classList.add("coin-amount-updated");
+
+  if (balance) {
+    balance.classList.remove("coin-balance-gain");
+
+    if (animationType === "gain") {
+      void balance.offsetWidth;
+      balance.classList.add("coin-balance-gain");
     }
   }
+
+  // Count toward the new balance
+  let current = start;
+  const direction = target > current ? 1 : -1;
+
+  amount.coinAnimation = setInterval(() => {
+    current += direction;
+
+    amount.dataset.coinValue = String(current);
+    amount.textContent = String(current);
+
+    if (current === target) {
+      clearInterval(amount.coinAnimation);
+      amount.coinAnimation = null;
+      updateHintAvailability();
+    }
+  }, 40);
 }
 
 function resetProgress() {
