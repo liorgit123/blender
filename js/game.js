@@ -132,11 +132,6 @@ function updateCoinBalance(animationType = "none") {
     return;
   }
 
-  // Trigger the normal coin-balance animation
-  amount.classList.remove("coin-amount-updated");
-  void amount.offsetWidth;
-  amount.classList.add("coin-amount-updated");
-
   if (balance) {
     balance.classList.remove("coin-balance-gain");
 
