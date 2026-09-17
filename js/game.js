@@ -121,6 +121,13 @@ function updateCoinBalance(animationType = "none") {
     amount.coinAnimation = null;
   }
 
+  if (animationType === "none") {
+    amount.dataset.coinValue = String(target);
+    amount.textContent = String(target);
+    updateHintAvailability();
+    return;
+  }
+
   const displayed = Number(amount.dataset.coinValue ?? amount.textContent ?? target);
   const start = Number.isFinite(displayed) ? displayed : target;
 
@@ -156,7 +163,7 @@ function updateCoinBalance(animationType = "none") {
       amount.coinAnimation = null;
       updateHintAvailability();
     }
-  }, 40);
+  }, 60);
 }
 
 function resetProgress() {
@@ -492,6 +499,16 @@ function updateHintAvailability() {
   const hintBtn = document.getElementById("hintBtn");
   if (!hintBtn) return;
 
+  if (GameState.hintLevel >= 2) {
+    hintBtn.disabled = true;
+    hintBtn.classList.remove("insufficient-funds");
+    hintBtn.style.backgroundColor = "#333";
+    hintBtn.style.opacity = "0.6";
+    hintBtn.style.cursor = "default";
+    updateHintFee();
+    return;
+  }
+
   hintBtn.classList.toggle("insufficient-funds", getCoins() <= 0 && !hintBtn.disabled);
   if (getCoins() > 0 || hintBtn.disabled) return;
 
@@ -615,6 +632,7 @@ function checkAnswer() {
     }
 
     hintBtn.disabled = true;
+    hintBtn.classList.remove("insufficient-funds");
     updateHintFee();
     document.getElementById("resetBtn").disabled = true;
 
@@ -649,7 +667,7 @@ function checkAnswer() {
         triggerFireworks("high");
       }
 
-      // Wait for success-breath animation to finish (0.6s × 3 = 1800ms)
+      // Wait for success-breath animation to finish (0.6s)
       setTimeout(() => {
         nextBtn.disabled = false;
         updateCounter();
@@ -661,7 +679,7 @@ function checkAnswer() {
           nextAttentionTimer = null;
         }, 2000);
 
-      }, 1800);
+      }, 1200);
 
     }, animationEndTime);
 

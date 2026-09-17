@@ -300,6 +300,15 @@ function renderQuestion(question) {
 
   // Scrambled letters
   const shuffled = shuffleArray(letters.slice());
+  if (
+    shuffled.length > 1 &&
+    shuffled.every((letter, index) => letter === letters[index])
+  ) {
+    const swapIndex = shuffled.findIndex((letter, index) => letter !== shuffled[0] && index > 0);
+    if (swapIndex > 0) {
+      [shuffled[0], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[0]];
+    }
+  }
   const rows = splitIntoRows(shuffled, 6);
 
   rows.forEach(rowLetters => {
@@ -618,6 +627,7 @@ function onSlotClick(e) {
   ].find(
     t =>
       t.classList.contains("empty") &&
+      t.dataset.locked !== "true" &&
       (
         t.dataset.base === letterBase ||
         t.dataset.letter === letterBase
@@ -957,6 +967,7 @@ function resetPlacement() {
     const originalTile = tiles.find(tile =>
       !reservedTiles.has(tile) &&
       tile.classList.contains("empty") &&
+      tile.dataset.locked !== "true" &&
       (tile.dataset.base === letter || tile.dataset.letter === letter)
     );
 

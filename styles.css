@@ -118,7 +118,7 @@ body[dir="rtl"] .lang-toggle {
 }
 
 .coin-balance-gain {
-  animation: coinBalanceGain 2200ms ease-out both;
+  animation: coinBalanceGain 1500ms ease-out both;
 }
 
 .coin-balance-insufficient {
@@ -843,10 +843,10 @@ body[dir="rtl"] #nextBtn .button-icon {
 #hintBtn.insufficient-funds::after {
   position: absolute;
   top: 50%;
-  left: -10%;
-  width: 120%;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.9);
+  left: 3%;
+  width: 100%;
+  height: 3px;
+  background: rgba(0, 0, 0, 0.5);
   content: "";
   transform: rotate(-45deg);
   pointer-events: none;
@@ -1023,7 +1023,7 @@ body[dir="ltr"] .win-content button {
 }
 
 .success-breath {
-  animation: successBreath 0.6s ease-in-out 3;
+  animation: successBreath 0.6s ease-in-out 2;
 }
 
 .slot.shake {
