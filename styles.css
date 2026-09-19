@@ -35,7 +35,7 @@ body[dir="rtl"] {
   position: relative;
   box-sizing: border-box;
   width: min(375px, calc(100% -32px));
-  margin: 10px auto;
+  margin: 3px auto;
 
   background: #000000; /* pure black app screen */
 
