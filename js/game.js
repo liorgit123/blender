@@ -492,7 +492,10 @@ function setButtonLabel(button, label) {
 function updateHintFee() {
   const hintBtn = document.getElementById("hintBtn");
   const hintFee = document.querySelector(".hint-fee");
-  if (hintBtn && hintFee) hintFee.hidden = hintBtn.disabled;
+  if (hintBtn && hintFee) {
+    hintFee.hidden = false;
+    hintFee.classList.toggle("hint-fee-disabled", hintBtn.disabled);
+  }
 }
 
 function updateHintAvailability() {
@@ -667,17 +670,26 @@ function checkAnswer() {
         triggerFireworks("high");
       }
 
-      // Wait for success-breath animation to finish (0.6s)
+      // Let the success message finish before revealing each follow-up update.
       setTimeout(() => {
-        nextBtn.disabled = false;
         updateCounter();
-        updateCoinBalance("gain");
 
-        // Start NEXT nudge 2 seconds after enabling
-        nextAttentionTimer = setTimeout(() => {
-          nextBtn.classList.add("next-attention");
-          nextAttentionTimer = null;
-        }, 2000);
+        setTimeout(() => {
+          updateCoinBalance("gain");
+
+          setTimeout(() => {
+            nextBtn.disabled = false;
+            nextBtn.classList.remove("next-activated");
+            void nextBtn.offsetWidth;
+            nextBtn.classList.add("next-activated");
+
+            // Start NEXT nudge 2 seconds after enabling
+            nextAttentionTimer = setTimeout(() => {
+              nextBtn.classList.add("next-attention");
+              nextAttentionTimer = null;
+            }, 2000);
+          }, 700);
+        }, 700);
 
       }, 1200);
 
