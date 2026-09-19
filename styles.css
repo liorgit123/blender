@@ -383,10 +383,10 @@ body[dir="rtl"] .lang-message {
 .logo {
   display: block;
   max-width: 160px;
-  width: 66%;
+  width: 75%;
   height: auto;
   margin-bottom: 16px;
-  margin-top: -10px;
+  margin-top: -14px;
   filter: brightness(1.28) contrast(1.08) saturate(1.06);
   -webkit-filter: brightness(1.28) contrast(1.08) saturate(1.06);
 }
