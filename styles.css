@@ -43,12 +43,10 @@ body[dir="rtl"] {
   --slot-size: 40px;
 
   border-radius: 16px; /* rounded corners */
-  border: 2px solid #4a4a4a;
+  border: 2px solid rgba(255, 255, 255, 0.55);
   box-shadow:
-    0 0 60px 30px rgba(255, 0, 0, 1),     /* massive red outer glow */
-    0 0 40px 20px rgba(0, 255, 0, 1),     /* massive green glow */
-    0 0 30px 15px rgba(0, 0, 255, 1),     /* massive blue glow */
-    inset 0 0 40px rgba(255, 255, 0, 1);  /* huge yellow inner glow */
+    0 0 22px rgba(255, 255, 255, 0.45),
+    0 0 12px rgba(0, 0, 0, 0.85) inset;
 
   padding: 20px 12px 22px;
 
