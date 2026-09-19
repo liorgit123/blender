@@ -9,14 +9,18 @@ body {
   position: relative;
   isolation: isolate;
   font-family: var(--font-text-en);
-  background: #ffffff; /* pure white background */
+  background: #000000;
   color: #f1f5ff;
   margin: 0;
-  padding: 0;
+  padding: 8px 0;
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  user-select: none; /* Non-prefixed version */
+  touch-action: manipulation; /* Disable double-tap zoom, keep pinch */
 }
 
 body[dir="rtl"] {
@@ -30,16 +34,19 @@ body[dir="rtl"] {
 .app {
   position: relative;
   box-sizing: border-box;
-  width: min(375px, calc(100% - 32px));
+  width: min(375px, calc(100% -32px));
   margin: 20px auto;
-  background: #000000; /* pure black app screen */
+  background: rgba(0, 0, 0, 0.5);
+  color: #f1f5ff;
+  --slot-size: 40px;
   border-radius: 16px;
   padding: 20px 12px 22px;
-
-  /* optional: keep or remove — does NOT affect layout */
-  box-shadow:
-    0 0 28px rgba(0, 0, 0, 0.75),
-    0 0 12px rgba(0, 229, 255, 0.12);
+  box-shadow: none;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 /* Force globe to the RIGHT in ALL languages */
