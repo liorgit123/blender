@@ -702,12 +702,6 @@ function checkAnswer() {
       s.dataset.solved = "true";
     });
 
-    document.querySelectorAll(".letter").forEach(tile => {
-      tile.style.cursor = "default";
-      tile.classList.add("disabled");
-      tile.removeEventListener("click", onLetterClick);
-    });
-
     document.getElementById("clue").style.pointerEvents = "none";
 
   } else {
