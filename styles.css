@@ -9,7 +9,7 @@ body {
   position: relative;
   isolation: isolate;
   font-family: var(--font-text-en);
-  background: #ffffff; /* pure white */
+  background: #808080; /* pure white */
   color: #f1f5ff;
   margin: 0;
   padding: 8px 0; /* keep your original spacing */
