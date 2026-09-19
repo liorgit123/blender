@@ -9,18 +9,18 @@ body {
   position: relative;
   isolation: isolate;
   font-family: var(--font-text-en);
-  background: #000000;
+  background: #ffffff; /* pure white */
   color: #f1f5ff;
   margin: 0;
-  padding: 8px 0;
+  padding: 8px 0; /* keep your original spacing */
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-  user-select: none; /* Non-prefixed version */
-  touch-action: manipulation; /* Disable double-tap zoom, keep pinch */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
 }
 
 body[dir="rtl"] {
@@ -36,13 +36,18 @@ body[dir="rtl"] {
   box-sizing: border-box;
   width: min(375px, calc(100% -32px));
   margin: 20px auto;
-  background: rgba(0, 0, 0, 0.5);
+
+  background: #000000; /* pure black app screen */
+
   color: #f1f5ff;
   --slot-size: 40px;
-  border-radius: 16px;
+
+  border-radius: 50%; /* fully rounded corners */
+  border: 3px solid #1e1e1e; /* clean subtle border */
+
   padding: 20px 12px 22px;
-  box-shadow: none;
-  border: none;
+
+  box-shadow: none; /* unchanged */
   display: flex;
   flex-direction: column;
   align-items: center;
