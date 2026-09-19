@@ -9,18 +9,14 @@ body {
   position: relative;
   isolation: isolate;
   font-family: var(--font-text-en);
-  background: #000000;
+  background: radial-gradient(circle at center, #0a0a0a 0%, #000000 70%);
   color: #f1f5ff;
   margin: 0;
-  padding: 8px 0;
+  padding: 0; /* remove padding */
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-  user-select: none; /* Non-prefixed version */
-  touch-action: manipulation; /* Disable double-tap zoom, keep pinch */
 }
 
 body[dir="rtl"] {
@@ -34,19 +30,14 @@ body[dir="rtl"] {
 .app {
   position: relative;
   box-sizing: border-box;
-  width: min(375px, calc(100% -32px));
+  width: min(375px, calc(100% - 32px));
   margin: 20px auto;
-  background: rgba(0, 0, 0, 0.5);
-  color: #f1f5ff;
-  --slot-size: 40px;
+  background: rgba(18, 22, 30, 0.92); /* solid panel */
   border-radius: 16px;
   padding: 20px 12px 22px;
-  box-shadow: none;
-  border: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+  box-shadow:
+    0 0 28px rgba(0, 0, 0, 0.75),
+    0 0 12px rgba(0, 229, 255, 0.12); /* subtle glow */
 }
 
 /* Force globe to the RIGHT in ALL languages */
