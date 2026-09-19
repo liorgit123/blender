@@ -696,7 +696,7 @@ function checkAnswer() {
     queueReachedLandmarks();
 
     // Disable active marker
-    document.querySelectorAll(".slot[data-filled='true']").forEach(s => {
+    document.querySelectorAll(".slot").forEach(s => {
       s.dataset.active = "false";
       s.dataset.locked = "true";
       s.dataset.solved = "true";
@@ -850,4 +850,3 @@ function revealCount(count) {
 function revealAllLetters() {
   // This function is also now superseded by showHint logic
 }
-
