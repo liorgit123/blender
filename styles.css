@@ -45,7 +45,7 @@ body[dir="rtl"] {
   border-radius: 10px; /* rounded corners */
   border: 3px solid rgba(0, 200, 255, 0.35);
 
-  padding: 80px 12px 22px;
+  padding: 20px 12px 22px;
 
   box-shadow: none; /* unchanged */
   display: flex;
@@ -57,7 +57,7 @@ body[dir="rtl"] {
 /* Force globe to the RIGHT in ALL languages */
 .lang-toggle {
   position: absolute;
-  top: 3px;
+  top: 15px;
   right: 15px;
   left: auto;
   background: transparent;
@@ -86,7 +86,7 @@ body[dir="rtl"] .lang-toggle {
 
 .coin-balance {
   position: absolute;
-  top: 35px;
+  top: 47px;
   right: 15px;
   display: inline-flex;
   align-items: center;
