@@ -696,7 +696,7 @@ function checkAnswer() {
     queueReachedLandmarks();
 
     // Disable active marker
-    document.querySelectorAll(".slot").forEach(s => {
+    document.querySelectorAll(".slot[data-filled='true']").forEach(s => {
       s.dataset.active = "false";
       s.dataset.locked = "true";
       s.dataset.solved = "true";
