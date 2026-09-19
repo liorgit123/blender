@@ -229,7 +229,7 @@ body[dir="rtl"] .lang-message {
 .counter {
   position: absolute;
   top: 17px;
-  left: 8px;
+  left: 15px;
   right: auto;
   z-index: 2147483647;
   font-family: var(--font-text-en);
