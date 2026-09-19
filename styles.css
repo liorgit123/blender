@@ -35,7 +35,7 @@ body[dir="rtl"] {
   position: relative;
   box-sizing: border-box;
   width: min(375px, calc(100% -32px));
-  margin: 30px auto;
+  margin: 10px auto;
 
   background: #000000; /* pure black app screen */
 
@@ -43,9 +43,9 @@ body[dir="rtl"] {
   --slot-size: 40px;
 
   border-radius: 10px; /* rounded corners */
-  border: 3px solid #3a3a3a; /* clean subtle border */
+  border: 3px solid rgba(0, 200, 255, 0.35);
 
-  padding: 20px 12px 22px;
+  padding: 40px 12px 22px;
 
   box-shadow: none; /* unchanged */
   display: flex;
