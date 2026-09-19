@@ -59,8 +59,8 @@ body[dir="rtl"] {
 /* Force globe to the RIGHT in ALL languages */
 .lang-toggle {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 13px;
+  right: 14px;
   left: auto;
   background: transparent;
   border: none;
@@ -73,7 +73,7 @@ body[dir="rtl"] {
 
 /* Ensure globe stays on the right */
 body[dir="rtl"] .lang-toggle {
-  right: 15px;
+  right: 14px;
   left: auto;
 }
 
@@ -89,7 +89,7 @@ body[dir="rtl"] .lang-toggle {
 .coin-balance {
   position: absolute;
   top: 47px;
-  right: 15px;
+  right: 17px;
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -229,7 +229,7 @@ body[dir="rtl"] .lang-message {
 .counter {
   position: absolute;
   top: 17px;
-  left: 15px;
+  left: 17px;
   right: auto;
   z-index: 2147483647;
   font-family: var(--font-text-en);
@@ -237,7 +237,7 @@ body[dir="rtl"] .lang-message {
 }
 
 [dir="rtl"] .counter {
-  left: 15px;
+  left: 17px;
   right: auto;
   font-family: var(--font-text-he);
 }
