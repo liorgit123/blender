@@ -78,8 +78,8 @@ body[dir="rtl"] .lang-toggle {
 }
 
 .lang-toggle img {
-  width: 23px;
-  height: 23px;
+  width: 28px;
+  height: 28px;
   filter:
     brightness(0) invert(1)
     drop-shadow(0 0 0.2px rgba(255, 255, 255, 0.85))
