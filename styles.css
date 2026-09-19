@@ -5,32 +5,34 @@
   --font-text-he: 'Rubik', sans-serif;
 }
 
-body {
-  position: relative;
-  isolation: isolate;
-  font-family: var(--font-text-en);
-  background: #012027;
-  color: #f1f5ff;
-  margin: 0;
-  padding: 8px 0; /* keep your original spacing */
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  user-select: none;
-  touch-action: manipulation;
+html {
+  overflow: hidden;
+  height: 100%;
+  touch-action: none;
 }
 
 body {
-  position: fixed;
-  width: 100%;
-  height: 100%;
+  position: fixed;              /* lock the viewport */
   top: 0;
   left: 0;
-  overflow: hidden;
-  touch-action: none;
+  width: 100%;
+  height: 100%;                 /* full screen */
+  margin: 0;
+  padding: 8px 0;               /* keep your spacing */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  background: #012027;          /* your background */
+  color: #f1f5ff;
+  font-family: var(--font-text-en);
+  isolation: isolate;
+
+  overflow: hidden;             /* no scroll */
+  touch-action: none;           /* no swipe, no pinch */
+  -webkit-touch-callout: none;  /* no long‑press menu */
+  -webkit-user-select: none;    /* no text selection */
+  user-select: none;
 }
 
 body[dir="rtl"] {
