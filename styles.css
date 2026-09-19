@@ -226,7 +226,7 @@ body[dir="rtl"] .lang-message {
 
 .counter {
   position: absolute;
-  top: 5px;
+  top: 17px;
   left: 8px;
   right: auto;
   z-index: 2147483647;
