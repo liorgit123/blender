@@ -45,7 +45,7 @@ body[dir="rtl"] {
   border-radius: 10px; /* rounded corners */
   border: 3px solid rgba(0, 200, 255, 0.35);
 
-  padding: 40px 12px 22px;
+  padding: 80px 12px 22px;
 
   box-shadow: none; /* unchanged */
   display: flex;
