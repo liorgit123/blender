@@ -42,8 +42,11 @@ body[dir="rtl"] {
   color: #f1f5ff;
   --slot-size: 40px;
 
-  border-radius: 10px; /* rounded corners */
-  border: 3px solid #6b6b6b;
+  border-radius: 16px; /* rounded corners */
+  border: 2px solid #3a3a3a;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
 
   padding: 20px 12px 22px;
 
