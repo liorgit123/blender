@@ -1,6 +1,11 @@
 // main.js – אתחול
 
 window.addEventListener("DOMContentLoaded", async () => {
+  // Disable pinch‑zoom in Safari
+  document.addEventListener("gesturestart", (e) => e.preventDefault());
+  document.addEventListener("gesturechange", (e) => e.preventDefault());
+  document.addEventListener("gestureend", (e) => e.preventDefault());
+  
   // Prevent context menu on long press
   document.addEventListener("contextmenu", (e) => e.preventDefault());
   try {
