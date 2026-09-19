@@ -42,7 +42,7 @@ body[dir="rtl"] {
   color: #f1f5ff;
   --slot-size: 40px;
 
-  border-radius: 25%; /* rounded corners */
+  border-radius: 10px; /* rounded corners */
   border: 3px solid #1e1e1e; /* clean subtle border */
 
   padding: 20px 12px 22px;
