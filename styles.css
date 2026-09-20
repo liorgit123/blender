@@ -429,38 +429,39 @@ h1 {
 
 .category {
   width: fit-content;
-  min-height: 22px;
   margin: 0 auto 18px;
-  padding: 3px 14px 2px;
+  padding: 4px 16px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  color: rgba(198, 255, 126, 0.92);
-  text-shadow: 0 0 7px rgba(118, 255, 74, 0.22);
+  gap: 8px;
+
+  color: #7dff4a; /* bright neon green */
+  text-shadow: 0 0 12px rgba(125, 255, 74, 0.9);
+
+  font-family: var(--font-text-en);
   line-height: 1;
-  box-sizing: border-box;
-  text-align: center;
   white-space: nowrap;
 }
 
 .category-icon {
   flex: 0 0 auto;
-  font-size: 2.7em;
+  font-size: 2.8rem;
   line-height: 1;
-  vertical-align: middle;
-  margin-inline-end: 0;
-  font-variation-settings: "FILL" 0, "wght" 450, "GRAD" 35, "opsz" 20;
-  color: #5d9c4e;
-  text-shadow: 0 0 5px rgba(82, 174, 72, 0.24);
+
+  color: #7dff4a; /* same neon green */
+  text-shadow: 0 0 14px rgba(125, 255, 74, 0.95);
+
+  font-variation-settings: "FILL" 1, "wght" 600, "GRAD" 0, "opsz" 48;
 }
 
 .category-value {
-  font-weight: 600;
-  font-size: 1.5rem;
-  letter-spacing: 0.03em;
-  line-height: 1;
-  color: inherit;
+  font-weight: 700;
+  font-size: 1.55rem;
+  letter-spacing: 0.02em;
+
+  color: #7dff4a; /* unified neon */
+  text-shadow: 0 0 12px rgba(125, 255, 74, 0.9);
 }
 
 .fact {
