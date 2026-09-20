@@ -6,7 +6,7 @@
 }
 
 html {
-  overflow: hidden;
+  /* overflow: hidden; */
   height: 100%;
   touch-action: none;
 }
@@ -28,7 +28,7 @@ body {
   font-family: var(--font-text-en);
   isolation: isolate;
 
-  overflow: hidden;             /* no scroll */
+  /* overflow: hidden;            /* no scroll */
   touch-action: none;           /* no swipe, no pinch */
   -webkit-touch-callout: none;  /* no long‑press menu */
   -webkit-user-select: none;    /* no text selection */
