@@ -309,7 +309,7 @@ function renderQuestion(question) {
       [shuffled[0], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[0]];
     }
   }
-  const rows = splitIntoRows(shuffled, 6);
+  const rows = splitIntoRows(shuffled, 7);
 
   rows.forEach(rowLetters => {
     const row = document.createElement("div");
@@ -404,10 +404,7 @@ function handleTileClick(e) {
    ========================================================= */
 
 function splitIntoRows(items, maxPerRow) {
-  const rowCount = Math.max(
-    1,
-    Math.ceil(items.length / maxPerRow)
-  );
+  const rowCount = 2;
 
   const baseCount = Math.floor(
     items.length / rowCount
@@ -440,14 +437,14 @@ function splitIntoRows(items, maxPerRow) {
 
 function createSlots(answer, container) {
 
-  function groupWordsMax7(words) {
+  function groupWordsMax9(words) {
     const lines = [];
     let current = [];
 
     for (const w of words) {
       const test = [...current, w].join(" ");
 
-      if (test.length <= 7) {
+      if (test.length <= 9) {
         current.push(w);
       } else {
         if (current.length) {
@@ -466,7 +463,9 @@ function createSlots(answer, container) {
   }
 
   const words = answer.split(" ");
-  const grouped = groupWordsMax7(words);
+  const grouped = words.length === 2
+    ? words.map(word => [word])
+    : groupWordsMax9(words);
 
   grouped.forEach((group, index) => {
     const line = document.createElement("div");

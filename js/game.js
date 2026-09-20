@@ -168,12 +168,15 @@ function updateCoinBalance(animationType = "none") {
 
 function resetProgress() {
   const landmarkProgress = JSON.parse(localStorage.getItem(LANDMARK_STATE_KEY) || "{}");
+  const lastPlayed = JSON.parse(localStorage.getItem(LAST_PLAYED_LEVELS_KEY) || "{}");
   delete GameState.levelProgress[GameState.language];
   delete landmarkProgress[GameState.language];
+  delete lastPlayed[GameState.language];
   const coinsByLanguage = JSON.parse(localStorage.getItem(COINS_KEY) || "{}");
   delete coinsByLanguage[GameState.language];
   localStorage.setItem(LEVEL_PROGRESS_KEY, JSON.stringify(GameState.levelProgress));
   localStorage.setItem(LANDMARK_STATE_KEY, JSON.stringify(landmarkProgress));
+  localStorage.setItem(LAST_PLAYED_LEVELS_KEY, JSON.stringify(lastPlayed));
   localStorage.setItem(COINS_KEY, JSON.stringify(coinsByLanguage));
   window.location.reload();
 }

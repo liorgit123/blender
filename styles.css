@@ -6,13 +6,13 @@
 }
 
 html {
-  /* overflow: hidden; */
+  overflow: hidden;
   height: 100%;
-  touch-action: manipulation;
+  touch-action: none;
 }
 
 body {
-  /* position: fixed;              /* lock the viewport */
+  position: fixed;              /* lock the viewport */
   top: 0;
   left: 0;
   width: 100%;
@@ -28,9 +28,8 @@ body {
   font-family: var(--font-text-en);
   isolation: isolate;
 
-  /* overflow: hidden;            /* no scroll */
-  touch-action: manipulation;
-           /* no swipe, no pinch */
+  overflow: hidden;             /* no scroll */
+  touch-action: none;           /* no swipe, no pinch */
   -webkit-touch-callout: none;  /* no long‑press menu */
   -webkit-user-select: none;    /* no text selection */
   user-select: none;
@@ -781,10 +780,10 @@ body[dir="ltr"] .fact {
     ) -120% 0 / 250% 100% no-repeat,
     linear-gradient(
       165deg,
-      #b7efff 0%,
-      #74d0ff 38%,
-      #2e9bea 72%,
-      #176fc5 100%
+      #9bdcf3 0%,
+      #55b9e8 38%,
+      #2088d4 72%,
+      #1262b3 100%
     );
 
   color: #072046;
