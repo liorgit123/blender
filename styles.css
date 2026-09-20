@@ -8,7 +8,7 @@
 html {
   /* overflow: hidden; */
   height: 100%;
-  touch-action: none;
+  touch-action: manipulation;
 }
 
 body {
@@ -29,7 +29,8 @@ body {
   isolation: isolate;
 
   /* overflow: hidden;            /* no scroll */
-  touch-action: none;           /* no swipe, no pinch */
+  touch-action: manipulation;
+           /* no swipe, no pinch */
   -webkit-touch-callout: none;  /* no long‑press menu */
   -webkit-user-select: none;    /* no text selection */
   user-select: none;
