@@ -12,7 +12,7 @@ html {
 }
 
 body {
-  position: fixed;              /* lock the viewport */
+  /* position: fixed;              /* lock the viewport */
   top: 0;
   left: 0;
   width: 100%;
