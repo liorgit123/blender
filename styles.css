@@ -430,38 +430,64 @@ h1 {
 .category {
   width: fit-content;
   margin: 0 auto 18px;
-  padding: 4px 16px;
+  padding: 6px 18px;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
 
-  color: #6df04a; /* softer neon green */
-  text-shadow: 0 0 6px rgba(109, 240, 74, 0.55);
+  color: #7dff5a;
+
+  /* Very subtle shared glow behind the whole category line */
+  text-shadow:
+    0 0 4px rgba(125, 255, 90, 0.9),
+    0 0 10px rgba(109, 240, 74, 0.55),
+    0 0 20px rgba(109, 240, 74, 0.22);
 
   font-family: var(--font-text-en);
   line-height: 1;
   white-space: nowrap;
+
+  /* Makes the icon and text feel like one illuminated element */
+  filter: drop-shadow(0 0 5px rgba(109, 240, 74, 0.18));
 }
 
 .category-icon {
   flex: 0 0 auto;
+
   font-size: 2.8rem;
   line-height: 1;
 
-  color: #6df04a; /* same softened neon */
-  text-shadow: 0 0 8px rgba(109, 240, 74, 0.6);
+  color: #75ff58;
 
-  font-variation-settings: "FILL" 1, "wght" 550, "GRAD" 0, "opsz" 48;
+  /* Layered light gives the icon more depth */
+  text-shadow:
+    0 0 3px rgba(220, 255, 210, 0.9),
+    0 0 7px rgba(117, 255, 88, 0.95),
+    0 0 15px rgba(109, 240, 74, 0.65),
+    0 0 25px rgba(109, 240, 74, 0.25);
+
+  font-variation-settings:
+    "FILL" 1,
+    "wght" 550,
+    "GRAD" 0,
+    "opsz" 48;
 }
 
 .category-value {
-  font-weight: 700;
+  font-weight: 750;
   font-size: 1.55rem;
   letter-spacing: 0.02em;
 
-  color: #6df04a;
-  text-shadow: 0 0 6px rgba(109, 240, 74, 0.55);
+  color: #7dff5a;
+
+  /* Bright core + softer neon falloff */
+  text-shadow:
+    0 0 2px rgba(225, 255, 215, 0.9),
+    0 0 6px rgba(125, 255, 90, 0.9),
+    0 0 13px rgba(109, 240, 74, 0.55),
+    0 0 24px rgba(109, 240, 74, 0.2);
 }
 
 .fact {
