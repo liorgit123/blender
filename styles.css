@@ -725,34 +725,34 @@ body[dir="ltr"] .fact {
 .slot[data-active="true"]::after {
   content: "";
   position: absolute;
-  inset: -1px; /* reduced to prevent black gap */
+  inset: -1px; /* prevents black gap */
 
-  border: 2px solid #2dd9f0; /* thinner, softer border */
+  border: 2px solid #138aa0; /* darker aqua for contrast */
   border-radius: inherit;
 
   pointer-events: none;
 
   box-shadow:
-    0 0 4px rgba(0, 220, 255, 0.45),
-    0 0 8px rgba(0, 220, 255, 0.25);
+    0 0 3px rgba(19, 138, 160, 0.45),
+    0 0 6px rgba(19, 138, 160, 0.25);
 
   animation: activeSlotPulse 1.8s ease-in-out infinite;
 }
 
 @keyframes activeSlotPulse {
   0%, 100% {
-    border-color: #1bc4da;
+    border-color: #0f7a8e; /* deeper base tone */
     box-shadow:
-      0 0 3px rgba(0, 220, 255, 0.35),
-      0 0 7px rgba(0, 220, 255, 0.18);
+      0 0 2px rgba(19, 138, 160, 0.32),
+      0 0 5px rgba(19, 138, 160, 0.18);
     transform: scale(1);
   }
 
   50% {
-    border-color: #6ff2ff;
+    border-color: #3cc9d9; /* lighter mid‑pulse, but not bright */
     box-shadow:
-      0 0 6px rgba(0, 240, 255, 0.55),
-      0 0 12px rgba(0, 220, 255, 0.32);
+      0 0 4px rgba(60, 201, 217, 0.55),
+      0 0 9px rgba(19, 138, 160, 0.28);
     transform: scale(1.02); /* subtle breathing */
   }
 }
