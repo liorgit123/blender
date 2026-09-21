@@ -725,21 +725,33 @@ body[dir="ltr"] .fact {
 .slot[data-active="true"]::after {
   content: "";
   position: absolute;
-  inset: -1px;
-  border: 2px solid #23e8ff;
+  inset: -2px;
+
+  border: 2px solid #20dff5;
   border-radius: inherit;
+
   pointer-events: none;
-  box-shadow: 0 0 7px rgba(0, 220, 255, 0.62);
-  animation: activeSlotColor 2s ease-in-out infinite;
+
+  box-shadow:
+    0 0 5px rgba(0, 220, 255, 0.55),
+    0 0 10px rgba(0, 220, 255, 0.25);
+
+  animation: activeSlotPulse 1.8s ease-in-out infinite;
 }
 
-@keyframes activeSlotColor {
+@keyframes activeSlotPulse {
   0%, 100% {
-    border-color: #00b8d4;
+    border-color: #16c9df;
+    box-shadow:
+      0 0 5px rgba(0, 220, 255, 0.45),
+      0 0 9px rgba(0, 220, 255, 0.18);
   }
 
   50% {
-    border-color: #6af6ff;
+    border-color: #68f4ff;
+    box-shadow:
+      0 0 7px rgba(0, 230, 255, 0.75),
+      0 0 14px rgba(0, 220, 255, 0.35);
   }
 }
 
