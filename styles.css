@@ -725,9 +725,9 @@ body[dir="ltr"] .fact {
 .slot[data-active="true"]::after {
   content: "";
   position: absolute;
-  inset: -3px; /* intentional gap between tile and glow */
+  inset: -4px; /* slightly larger gap for visibility */
 
-  border: 3px solid #0f7a8e; /* deeper teal border */
+  border: 2px solid #0f7a8e; /* thinner border for cleaner separation */
   border-radius: inherit;
 
   pointer-events: none;
@@ -749,11 +749,11 @@ body[dir="ltr"] .fact {
   }
 
   50% {
-    border-color: #3cc9d9; /* lighter mid-pulse teal */
+    border-color: #3cc9d9;
     box-shadow:
       0 0 9px rgba(60, 201, 217, 0.75),
       0 0 18px rgba(19, 138, 160, 0.4);
-    transform: scale(1.03); /* subtle breathing */
+    transform: scale(1.03);
   }
 }
 
