@@ -732,8 +732,8 @@ body[dir="ltr"] .fact {
 
   pointer-events: none;
 
-  top: -1px;
-  left: -1px;
+  top: 1px;
+  left: 1px;
 
   box-shadow:
     0 0 6px rgba(19, 138, 160, 0.55),
