@@ -725,7 +725,7 @@ body[dir="ltr"] .fact {
 .slot[data-active="true"]::after {
   content: "";
   position: absolute;
-  inset: -4px; /* slightly larger gap for visibility */
+  inset: -3px; /* slightly larger gap for visibility */
 
   border: 2px solid #0f7a8e; /* thinner border for cleaner separation */
   border-radius: inherit;
