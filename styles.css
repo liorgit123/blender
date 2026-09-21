@@ -430,43 +430,35 @@ h1 {
 .category {
   width: fit-content;
   margin: 0 auto 18px;
-  padding: 6px 18px;
+  padding: 4px 16px;
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 9px;
 
-  color: #7dff5a;
+  color: #76f052;
 
-  /* Very subtle shared glow behind the whole category line */
+  /* Crisp text with a restrained neon halo */
   text-shadow:
-    0 0 4px rgba(125, 255, 90, 0.9),
-    0 0 10px rgba(109, 240, 74, 0.55),
-    0 0 20px rgba(109, 240, 74, 0.22);
+    0 0 4px rgba(118, 240, 82, 0.65),
+    0 0 11px rgba(118, 240, 82, 0.28);
 
   font-family: var(--font-text-en);
   line-height: 1;
   white-space: nowrap;
-
-  /* Makes the icon and text feel like one illuminated element */
-  filter: drop-shadow(0 0 5px rgba(109, 240, 74, 0.18));
 }
 
 .category-icon {
   flex: 0 0 auto;
-
   font-size: 2.8rem;
   line-height: 1;
 
-  color: #75ff58;
+  color: #76f052;
 
-  /* Layered light gives the icon more depth */
   text-shadow:
-    0 0 3px rgba(220, 255, 210, 0.9),
-    0 0 7px rgba(117, 255, 88, 0.95),
-    0 0 15px rgba(109, 240, 74, 0.65),
-    0 0 25px rgba(109, 240, 74, 0.25);
+    0 0 4px rgba(118, 240, 82, 0.7),
+    0 0 10px rgba(118, 240, 82, 0.4);
 
   font-variation-settings:
     "FILL" 1,
@@ -476,18 +468,15 @@ h1 {
 }
 
 .category-value {
-  font-weight: 750;
+  font-weight: 700;
   font-size: 1.55rem;
   letter-spacing: 0.02em;
 
-  color: #7dff5a;
+  color: #76f052;
 
-  /* Bright core + softer neon falloff */
   text-shadow:
-    0 0 2px rgba(225, 255, 215, 0.9),
-    0 0 6px rgba(125, 255, 90, 0.9),
-    0 0 13px rgba(109, 240, 74, 0.55),
-    0 0 24px rgba(109, 240, 74, 0.2);
+    0 0 3px rgba(118, 240, 82, 0.7),
+    0 0 9px rgba(118, 240, 82, 0.35);
 }
 
 .fact {
