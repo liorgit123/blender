@@ -728,7 +728,7 @@ body[dir="ltr"] .fact {
   inset: -3px; /* slightly larger gap for visibility */
 
   border: 2px solid #0f7a8e; /* thinner border for cleaner separation */
-  border-radius: inherit;
+  border-radius: 13px;
 
   pointer-events: none;
 
