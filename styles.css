@@ -711,7 +711,7 @@ body[dir="ltr"] .fact {
 }
 
 body[dir="rtl"] .slot {
-  font-weight: 850;
+  font-weight: 900;
 }
 
 .slot::before {
@@ -851,6 +851,10 @@ body[dir="rtl"] .slot {
     inset 0 -3px 0 rgba(15, 91, 170, 0.62);
 }
 
+body[dir="rtl"] .letter {
+  font-weight: 900;
+}
+
 .letter:not(.empty)::before {
   content: "";
   position: absolute;
@@ -863,10 +867,6 @@ body[dir="rtl"] .slot {
   filter: blur(1px);
   transform: rotate(-22deg);
   pointer-events: none;
-}
-
-body[dir="rtl"] .letter {
-  font-weight: 850;
 }
 
 .letter:not(.empty)::after {
