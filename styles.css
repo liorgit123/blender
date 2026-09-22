@@ -681,7 +681,7 @@ body[dir="ltr"] .fact {
   align-items: center;
 
   color: #111111;
-  font-size: min(calc(var(--slot-size) * 0.65), 22px);
+  font-size: calc(var(--slot-size) * 0.65);
   font-weight: 800;
   text-align: center;
 
@@ -799,7 +799,7 @@ body[dir="rtl"] .slot {
 }
 
 .slot[data-filled="true"] {
-  font-size: calc(var(--slot-size) * 0.50);
+  font-size: min(calc(var(--slot-size) * 0.6), 22px);
   color: #000000;
 }
 
