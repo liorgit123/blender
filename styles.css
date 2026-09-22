@@ -681,7 +681,7 @@ body[dir="ltr"] .fact {
   align-items: center;
 
   color: #111111;
-  font-size: min(calc(var(--slot-size) * 0.6), 22px);
+  font-size: min(calc(var(--slot-size) * 0.62), 22px);
   font-weight: 800;
   text-align: center;
 
