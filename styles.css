@@ -710,6 +710,10 @@ body[dir="ltr"] .fact {
     inset 0 -2px 0 rgba(172, 193, 222, 0.9);
 }
 
+body[dir="rtl"] .slot {
+  font-weight: 850;
+}
+
 .slot::before {
   content: "";
   position: absolute;
@@ -859,6 +863,10 @@ body[dir="ltr"] .fact {
   filter: blur(1px);
   transform: rotate(-22deg);
   pointer-events: none;
+}
+
+body[dir="rtl"] .letter {
+  font-weight: 850;
 }
 
 .letter:not(.empty)::after {
