@@ -711,7 +711,8 @@ body[dir="ltr"] .fact {
 }
 
 body[dir="rtl"] .slot {
-  font-weight: 900;
+  font-weight: 800;
+  font-size: calc(var(--slot-size) * 0.65);
 }
 
 .slot::before {
@@ -852,7 +853,7 @@ body[dir="rtl"] .slot {
 }
 
 body[dir="rtl"] .letter {
-  font-weight: 900;
+  font-weight: 800;
   font-size: calc(var(--slot-size) * 0.65);
 }
 
