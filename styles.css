@@ -682,7 +682,7 @@ body[dir="ltr"] .fact {
 
   color: #111111;
   font-size: calc(var(--slot-size) * 0.55);
-  font-weight: 700;
+  font-weight: 800;
   text-align: center;
 
   cursor: pointer;
@@ -837,7 +837,7 @@ body[dir="ltr"] .fact {
 
   color: #072046;
   font-size: calc(var(--slot-size) * 0.55);
-  font-weight: 900;
+  font-weight: 800;
   cursor: grab;
   user-select: none;
 
