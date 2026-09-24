@@ -225,11 +225,18 @@ function renderQuestion(question) {
   if (clueContainer) {
     clueContainer.innerHTML = "";
 
+    const clueIcon = document.createElement("img");
+    clueIcon.className = "clue-icon";
+    clueIcon.src = "images/clue.png";
+    clueIcon.alt = "";
+    clueIcon.setAttribute("aria-hidden", "true");
+
     const textSpan = document.createElement("span");
     textSpan.className = "clue-text";
       textSpan.id = "clue-text";
       textSpan.textContent = question.fact;
 
+      clueContainer.appendChild(clueIcon);
       clueContainer.appendChild(textSpan);
     }
 

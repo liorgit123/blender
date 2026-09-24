@@ -576,6 +576,14 @@ body[dir="ltr"] .fact {
   opacity: 0;
 }
 
+.clue-icon {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 25px;
+  object-fit: contain;
+  order: -1;
+}
+
 /* Actual clue text */
 .clue-text {
   position: relative;
@@ -1163,7 +1171,7 @@ body[dir="rtl"] #nextBtn .button-icon {
 
 #hintBtn .button-icon {
   filter: none;
-  -webkit-filter: none;
+  -webkit-filter: invert(1);
 }
 
 #hintBtn.insufficient-funds::after {
@@ -1342,42 +1350,6 @@ button:disabled {
 /* =========================================================
    WIN DIALOG
    ========================================================= */
-
-.win-dialog {
-  position: absolute;
-  top: 100px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: #000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  padding: 20px;
-}
-
-.win-content {
-  text-align: center;
-  padding: 20px;
-}
-
-.win-content h2 {
-  font-size: 3rem;
-  margin-bottom: 20px;
-}
-
-.win-content button {
-  display: block;
-  width: 200px;
-  margin: 10px auto;
-  padding: 15px;
-  background: #6e75ff;
-  border-radius: 10px;
-  color: #fff;
-  font-size: 1.1rem;
-  cursor: pointer;
-}
 
 body[dir="rtl"] .win-content {
   font-family: var(--font-text-he);

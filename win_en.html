@@ -36,10 +36,14 @@
     }
 
     /* Full-screen centered content */
+    body {
+      background: #000;
+    }
+
     .win-dialog {
       position: fixed;
       inset: 0;
-      background: transparent;
+      background: #000;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -51,6 +55,14 @@
       text-align: center;
       padding: 20px;
       margin: 0 auto;
+    }
+
+    .win-coin-balance {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      transform: scale(1.55);
+      transform-origin: top right;
     }
 
     .win-content h2 {
@@ -79,17 +91,21 @@
 
     #resetBtn {
       background: #238636;
+      box-shadow: none;
+      font-family: 'Rubik', sans-serif;
     }
 
     #langBtn {
       background: #7d4cff;
+      box-shadow: none;
+      font-family: 'Rubik', sans-serif;
     }
 
     /* Center logo */
     .win-content .logo {
       display: block;
-      margin: 0 auto 24px auto;
-      max-width: 200px;
+      margin: 0 auto 64px auto;
+      max-width: 500px;
     }
   </style>
 </head>
@@ -101,6 +117,11 @@
 
   <!-- Centered win dialog -->
   <div class="win-dialog">
+    <div id="winCoinBalance" class="coin-balance win-coin-balance" aria-live="polite">
+      <span class="coin-symbol" aria-hidden="true"></span>
+      <span id="winCoinAmount">0</span>
+    </div>
+
     <div class="win-content">
 
       <img class="logo" src="images/logo.png" alt="Sablander">
@@ -115,6 +136,10 @@
   </div>
 
   <script>
+    const winCoins = JSON.parse(localStorage.getItem("gameCoins") || "{}");
+    const winCoinAmount = Number.isFinite(winCoins.en) ? winCoins.en : 50;
+    document.getElementById("winCoinAmount").textContent = String(winCoinAmount);
+
     function resetProgress() {
       const levelProgress = JSON.parse(localStorage.getItem("levelProgress") || "{}");
       const landmarkProgress = JSON.parse(localStorage.getItem("landmarkProgress") || "{}");
