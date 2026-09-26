@@ -1122,6 +1122,8 @@ button.icon-button {
 #nextBtn .button-icon {
   width: 78%;
   height: 78%;
+  transform: translateX(2px);   /* move right */
+  /* transform: translateX(-2px);  move left */
 }
 
 body[dir="rtl"] #nextBtn .button-icon {
