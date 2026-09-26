@@ -1128,6 +1128,7 @@ button.icon-button {
 
 body[dir="rtl"] #nextBtn .button-icon {
   transform: scaleX(-1);
+  transform: translateX(-2px);
 }
 
 .visually-hidden {
