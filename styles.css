@@ -1108,15 +1108,15 @@ button.icon-button {
 }
 
 .button-icon {
-  width: 60%;
-  height: 60%;
+  width: 70%;
+  height: 70%;
   fill: currentColor;
   display: block;
 }
 
 #resetBtn .button-icon {
-  width: 49%;
-  height: 49%;
+  width: 59%;
+  height: 59%;
 }
 
 #nextBtn .button-icon {
