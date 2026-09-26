@@ -1120,8 +1120,8 @@ button.icon-button {
 }
 
 #nextBtn .button-icon {
-  width: 64%;
-  height: 64%;
+  width: 78%;
+  height: 78%;
 }
 
 body[dir="rtl"] #nextBtn .button-icon {
