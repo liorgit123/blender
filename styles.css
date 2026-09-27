@@ -1120,14 +1120,12 @@ button.icon-button {
 }
 
 #nextBtn .button-icon {
-  width: 65%;
-  height: 65%;
-  transform: translateX(2px);   /* move right */
-  /* transform: translateX(-2px);  move left */
+  width: 62%;
+  height: 62%;
 }
 
 body[dir="rtl"] #nextBtn .button-icon {
-  transform: scaleX(-1) translateX(2px);
+  transform: scaleX(-1);
 }
 
 .visually-hidden {
