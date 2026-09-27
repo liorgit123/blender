@@ -492,6 +492,14 @@ function setButtonLabel(button, label) {
   button.setAttribute("aria-label", label);
 }
 
+function setButtonIcon(button, iconName) {
+  const icon = button.querySelector(".button-icon");
+  if (icon) {
+    icon.src = `images/${iconName}.svg`;
+    button.classList.toggle("next-icon-displayed", iconName === "next1");
+  }
+}
+
 function updateHintFee() {
   const hintBtn = document.getElementById("hintBtn");
   const hintFee = document.querySelector(".hint-fee");
@@ -558,6 +566,7 @@ function resetButtons() {
   // Update Reset button: visible, but disabled if no tiles are placed
   resetBtn.style.visibility = "visible";
   setButtonLabel(nextBtn, getLocalizedText("skip"));
+  setButtonIcon(nextBtn, "skip1");
 
   // Initial check for buttons state
   updateResetButtonState();
@@ -682,6 +691,7 @@ function checkAnswer() {
 
           setTimeout(() => {
             nextBtn.disabled = false;
+            setButtonIcon(nextBtn, "next1");
             nextBtn.classList.remove("next-activated");
             void nextBtn.offsetWidth;
             nextBtn.classList.add("next-activated");

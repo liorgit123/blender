@@ -63,6 +63,7 @@ function createBlueTileOverlay(tile, letter) {
 
   // Clone the tile
   const overlay = tile.cloneNode(true);
+  overlay.classList.add("tile-animation");
 
   // Temporarily make the clone a normal blue tile
   overlay.classList.remove("empty", "disabled");
@@ -709,6 +710,7 @@ function onLetterClick(e) {
    * background underneath it.
    */
   const fadeTile = tile.cloneNode(true);
+  fadeTile.classList.add("tile-animation");
 
   const computedStyle =
     getComputedStyle(tile);
@@ -936,72 +938,26 @@ function clearBoardForHint() {
 function resetPlacement() {
   stopIdleTileBreathing();
 
-  const slots = [
-    ...document.querySelectorAll(".slot")
-  ];
-
-  const tiles = [
+  const blueTiles = [
     ...document.querySelectorAll(".letter")
-  ];
+  ].filter(tile =>
+    !tile.classList.contains("empty") &&
+    tile.dataset.locked !== "true"
+  );
 
-  const placedLetters = slots
-    .filter(slot =>
-      slot.dataset.filled === "true" &&
-      slot.dataset.locked !== "true"
-    )
-    .map(slot => ({
-      slot,
-      letter: slot.dataset.letter
-    }));
+  const letters = blueTiles.map(tile => ({
+    base: tile.dataset.base,
+    text: tile.textContent
+  }));
 
-  if (placedLetters.length === 0) {
-    scheduleIdleTileBreathing();
-    updateResetButtonState();
-    return;
-  }
-
-  const resetBtn = document.getElementById("resetBtn");
-  resetBtn.disabled = true;
-
-  const reservedTiles = new Set();
-
-  tiles.forEach(tile => {
-    tile.style.pointerEvents = "none";
+  shuffleArray(letters).forEach((letter, index) => {
+    const tile = blueTiles[index];
+    tile.dataset.base = letter.base;
+    tile.textContent = letter.text;
   });
 
-  placedLetters.forEach(({ slot, letter }, index) => {
-    const originalTile = tiles.find(tile =>
-      !reservedTiles.has(tile) &&
-      tile.classList.contains("empty") &&
-      tile.dataset.locked !== "true" &&
-      (tile.dataset.base === letter || tile.dataset.letter === letter)
-    );
-
-    if (originalTile) {
-      reservedTiles.add(originalTile);
-    }
-
-    setTimeout(() => {
-      slot.textContent = "";
-      slot.dataset.filled = "false";
-      slot.removeAttribute("data-letter");
-      updateActiveSlot();
-
-      if (originalTile) {
-        fadeTileBackIn(originalTile, letter);
-      }
-    }, index * 55);
-  });
-
-  updateActiveSlot();
-
-  setTimeout(() => {
-    tiles.forEach(tile => {
-      tile.style.pointerEvents = "auto";
-    });
-    scheduleIdleTileBreathing();
-    updateResetButtonState();
-  }, (placedLetters.length - 1) * 55 + 320);
+  scheduleIdleTileBreathing();
+  updateResetButtonState();
 
 }
 
@@ -1158,12 +1114,12 @@ function revealAllLetters() {
    ========================================================= */
 
 function updateResetButtonState() {
-  const anyPlaced = [
-    ...document.querySelectorAll(".slot")
-  ].some(
-    s =>
-      s.dataset.filled === "true" &&
-      s.dataset.locked !== "true"
+  const anyBlueLetters = [
+    ...document.querySelectorAll(".letter")
+  ].some(tile =>
+    !tile.classList.contains("empty") &&
+    !tile.classList.contains("tile-animation") &&
+    tile.dataset.locked !== "true"
   );
 
   const resetBtn =
@@ -1171,7 +1127,7 @@ function updateResetButtonState() {
       "resetBtn"
     );
 
-  resetBtn.disabled = !anyPlaced;
+  resetBtn.disabled = !anyBlueLetters;
   resetBtn.style.visibility =
     "visible";
 }
