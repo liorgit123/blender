@@ -1115,13 +1115,13 @@ button.icon-button {
 }
 
 #resetBtn .button-icon {
-  width: 59%;
-  height: 59%;
+  width: 73%;
+  height: 73%;
 }
 
 #nextBtn .button-icon {
-  width: 78%;
-  height: 78%;
+  width: 65%;
+  height: 65%;
   transform: translateX(2px);   /* move right */
   /* transform: translateX(-2px);  move left */
 }
