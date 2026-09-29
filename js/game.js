@@ -591,10 +591,22 @@ function checkAnswer() {
   function showTemporaryMessage(text, isSuccess = false) {
     factBox.classList.add("hidden");
 
-    const successColor = '#B7FF4A';
     const failColor = '#FF073A';
 
-    messageBox.innerHTML = `<span style="display: inline-block; font-size: 1rem; font-weight: ${isSuccess ? 'normal' : 'normal'}; color: ${isSuccess ? successColor : failColor}; text-shadow: 0 0 10px ${isSuccess ? 'rgba(183, 255, 74, 0.7)' : 'rgba(255, 7, 58, 0.7)'};">${text}</span>`;
+    if (isSuccess) {
+      const languageClass = GameState.language === "he" ? "success-message-he" : "success-message-en";
+      const rewardLabel = GameState.language === "he"
+        ? `הרווחת ${SOLVE_COIN_REWARD} מטבעות`
+        : `${SOLVE_COIN_REWARD} coins gained`;
+      const reward = `<span class="success-reward" aria-label="${rewardLabel}"><span class="coin-symbol" aria-hidden="true"><span class="success-reward-amount">+${SOLVE_COIN_REWARD}</span></span></span>`;
+      const successText = `<span class="success-text">${text}</span>`;
+      const messageContent = GameState.language === "he"
+        ? `${reward}${successText}`
+        : `${successText}${reward}`;
+      messageBox.innerHTML = `<span class="success-message ${languageClass}">${messageContent}</span>`;
+    } else {
+      messageBox.innerHTML = `<span style="display: inline-block; font-size: 1rem; font-weight: normal; color: ${failColor}; text-shadow: 0 0 10px rgba(255, 7, 58, 0.7);">${text}</span>`;
+    }
 
     messageBox.style.color = "transparent";
     messageBox.style.fontWeight = "normal";
@@ -630,21 +642,10 @@ function checkAnswer() {
   }
 
   if (user === target) {
-    let successText;
-
-    if (GameState.hintLevel === 0) {
-      successText = GameState.language === "en"
-        ? "Well done - solved without hints!"
-        : "כל הכבוד - פתרת ללא רמזים!";
-    } else if (GameState.hintLevel === 1) {
-      successText = GameState.language === "en"
-        ? "Nice work - solved with only one hint"
-        : "יפה מאוד - פתרת עם רמז אחד בלבד";
-    } else {
-      successText = GameState.language === "en"
-        ? "Good job - solved with two hints"
-        : "עבודה טובה - פתרת עם שני רמזים";
-    }
+    const successMessages = GameState.language === "en"
+      ? ["Well done!", "Great job!"]
+      : ["כל הכבוד!", "עבודה נהדרת!"];
+    const successText = successMessages[Math.floor(Math.random() * successMessages.length)];
 
     hintBtn.disabled = true;
     hintBtn.classList.remove("insufficient-funds");

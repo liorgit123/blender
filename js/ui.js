@@ -30,6 +30,16 @@ function toFinalHebrew(letter) {
   return HebrewFinalMap[letter] || letter;
 }
 
+function setTileLetter(tile, letter) {
+  let span = tile.querySelector(".letter-char");
+  if (!span) {
+    span = document.createElement("span");
+    span.className = "letter-char";
+    tile.replaceChildren(span);
+  }
+  span.textContent = letter;
+}
+
 function isFinalSlot(slot) {
   return slot.dataset.final === "true";
 }
@@ -69,7 +79,7 @@ function createBlueTileOverlay(tile, letter) {
   overlay.classList.remove("empty", "disabled");
 
   // Restore the letter
-  overlay.textContent = letter;
+    setTileLetter(overlay, letter);
   overlay.dataset.base = letter;
   overlay.removeAttribute("data-letter");
 
@@ -81,7 +91,7 @@ function createBlueTileOverlay(tile, letter) {
 
   if (originalHadEmpty) {
     tile.classList.remove("empty");
-    tile.textContent = letter;
+    setTileLetter(tile, letter);
   }
 
   const computedStyle = getComputedStyle(tile);
@@ -108,7 +118,7 @@ function createBlueTileOverlay(tile, letter) {
   // Restore the original tile exactly as it was
   if (originalHadEmpty) {
     tile.classList.add("empty");
-    tile.textContent = originalText;
+    setTileLetter(tile, originalText);
   }
 
   overlay.style.position = "fixed";
@@ -147,13 +157,14 @@ function fadeTileBackIn(tile, letter) {
      * cannot produce a visible flash.
      */
 
-    tile.textContent = letter;
+      setTileLetter(tile, letter);
     tile.dataset.base = letter;
     tile.classList.remove("empty");
     tile.removeAttribute("data-letter");
     tile.style.opacity = "1";
 
     overlay.remove();
+    updateResetButtonState();
   };
 }
 
@@ -328,7 +339,7 @@ function renderQuestion(question) {
 
       tile.className = "letter";
       tile.dataset.base = toBaseHebrew(letter);
-      tile.textContent = toBaseHebrew(letter);
+      tile.innerHTML = `<span class="letter-char">${toBaseHebrew(letter)}</span>`;
 
       tile.addEventListener("click", handleTileClick);
 
@@ -359,7 +370,7 @@ function restoreSavedHints() {
       if (!tile || slot.dataset.filled === "true") return;
 
       tile.classList.add("empty");
-      tile.textContent = "";
+      setTileLetter(tile, "");
       tile.dataset.letter = letterBase;
       tile.dataset.locked = "true";
       tile.style.cursor = "default";
@@ -740,7 +751,7 @@ function onLetterClick(e) {
     "disabled"
   );
 
-  fadeTile.textContent = letterToMove;
+  setTileLetter(fadeTile, letterToMove);
 
   fadeTile.style.position = "fixed";
 
@@ -771,7 +782,7 @@ function onLetterClick(e) {
    * BEFORE the fade starts.
    */
   tile.classList.add("empty");
-  tile.textContent = "";
+  setTileLetter(tile, "");
   tile.style.opacity = "1";
 
   /*
@@ -912,8 +923,7 @@ function clearBoardForHint() {
       tile.dataset.letter &&
       tile.dataset.locked !== "true"
     ) {
-      tile.textContent =
-        tile.dataset.letter;
+      setTileLetter(tile, tile.dataset.letter);
 
       tile.removeAttribute(
         "data-letter"
@@ -952,8 +962,24 @@ function resetPlacement() {
 
   shuffleArray(letters).forEach((letter, index) => {
     const tile = blueTiles[index];
-    tile.dataset.base = letter.base;
-    tile.textContent = letter.text;
+    let span = tile.querySelector(".letter-char");
+    if (!span) {
+      setTileLetter(tile, tile.textContent);
+      span = tile.querySelector(".letter-char");
+    }
+
+    span.classList.add("flip-out");
+
+    setTimeout(() => {
+      tile.dataset.base = letter.base;
+      span.textContent = letter.text;
+      span.classList.remove("flip-out");
+      span.classList.add("flip-in");
+
+      setTimeout(() => {
+        span.classList.remove("flip-in");
+      }, 450);
+    }, 225);
   });
 
   scheduleIdleTileBreathing();
@@ -1034,7 +1060,7 @@ function revealRandomLetter() {
 
       tile.dataset.locked = "true";
 
-      tile.textContent = "";
+      setTileLetter(tile, "");
 
       tile.classList.add("empty");
 
@@ -1092,7 +1118,7 @@ function revealAllLetters() {
         toBaseHebrew(t.textContent);
     }
 
-    t.textContent = "";
+    setTileLetter(t, "");
 
     t.classList.add("empty");
 
@@ -1114,20 +1140,20 @@ function revealAllLetters() {
    ========================================================= */
 
 function updateResetButtonState() {
-  const anyBlueLetters = [
+  const movableBlueLetters = [
     ...document.querySelectorAll(".letter")
-  ].some(tile =>
+  ].filter(tile =>
     !tile.classList.contains("empty") &&
     !tile.classList.contains("tile-animation") &&
     tile.dataset.locked !== "true"
-  );
+  ).length;
 
   const resetBtn =
     document.getElementById(
       "resetBtn"
     );
 
-  resetBtn.disabled = !anyBlueLetters;
+  resetBtn.disabled = movableBlueLetters < 2;
   resetBtn.style.visibility =
     "visible";
 }

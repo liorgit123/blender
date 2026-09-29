@@ -205,7 +205,8 @@ body[dir="rtl"] .lang-toggle {
 
 @media (prefers-reduced-motion: reduce) {
   .coin-amount-updated,
-  .coin-balance-gain {
+  .coin-balance-gain,
+  .success-reward {
     animation: none;
   }
 }
@@ -860,6 +861,22 @@ body[dir="rtl"] .slot {
     inset 0 -3px 0 rgba(15, 91, 170, 0.62);
 }
 
+/* Letter shuffle animation */
+.letter-char {
+  display: inline-block;
+  transition: transform 0.45s ease, opacity 0.45s ease;
+}
+
+.letter-char.flip-out {
+  transform: rotateY(90deg);
+  opacity: 0;
+}
+
+.letter-char.flip-in {
+  transform: rotateY(0deg);
+  opacity: 1;
+}
+
 body[dir="rtl"] .letter {
   font-weight: 800;
   font-size: calc(var(--slot-size) * 0.62);
@@ -1314,6 +1331,71 @@ button:disabled {
   visibility: visible;
 }
 
+.success-message {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  direction: ltr;
+  color: #ffd700;
+  font-size: 1.3rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.45);
+}
+
+.success-message-he .success-text {
+  direction: rtl;
+}
+
+.success-text {
+  color: #ffffff;
+  text-shadow: 0 0 5px rgba(90, 215, 255, 0.4);
+}
+
+.success-reward {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  animation: successRewardFlip 1600ms linear 1;
+}
+
+.success-reward .coin-symbol {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+}
+
+.success-reward-amount {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #523100;
+  font-size: 0.65rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0;
+  text-shadow: none;
+  white-space: nowrap;
+}
+
+@keyframes successRewardFlip {
+  0% {
+    transform: perspective(500px) rotateY(0deg);
+  }
+  50% {
+    transform: perspective(500px) rotateY(360deg);
+  }
+  100% {
+    transform: perspective(500px) rotateY(720deg);
+  }
+}
 
 /* =========================================================
    WORD / LINE SPACING
