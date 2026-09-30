@@ -643,8 +643,8 @@ function checkAnswer() {
 
   if (user === target) {
     const successMessages = GameState.language === "en"
-      ? ["Well done!", "Great job!"]
-      : ["כל הכבוד!", "עבודה נהדרת!"];
+      ? ["Well done!", "Great job!", "Fantastic!", "Awesome!", "Excellent!"]
+      : ["מצויין!", "כל הכבוד!", "יפה מאוד!", "נהדר!", ];
     const successText = successMessages[Math.floor(Math.random() * successMessages.length)];
 
     hintBtn.disabled = true;
