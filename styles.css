@@ -1131,7 +1131,7 @@ button.icon-button {
   display: block;
 }
 
-#resetBtn .button-icon {
+#shuffleBtn .button-icon {
   width: 73%;
   height: 73%;
 }
@@ -1211,7 +1211,7 @@ body[dir="rtl"] #nextBtn.next-icon-displayed .button-icon {
   pointer-events: none;
 }
 
-#resetBtn {
+#shuffleBtn {
   position: relative;
   background: linear-gradient(160deg, #ffb35f 0%, #ff762f 48%, #d9431f 100%);
   box-shadow:
@@ -1221,7 +1221,7 @@ body[dir="rtl"] #nextBtn.next-icon-displayed .button-icon {
     inset 0 -3px 0 rgba(170, 47, 20, 0.64);
 }
 
-#resetBtn::before {
+#shuffleBtn::before {
   content: "";
   position: absolute;
   top: 7px;
@@ -1235,7 +1235,7 @@ body[dir="rtl"] #nextBtn.next-icon-displayed .button-icon {
   pointer-events: none;
 }
 
-#resetBtn .button-icon {
+#shuffleBtn .button-icon {
   filter: none;
   -webkit-filter: none;
 }
@@ -1274,7 +1274,7 @@ body[dir="rtl"] #nextBtn.next-icon-displayed .button-icon {
 }
 
 #hintBtn:hover:not(:disabled),
-#resetBtn:hover:not(:disabled),
+#shuffleBtn:hover:not(:disabled),
 #nextBtn:hover:not(:disabled) {
   transform: translateY(-1px);
 }

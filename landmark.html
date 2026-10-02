@@ -89,36 +89,68 @@
       line-height: 1.3;
     }
 
-    .landmark-continue {
+    .landmark-button {
       display: inline-block;
-      padding: 0.9rem 1.8rem;
+      width: 130px;
+      box-sizing: border-box;
+      padding: 0.9rem 1.2rem;
       border: none;
       border-radius: 16px;
-      background: linear-gradient(160deg, #6e75ff 0%, #4a5ef0 100%);
       color: #fff;
       font: inherit;
       font-size: 1.2rem;
       font-weight: 400;
       cursor: pointer;
-      box-shadow: 0 8px 18px rgba(74, 94, 240, 0.35);
       transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .landmark-continue:hover {
+    .landmark-continue {
+      background: linear-gradient(160deg, #6e75ff 0%, #4a5ef0 100%);
+      box-shadow: 0 8px 18px rgba(74, 94, 240, 0.35);
+    }
+
+    .landmark-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .landmark-share {
+      background: #238636;
+      box-shadow: 0 8px 18px rgba(35, 134, 54, 0.35);
+    }
+
+    .landmark-share-status {
+      min-height: 1.4em;
+      margin: 10px 0 0;
+      color: #9ce9d2;
+      font-size: 0.95rem;
+    }
+
+    .landmark-button:hover {
       transform: translateY(-1px);
+    }
+
+    .landmark-continue:hover {
       box-shadow: 0 10px 20px rgba(74, 94, 240, 0.42);
+    }
+
+    .landmark-share:hover {
+      box-shadow: 0 10px 20px rgba(35, 134, 54, 0.42);
     }
 
     @keyframes landmarkRingIn {
       0% {
         opacity: 0;
         transform: scale(0.86);
-        filter: drop-shadow(0 0 0 rgba(26, 188, 156, 0));
+        box-shadow: 0 0 0 rgba(26, 188, 156, 0);
       }
       100% {
         opacity: 1;
         transform: scale(1);
-        filter: drop-shadow(0 0 18px rgba(26, 188, 156, 0.35));
+        box-shadow: 0 0 18px rgba(26, 188, 156, 0.35);
       }
     }
 
@@ -155,11 +187,18 @@
       </div>
     </div>
     <p id="landmarkMessage" class="landmark-message"></p>
-    <button id="landmarkContinue" class="landmark-continue" type="button">
-      Continue
-    </button>
+    <div class="landmark-actions">
+      <button id="landmarkContinue" class="landmark-button landmark-continue" type="button">
+        Continue
+      </button>
+      <button id="landmarkShare" class="landmark-button landmark-share" type="button">
+        Share
+      </button>
+    </div>
+    <p id="landmarkShareStatus" class="landmark-share-status" aria-live="polite"></p>
   </main>
 
+  <script src="js/fireworks.js?v=224"></script>
   <script>
     const params = new URLSearchParams(window.location.search);
     const percentage = Number(params.get("percent"));
@@ -172,10 +211,13 @@
     const messageEl = document.getElementById("landmarkMessage");
     const coinAmountEl = document.getElementById("landmarkCoinAmount");
     const continueBtn = document.getElementById("landmarkContinue");
+    const shareBtn = document.getElementById("landmarkShare");
+    const shareStatusEl = document.getElementById("landmarkShareStatus");
 
     document.documentElement.lang = language;
     document.body.dir = language === "he" ? "rtl" : "ltr";
     continueBtn.textContent = language === "he" ? "המשך" : "Continue";
+    shareBtn.textContent = language === "he" ? "שיתוף" : "Share";
 
     const coinsByLanguage = JSON.parse(localStorage.getItem(coinsKey) || "{}");
     const coinTotal = Number.isFinite(coinsByLanguage[language]) ? coinsByLanguage[language] : 50;
@@ -188,6 +230,8 @@
     function animateProgress(solved, total) {
       const start = performance.now();
       const duration = 1800;
+      const fireworksLeadTime = 750;
+      let fireworksStarted = false;
 
       function frame(now) {
         const progress = Math.min(1, (now - start) / duration);
@@ -195,6 +239,10 @@
         const currentPercent = Math.round(percentage * eased);
         progressEl.style.setProperty("--progress", `${currentPercent}%`);
         percentEl.textContent = `${currentPercent}%`;
+        if (!fireworksStarted && now - start >= duration - fireworksLeadTime) {
+          triggerFireworks("high");
+          fireworksStarted = true;
+        }
         if (progress < 1) {
           requestAnimationFrame(frame);
         } else {
@@ -220,6 +268,35 @@
     continueBtn.addEventListener("click", () => {
       localStorage.setItem("gameLanguage", language);
       window.location.replace("index.html");
+    });
+
+    shareBtn.addEventListener("click", async () => {
+      const displayedPercent = Number.parseInt(percentEl.textContent, 10) || 0;
+      const filledBlocks = Math.max(0, Math.min(10, Math.round(displayedPercent / 10)));
+      const progressBar = `${"🟩".repeat(filledBlocks)}${"⬜".repeat(10 - filledBlocks)}`;
+      const shareCaption = language === "he"
+        ? `הגעתי ל־${percentEl.textContent} במשחק בלנדר! 🎉`
+        : `I reached ${percentEl.textContent} in Blender Word Game! 🎉`;
+      const shareText = `${shareCaption}\n${progressBar} ${percentEl.textContent} (${totalEl.textContent})`;
+
+      try {
+        if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(shareText);
+        } else {
+          const temporaryInput = document.createElement("textarea");
+          temporaryInput.value = shareText;
+          temporaryInput.style.position = "fixed";
+          temporaryInput.style.opacity = "0";
+          document.body.appendChild(temporaryInput);
+          temporaryInput.select();
+          const copied = document.execCommand("copy");
+          temporaryInput.remove();
+          if (!copied) throw new Error("Clipboard copy failed");
+        }
+        shareStatusEl.textContent = language === "he" ? "הועתק ללוח" : "Copied to clipboard";
+      } catch {
+        shareStatusEl.textContent = language === "he" ? "לא ניתן להעתיק ללוח" : "Could not copy to clipboard";
+      }
     });
 
     initialize().catch(() => {

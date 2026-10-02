@@ -544,7 +544,7 @@ function blinkCoinBalance() {
 
 function resetButtons() {
   const hintBtn = document.getElementById("hintBtn");
-  const resetBtn = document.getElementById("resetBtn");
+  const resetBtn = document.getElementById("shuffleBtn");
   const nextBtn = document.getElementById("nextBtn");
 
   if (nextAttentionTimer) {
@@ -650,7 +650,7 @@ function checkAnswer() {
     hintBtn.disabled = true;
     hintBtn.classList.remove("insufficient-funds");
     updateHintFee();
-    document.getElementById("resetBtn").disabled = true;
+    document.getElementById("shuffleBtn").disabled = true;
 
     // Disable NEXT during the entire success animation
     const nextBtn = document.getElementById("nextBtn");
@@ -678,10 +678,6 @@ function checkAnswer() {
     // Show success message after glow-n-bounce
     setTimeout(() => {
       showTemporaryMessage(successText, true);
-
-      if (GameState.hintLevel === 0) {
-        triggerFireworks("high");
-      }
 
       // Let the success message finish before revealing each follow-up update.
       setTimeout(() => {
@@ -780,8 +776,8 @@ async function showHint() {
   } else if (GameState.hintLevel === 3) {
     count = slots.length;
     hintBtn.disabled = true;
-    document.getElementById("resetBtn").disabled = true;
-    document.getElementById("resetBtn").style.visibility = "hidden";
+    document.getElementById("shuffleBtn").disabled = true;
+    document.getElementById("shuffleBtn").style.visibility = "hidden";
     setButtonLabel(document.getElementById("nextBtn"), getLocalizedText("next"));
     updateHintFee();
   }

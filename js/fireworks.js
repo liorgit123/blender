@@ -1,18 +1,28 @@
 function triggerFireworks(intensity = "high") {
   const patternBox = document.getElementById("pattern");
   const scrambleBox = document.getElementById("scramble");
-  if (!patternBox) return;
 
-  // Combine areas: pattern tiles + scramble tiles
-  const rectPattern = patternBox.getBoundingClientRect();
-  const rectScramble = scrambleBox ? scrambleBox.getBoundingClientRect() : rectPattern;
+  let minX = 0;
+  let maxX = window.innerWidth;
+  let minY = 0;
+  let maxY = window.innerHeight;
 
-  const minX = Math.min(rectPattern.left, rectScramble.left);
-  const maxX = Math.max(rectPattern.right, rectScramble.right);
-  const minY = Math.min(rectPattern.top, rectScramble.top);
-  const maxY = Math.max(rectPattern.bottom, rectScramble.bottom);
+  if (patternBox) {
+    const rectPattern = patternBox.getBoundingClientRect();
+    const rectScramble = scrambleBox ? scrambleBox.getBoundingClientRect() : rectPattern;
+    minX = Math.min(rectPattern.left, rectScramble.left);
+    maxX = Math.max(rectPattern.right, rectScramble.right);
+    minY = Math.min(rectPattern.top, rectScramble.top);
+    maxY = Math.max(rectPattern.bottom, rectScramble.bottom);
+  }
 
+  const horizontalTrim = (maxX - minX) * 0.2;
+  minX += horizontalTrim;
+  maxX -= horizontalTrim;
   const width = maxX - minX;
+  const verticalTrim = (maxY - minY) * 0.2;
+  minY += verticalTrim;
+  maxY -= verticalTrim;
   const height = maxY - minY;
 
   const layer = document.createElement("div");
@@ -82,6 +92,6 @@ function triggerFireworks(intensity = "high") {
   setTimeout(() => {
     layer.remove();
     style.remove();
-  }, 5000);
+  }, 10000);
 }
 

@@ -35,7 +35,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   resetButtons();
 
   document.getElementById("hintBtn").addEventListener("click", showHint);
-  document.getElementById("resetBtn").addEventListener("click", resetPlacement);
+  document.getElementById("shuffleBtn").addEventListener("click", resetPlacement);
   document.getElementById("nextBtn").addEventListener("click", () => {
     nextQuestion();
   });
@@ -61,4 +61,3 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   updateResetButtonState();
 });
-

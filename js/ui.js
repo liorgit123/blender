@@ -384,7 +384,7 @@ function restoreSavedHints() {
   updateActiveSlot();
 
   const hintBtn = document.getElementById("hintBtn");
-  const resetBtn = document.getElementById("resetBtn");
+  const resetBtn = document.getElementById("shuffleBtn");
   if (progress.hintCount >= 2) {
     hintBtn.disabled = true;
     hintBtn.style.backgroundColor = "#333";
@@ -1150,7 +1150,7 @@ function updateResetButtonState() {
 
   const resetBtn =
     document.getElementById(
-      "resetBtn"
+      "shuffleBtn"
     );
 
   resetBtn.disabled = movableBlueLetters < 2;
@@ -1182,4 +1182,3 @@ function shuffleArray(arr) {
 
   return a;
 }
-
