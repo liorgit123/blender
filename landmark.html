@@ -200,109 +200,122 @@
 
   <script src="js/fireworks.js?v=224"></script>
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const percentage = Number(params.get("percent"));
-    const language = params.get("language") === "he" ? "he" : "en";
-    const progressKey = "levelProgress";
-    const coinsKey = "gameCoins";
-    const progressEl = document.getElementById("landmarkProgress");
-    const percentEl = document.getElementById("landmarkPercent");
-    const totalEl = document.getElementById("landmarkTotal");
-    const messageEl = document.getElementById("landmarkMessage");
-    const coinAmountEl = document.getElementById("landmarkCoinAmount");
-    const continueBtn = document.getElementById("landmarkContinue");
-    const shareBtn = document.getElementById("landmarkShare");
-    const shareStatusEl = document.getElementById("landmarkShareStatus");
+  const params = new URLSearchParams(window.location.search);
+  const percentage = Number(params.get("percent"));
+  const language = params.get("language") === "he" ? "he" : "en";
+  const progressKey = "levelProgress";
+  const coinsKey = "gameCoins";
+  const progressEl = document.getElementById("landmarkProgress");
+  const percentEl = document.getElementById("landmarkPercent");
+  const totalEl = document.getElementById("landmarkTotal");
+  const messageEl = document.getElementById("landmarkMessage");
+  const coinAmountEl = document.getElementById("landmarkCoinAmount");
+  const continueBtn = document.getElementById("landmarkContinue");
+  const shareBtn = document.getElementById("landmarkShare");
+  const shareStatusEl = document.getElementById("landmarkShareStatus");
 
-    document.documentElement.lang = language;
-    document.body.dir = language === "he" ? "rtl" : "ltr";
-    continueBtn.textContent = language === "he" ? "המשך" : "Continue";
-    shareBtn.textContent = language === "he" ? "שיתוף" : "Share";
+  document.documentElement.lang = language;
+  document.body.dir = language === "he" ? "rtl" : "ltr";
+  continueBtn.textContent = language === "he" ? "המשך" : "Continue";
+  shareBtn.textContent = language === "he" ? "שיתוף" : "Share";
 
-    const coinsByLanguage = JSON.parse(localStorage.getItem(coinsKey) || "{}");
-    const coinTotal = Number.isFinite(coinsByLanguage[language]) ? coinsByLanguage[language] : 50;
-    coinAmountEl.textContent = String(coinTotal);
+  const coinsByLanguage = JSON.parse(localStorage.getItem(coinsKey) || "{}");
+  const coinTotal = Number.isFinite(coinsByLanguage[language]) ? coinsByLanguage[language] : 50;
+  coinAmountEl.textContent = String(coinTotal);
 
-    messageEl.textContent = language === "he"
-      ? `כל הכבוד - פתרת ${percentage}% מהשלבים!`
-      : `Congratulations - you solved ${percentage}% of the levels!`;
+  messageEl.textContent = language === "he"
+    ? `כל הכבוד - פתרת ${percentage}% מהשלבים!`
+    : `Congratulations - you solved ${percentage}% of the levels!`;
 
-    function animateProgress(solved, total) {
-      const start = performance.now();
-      const duration = 1800;
-      const fireworksLeadTime = 750;
-      let fireworksStarted = false;
+  function animateProgress(solved, total) {
+    const start = performance.now();
+    const duration = 1800;
+    const fireworksLeadTime = 750;
+    let fireworksStarted = false;
 
-      function frame(now) {
-        const progress = Math.min(1, (now - start) / duration);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        const currentPercent = Math.round(percentage * eased);
-        progressEl.style.setProperty("--progress", `${currentPercent}%`);
-        percentEl.textContent = `${currentPercent}%`;
-        if (!fireworksStarted && now - start >= duration - fireworksLeadTime) {
-          triggerFireworks("high");
-          fireworksStarted = true;
-        }
-        if (progress < 1) {
-          requestAnimationFrame(frame);
-        } else {
-          totalEl.textContent = `${solved}/${total}`;
-        }
+    function frame(now) {
+      const progress = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const currentPercent = Math.round(percentage * eased);
+      progressEl.style.setProperty("--progress", `${currentPercent}%`);
+      percentEl.textContent = `${currentPercent}%`;
+      if (!fireworksStarted && now - start >= duration - fireworksLeadTime) {
+        triggerFireworks("high");
+        fireworksStarted = true;
       }
-
-      requestAnimationFrame(frame);
+      if (progress < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        totalEl.textContent = `${solved}/${total}`;
+      }
     }
 
-    async function initialize() {
-      const fileName = language === "en" ? "questions-en.json?v=100" : "questions-he.json?v=100";
-      const response = await fetch(`data/${fileName}`);
-      const questions = await response.json();
-      const levelProgress = JSON.parse(localStorage.getItem(progressKey) || "{}");
-      const languageProgress = levelProgress[language] || {};
-      const solved = questions.filter(question => languageProgress[question.id]?.is_solved).length;
+    requestAnimationFrame(frame);
+  }
 
-      totalEl.textContent = `${solved}/${questions.length}`;
-      animateProgress(solved, questions.length);
-    }
+  async function initialize() {
+    const fileName = language === "en" ? "questions-en.json?v=100" : "questions-he.json?v=100";
+    const response = await fetch(`data/${fileName}`);
+    const questions = await response.json();
+    const levelProgress = JSON.parse(localStorage.getItem(progressKey) || "{}");
+    const languageProgress = levelProgress[language] || {};
+    const solved = questions.filter(question => languageProgress[question.id]?.is_solved).length;
 
-    continueBtn.addEventListener("click", () => {
-      localStorage.setItem("gameLanguage", language);
-      window.location.replace("index.html");
-    });
+    totalEl.textContent = `${solved}/${questions.length}`;
+    animateProgress(solved, questions.length);
+  }
 
-    shareBtn.addEventListener("click", async () => {
-      const displayedPercent = Number.parseInt(percentEl.textContent, 10) || 0;
-      const filledBlocks = Math.max(0, Math.min(10, Math.round(displayedPercent / 10)));
-      const progressBar = `${"🟩".repeat(filledBlocks)}${"⬜".repeat(10 - filledBlocks)}`;
-      const shareCaption = language === "he"
-        ? `הגעתי ל־${percentEl.textContent} במשחק בלנדר! 🎉`
-        : `I reached ${percentEl.textContent} in Blender Word Game! 🎉`;
-      const shareText = `${shareCaption}\n${progressBar} ${percentEl.textContent} (${totalEl.textContent})`;
+  continueBtn.addEventListener("click", () => {
+    localStorage.setItem("gameLanguage", language);
+    window.location.replace("index.html");
+  });
 
-      try {
-        if (navigator.clipboard?.writeText) {
-          await navigator.clipboard.writeText(shareText);
-        } else {
-          const temporaryInput = document.createElement("textarea");
-          temporaryInput.value = shareText;
-          temporaryInput.style.position = "fixed";
-          temporaryInput.style.opacity = "0";
-          document.body.appendChild(temporaryInput);
-          temporaryInput.select();
-          const copied = document.execCommand("copy");
-          temporaryInput.remove();
-          if (!copied) throw new Error("Clipboard copy failed");
-        }
-        shareStatusEl.textContent = language === "he" ? "הועתק ללוח" : "Copied to clipboard";
-      } catch {
-        shareStatusEl.textContent = language === "he" ? "לא ניתן להעתיק ללוח" : "Could not copy to clipboard";
+  shareBtn.addEventListener("click", async () => {
+    const displayedPercent = Number.parseInt(percentEl.textContent, 10) || 0;
+
+    const filledBlocks = Math.max(0, Math.min(10, Math.round(displayedPercent / 10)));
+    const progressBar = `${"🟩".repeat(filledBlocks)}${"⬜".repeat(10 - filledBlocks)}`;
+
+    const gameLink = "https://liorgit123.github.io/blender";
+
+    const shareText = language === "he"
+      ? `הגעתי ל־${percentEl.textContent} במשחק בלנדר! 🎉
+${progressBar}
+💰 צברתי כבר **${coinTotal}** מטבעות
+
+אתם יכולים לעשות טוב יותר?
+${gameLink}`
+      : `I reached ${percentEl.textContent} in Blender Word Game! 🎉
+${progressBar}
+💰 **${coinTotal}** coins collected
+
+Can you do better?
+${gameLink}`;
+
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(shareText);
+      } else {
+        const temporaryInput = document.createElement("textarea");
+        temporaryInput.value = shareText;
+        temporaryInput.style.position = "fixed";
+        temporaryInput.style.opacity = "0";
+        document.body.appendChild(temporaryInput);
+        temporaryInput.select();
+        const copied = document.execCommand("copy");
+        temporaryInput.remove();
+        if (!copied) throw new Error("Clipboard copy failed");
       }
-    });
+      shareStatusEl.textContent = language === "he" ? "הועתק ללוח" : "Copied to clipboard";
+    } catch {
+      shareStatusEl.textContent = language === "he" ? "לא ניתן להעתיק ללוח" : "Could not copy to clipboard";
+    }
+  });
 
-    initialize().catch(() => {
-      totalEl.textContent = "0/0";
-      animateProgress(0, 0);
-    });
-  </script>
+  initialize().catch(() => {
+    totalEl.textContent = "0/0";
+    animateProgress(0, 0);
+  });
+</script>
 </body>
 </html>
