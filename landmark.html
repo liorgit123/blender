@@ -115,6 +115,19 @@
       justify-content: center;
       gap: 12px;
       flex-wrap: wrap;
+      visibility: hidden;
+    }
+
+    .landmark-actions.is-visible {
+      visibility: visible;
+    }
+
+    .landmark-actions.is-visible .landmark-button {
+      animation: landmarkButtonFadeIn 650ms ease-out both;
+    }
+
+    .landmark-actions.is-visible .landmark-button:nth-child(2) {
+      animation-delay: 650ms;
     }
 
     .landmark-share {
@@ -165,10 +178,20 @@
       }
     }
 
+    @keyframes landmarkButtonFadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .landmark-progress,
       .landmark-progress strong,
-      .landmark-total {
+      .landmark-total,
+      .landmark-actions.is-visible .landmark-button {
         animation: none;
       }
     }
@@ -188,11 +211,11 @@
     </div>
     <p id="landmarkMessage" class="landmark-message"></p>
     <div class="landmark-actions">
-      <button id="landmarkContinue" class="landmark-button landmark-continue" type="button">
-        Continue
-      </button>
       <button id="landmarkShare" class="landmark-button landmark-share" type="button">
         Share
+      </button>
+      <button id="landmarkContinue" class="landmark-button landmark-continue" type="button">
+        Continue
       </button>
     </div>
     <p id="landmarkShareStatus" class="landmark-share-status" aria-live="polite"></p>
@@ -210,6 +233,7 @@
   const totalEl = document.getElementById("landmarkTotal");
   const messageEl = document.getElementById("landmarkMessage");
   const coinAmountEl = document.getElementById("landmarkCoinAmount");
+  const actionsEl = document.querySelector(".landmark-actions");
   const continueBtn = document.getElementById("landmarkContinue");
   const shareBtn = document.getElementById("landmarkShare");
   const shareStatusEl = document.getElementById("landmarkShareStatus");
@@ -247,6 +271,7 @@
         requestAnimationFrame(frame);
       } else {
         totalEl.textContent = `${solved}/${total}`;
+        actionsEl.classList.add("is-visible");
       }
     }
 
@@ -281,15 +306,15 @@
     const shareText = language === "he"
       ? `הגעתי ל־${percentEl.textContent} במשחק בלנדר! 🎉
 ${progressBar}
-💰 צברתי כבר **${coinTotal}** מטבעות
+💰 צברתי כבר *${coinTotal}* מטבעות
 
-אתם יכולים לעשות טוב יותר?
+מוזמנים לשחק:
 ${gameLink}`
       : `I reached ${percentEl.textContent} in Blender Word Game! 🎉
 ${progressBar}
-💰 **${coinTotal}** coins collected
+💰 *${coinTotal}* coins collected
 
-Can you do better?
+Try it yourself:
 ${gameLink}`;
 
     try {

@@ -206,7 +206,9 @@ body[dir="rtl"] .lang-toggle {
 @media (prefers-reduced-motion: reduce) {
   .coin-amount-updated,
   .coin-balance-gain,
-  .success-reward {
+  .success-reward,
+  .success-reward .coin-symbol,
+  .success-reward .coin-symbol::after {
     animation: none;
   }
 }
@@ -1125,8 +1127,8 @@ button.icon-button {
 }
 
 .button-icon {
-  width: 70%;
-  height: 70%;
+  width: 60%;
+  height: 60%;
   fill: currentColor;
   display: block;
 }
@@ -1139,6 +1141,11 @@ button.icon-button {
 #nextBtn .button-icon {
   width: 62%;
   height: 62%;
+}
+
+#nextBtn.next-icon-displayed .button-icon {
+  width: 43%;
+  height: 43%;
 }
 
 body[dir="rtl"] #nextBtn .button-icon {
@@ -1364,15 +1371,31 @@ button:disabled {
 
 .success-reward .coin-symbol {
   position: relative;
+  overflow: hidden;
   display: grid;
   place-items: center;
   width: 30px;
   height: 30px;
 }
 
+.success-reward .coin-symbol::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: 0;
+  width: 45%;
+  height: 140%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 235, 0.9), transparent);
+  transform: translateX(-150%) rotate(25deg);
+  pointer-events: none;
+  animation: successRewardShimmer 1000ms ease-in-out infinite;
+  animation-direction: alternate;
+}
+
 .success-reward-amount {
   position: absolute;
   inset: 0;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1394,6 +1417,23 @@ button:disabled {
   }
   100% {
     transform: perspective(500px) rotateY(720deg);
+  }
+}
+
+@keyframes successRewardShimmer {
+  0% {
+    opacity: 0;
+    transform: translateX(-150%) rotate(25deg);
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(260%) rotate(25deg);
   }
 }
 

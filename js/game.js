@@ -7,7 +7,7 @@ function normalizeHebrewText(text) {
 const LEVEL_PROGRESS_KEY = "levelProgress";
 const LEGACY_SOLVED_KEY = "solvedLevels";
 const LEGACY_HINT_KEY = "hintProgress";
-const LANDMARKS = [10, 25, 50, 75, 90];
+const LANDMARKS = [10, 30, 50, 90];
 const LANDMARK_STATE_KEY = "landmarkProgress";
 const COINS_KEY = "gameCoins";
 const STARTING_COINS = 50;
@@ -687,8 +687,8 @@ function checkAnswer() {
           updateCoinBalance("gain");
 
           setTimeout(() => {
-            nextBtn.disabled = false;
             setButtonIcon(nextBtn, "next1");
+            nextBtn.disabled = false;
             nextBtn.classList.remove("next-activated");
             void nextBtn.offsetWidth;
             nextBtn.classList.add("next-activated");
