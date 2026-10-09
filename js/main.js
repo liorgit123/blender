@@ -6,16 +6,25 @@ window.addEventListener("DOMContentLoaded", async () => {
   document.addEventListener("gesturechange", (e) => e.preventDefault());
   document.addEventListener("gestureend", (e) => e.preventDefault());
 
-  // Prevent double-click zoom on text areas only
-document.addEventListener("dblclick", (e) => {
-  // Don't interfere with game tiles or interactive controls
-  if (e.target.closest(
-    ".letter, .slot, button, a, input, textarea, select"
-  )) {
+  // Prevent double-tap zoom on text areas without blocking tile taps
+let lastTouchEnd = 0;
+
+document.addEventListener("touchend", (e) => {
+  const target = e.target;
+
+  // Never interfere with game controls or letter placement
+  if (target.closest(".letter, .slot, button")) {
+    lastTouchEnd = 0;
     return;
   }
 
-  e.preventDefault();
+  const now = Date.now();
+
+  if (now - lastTouchEnd <= 300) {
+    e.preventDefault();
+  }
+
+  lastTouchEnd = now;
 }, { passive: false });
   
   // Prevent context menu on long press
