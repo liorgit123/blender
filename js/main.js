@@ -5,6 +5,18 @@ window.addEventListener("DOMContentLoaded", async () => {
   document.addEventListener("gesturestart", (e) => e.preventDefault());
   document.addEventListener("gesturechange", (e) => e.preventDefault());
   document.addEventListener("gestureend", (e) => e.preventDefault());
+
+  // Prevent double-click zoom on text areas only
+document.addEventListener("dblclick", (e) => {
+  // Don't interfere with game tiles or interactive controls
+  if (e.target.closest(
+    ".letter, .slot, button, a, input, textarea, select"
+  )) {
+    return;
+  }
+
+  e.preventDefault();
+}, { passive: false });
   
   // Prevent context menu on long press
   document.addEventListener("contextmenu", (e) => e.preventDefault());
