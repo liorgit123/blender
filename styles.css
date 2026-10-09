@@ -39,15 +39,6 @@ body[dir="rtl"] {
   font-family: var(--font-text-he);
 }
 
-.app,
-.app * {
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-  -webkit-user-select: none;
-  user-select: none;
-  touch-action: none;
-}
-
 :root {
   --radius: 50%;
 }
