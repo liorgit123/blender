@@ -41,7 +41,7 @@ body[dir="rtl"] {
 
 .app,
 .app * {
-  touch-action: manipulation;
+  touch-action: none;
 }
 
 :root {
