@@ -39,6 +39,11 @@ body[dir="rtl"] {
   font-family: var(--font-text-he);
 }
 
+.app,
+.app * {
+  touch-action: manipulation;
+}
+
 :root {
   --radius: 50%;
 }
