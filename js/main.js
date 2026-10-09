@@ -5,11 +5,6 @@ window.addEventListener("DOMContentLoaded", async () => {
   document.addEventListener("gesturestart", (e) => e.preventDefault());
   document.addEventListener("gesturechange", (e) => e.preventDefault());
   document.addEventListener("gestureend", (e) => e.preventDefault());
-
-  // Prevent Safari's default double-click zoom behavior
-document.addEventListener('dblclick', function (event) {
-  event.preventDefault();
-}, { passive: false });
   
   // Prevent context menu on long press
   document.addEventListener("contextmenu", (e) => e.preventDefault());
