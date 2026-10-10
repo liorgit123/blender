@@ -1348,13 +1348,12 @@ button:disabled {
   direction: ltr;
   color: #ffffff;
   font-size: 1.4rem;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.025em;
   -webkit-font-smoothing: antialiased;
   text-shadow:
-    0 1px 1px rgba(0, 0, 0, 0.8),
-    0 0 5px rgba(255, 255, 255, 0.30),
-    0 0 14px rgba(0, 220, 255, 0.28);
+    0 0 5px rgba(255, 255, 255, 0.18),
+    0 0 14px rgba(0, 210, 255, 0.18);
   animation: successMessageGlow 2.4s ease-in-out infinite;
 }
 
@@ -1364,16 +1363,10 @@ button:disabled {
 
 .success-text {
   color: #ffffff;
-  background: linear-gradient(
-    180deg,
-    #ffffff 0%,
-    #f0fdff 55%,
-    #ccefff 100%
-  );
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.75));
+  background: none;
+  -webkit-text-fill-color: #ffffff;
+  text-shadow: none;
+  filter: none;
 }
 
 /* Gold reward container */
@@ -1479,15 +1472,13 @@ button:disabled {
 @keyframes successMessageGlow {
   0%, 100% {
     text-shadow:
-      0 1px 1px rgba(0, 0, 0, 0.8),
-      0 0 5px rgba(255, 255, 255, 0.25),
-      0 0 12px rgba(0, 220, 255, 0.20);
+      0 0 4px rgba(255, 255, 255, 0.12),
+      0 0 10px rgba(0, 210, 255, 0.14);
   }
   50% {
     text-shadow:
-      0 1px 1px rgba(0, 0, 0, 0.8),
-      0 0 7px rgba(255, 255, 255, 0.4),
-      0 0 18px rgba(0, 220, 255, 0.38);
+      0 0 6px rgba(255, 255, 255, 0.22),
+      0 0 16px rgba(0, 210, 255, 0.25);
   }
 }
 
