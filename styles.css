@@ -1313,6 +1313,7 @@ button:disabled {
    MESSAGE
    ========================================================= */
 
+
 .message {
   position: absolute;
   top: 5px;
@@ -1326,10 +1327,10 @@ button:disabled {
   font-size: 1rem;
   opacity: 0;
   z-index: 10;
-  transition: opacity 0.8s ease-in-out;
+  transition: opacity 0.45s ease-in-out;
   gap: 8px;
   pointer-events: none;
-  filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.35));
+  filter: drop-shadow(0 0 8px rgba(0, 210, 255, 0.18));
 }
 
 .message.show {
@@ -1338,16 +1339,23 @@ button:disabled {
   visibility: visible;
 }
 
+/* Success message */
 .success-message {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  gap: 12px;
   direction: ltr;
-  color: #ffd700;
-  font-size: 1.3rem;
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  text-shadow: 0 0 5px rgba(255, 215, 0, 0.45);
+  color: #ffffff;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.025em;
+  -webkit-font-smoothing: antialiased;
+  text-shadow:
+    0 1px 1px rgba(0, 0, 0, 0.8),
+    0 0 5px rgba(255, 255, 255, 0.30),
+    0 0 14px rgba(0, 220, 255, 0.28);
+  animation: successMessageGlow 2.4s ease-in-out infinite;
 }
 
 .success-message-he .success-text {
@@ -1356,40 +1364,98 @@ button:disabled {
 
 .success-text {
   color: #ffffff;
-  text-shadow: 0 0 5px rgba(90, 215, 255, 0.4);
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #f0fdff 55%,
+    #ccefff 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.75));
 }
 
+/* Gold reward container */
 .success-reward {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  flex: 0 0 40px;
-  animation: successRewardFlip 1600ms linear 1;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 201, 50, 0.20) 0%,
+    rgba(255, 177, 20, 0.08) 52%,
+    transparent 72%
+  );
+  filter: drop-shadow(0 0 5px rgba(255, 190, 35, 0.55));
+  animation:
+    successRewardFlip 1600ms ease-in-out 1,
+    successCoinGlow 2s ease-in-out 1.6s infinite;
 }
 
 .success-reward .coin-symbol {
   position: relative;
   overflow: hidden;
+  isolation: isolate;
   display: grid;
   place-items: center;
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  background: radial-gradient(
+    circle at 32% 25%,
+    #fff8c9 0%,
+    #ffe777 18%,
+    #ffc928 45%,
+    #e6a510 72%,
+    #9c6500 100%
+  );
+  border: 2px solid #ffe68a;
+  box-shadow:
+    inset 0 2px 3px rgba(255, 255, 255, 0.85),
+    inset 0 -3px 4px rgba(128, 75, 0, 0.48),
+    0 0 0 2px rgba(255, 187, 25, 0.28),
+    0 3px 5px rgba(0, 0, 0, 0.45);
 }
 
+/* Inner coin rim */
+.success-reward .coin-symbol::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 210, 0.62);
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Moving metallic shine */
 .success-reward .coin-symbol::after {
   content: "";
   position: absolute;
-  top: -20%;
+  top: -25%;
   left: 0;
-  width: 45%;
-  height: 140%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 235, 0.9), transparent);
-  transform: translateX(-150%) rotate(25deg);
+  width: 42%;
+  height: 150%;
+  z-index: 2;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 235, 0.9),
+    rgba(255, 255, 255, 0.98),
+    transparent
+  );
+  transform: translateX(-160%) rotate(25deg);
   pointer-events: none;
-  animation: successRewardShimmer 1000ms ease-in-out infinite;
-  animation-direction: alternate;
+  animation: successRewardShimmer 1.5s ease-in-out 0.4s infinite;
 }
 
 .success-reward-amount {
@@ -1399,41 +1465,79 @@ button:disabled {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #523100;
-  font-size: 0.65rem;
+  color: #513000;
+  font-size: 0.68rem;
   font-weight: 900;
   line-height: 1;
-  letter-spacing: 0;
-  text-shadow: none;
+  letter-spacing: -0.03em;
+  text-shadow:
+    0 1px 0 rgba(255, 245, 170, 0.7);
   white-space: nowrap;
+}
+
+/* Subtle breathing light on the message */
+@keyframes successMessageGlow {
+  0%, 100% {
+    text-shadow:
+      0 1px 1px rgba(0, 0, 0, 0.8),
+      0 0 5px rgba(255, 255, 255, 0.25),
+      0 0 12px rgba(0, 220, 255, 0.20);
+  }
+  50% {
+    text-shadow:
+      0 1px 1px rgba(0, 0, 0, 0.8),
+      0 0 7px rgba(255, 255, 255, 0.4),
+      0 0 18px rgba(0, 220, 255, 0.38);
+  }
 }
 
 @keyframes successRewardFlip {
   0% {
-    transform: perspective(500px) rotateY(0deg);
+    transform: perspective(500px) rotateY(0deg) scale(0.75);
   }
-  50% {
-    transform: perspective(500px) rotateY(360deg);
+  35% {
+    transform: perspective(500px) rotateY(360deg) scale(1.15);
+  }
+  70% {
+    transform: perspective(500px) rotateY(630deg) scale(0.96);
   }
   100% {
-    transform: perspective(500px) rotateY(720deg);
+    transform: perspective(500px) rotateY(720deg) scale(1);
   }
 }
 
 @keyframes successRewardShimmer {
-  0% {
+  0%, 15% {
     opacity: 0;
-    transform: translateX(-150%) rotate(25deg);
+    transform: translateX(-160%) rotate(25deg);
   }
-  10% {
-    opacity: 0.8;
+  35% {
+    opacity: 0.9;
   }
-  90% {
-    opacity: 0.8;
+  65% {
+    opacity: 0.85;
   }
-  100% {
+  85%, 100% {
     opacity: 0;
     transform: translateX(260%) rotate(25deg);
+  }
+}
+
+@keyframes successCoinGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 5px rgba(255, 190, 35, 0.45));
+  }
+  50% {
+    filter: drop-shadow(0 0 10px rgba(255, 205, 55, 0.8));
+  }
+}
+
+/* Respect accessibility preferences */
+@media (prefers-reduced-motion: reduce) {
+  .success-message,
+  .success-reward,
+  .success-reward .coin-symbol::after {
+    animation: none;
   }
 }
 
