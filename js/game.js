@@ -589,10 +589,19 @@ function checkAnswer() {
   const messageBox = document.getElementById("messageBox");
   const playArea = document.getElementById("play-area");
 
-  function showTemporaryMessage(text, isSuccess = false) {
-    factBox.classList.add("hidden");
+  function showTemporaryMessage(text, isSuccess = false, showIncorrectMark = false) {
+    if (showIncorrectMark) {
+      factBox.classList.remove("hidden");
+    } else {
+      factBox.classList.add("hidden");
+    }
 
     const failColor = '#FF073A';
+    const app = document.querySelector(".app");
+
+    messageBox.classList.remove("incorrect-message");
+    messageBox.style.removeProperty("--incorrect-message-top");
+    messageBox.style.removeProperty("--incorrect-message-height");
 
     if (isSuccess) {
       playArea.classList.add("solved");
@@ -606,6 +615,15 @@ function checkAnswer() {
         ? `${reward}${successText}`
         : `${successText}${reward}`;
       messageBox.innerHTML = `<span class="success-message ${languageClass}">${messageContent}</span>`;
+    } else if (showIncorrectMark) {
+      const scrambleBounds = document.getElementById("scramble").getBoundingClientRect();
+      const playAreaBounds = playArea.getBoundingClientRect();
+      messageBox.style.setProperty("--incorrect-message-top", `${scrambleBounds.top - playAreaBounds.top}px`);
+      messageBox.style.setProperty("--incorrect-message-height", `${scrambleBounds.height}px`);
+      playArea.classList.add("incorrect-mark-visible");
+      app.classList.add("interaction-locked");
+      messageBox.classList.add("incorrect-message");
+      messageBox.innerHTML = `<span class="incorrect-mark" role="img" aria-label="${text}"></span>`;
     } else {
       messageBox.innerHTML = `<span style="display: inline-block; font-size: 1rem; font-weight: normal; color: ${failColor}; text-shadow: 0 0 10px rgba(255, 7, 58, 0.7);">${text}</span>`;
     }
@@ -630,11 +648,19 @@ function checkAnswer() {
     }
 
     if (!isSuccess) {
+      const messageDuration = showIncorrectMark ? 1000 : 2000;
       setTimeout(() => {
         messageBox.classList.remove("show");
+        messageBox.classList.remove("incorrect-message");
+        messageBox.style.removeProperty("--incorrect-message-top");
+        messageBox.style.removeProperty("--incorrect-message-height");
         messageBox.style.visibility = "hidden";
-        factBox.classList.remove("hidden");
-      }, 2000);
+        playArea.classList.remove("incorrect-mark-visible");
+        app.classList.remove("interaction-locked");
+        if (!showIncorrectMark) {
+          factBox.classList.remove("hidden");
+        }
+      }, messageDuration);
     }
   }
 
@@ -729,7 +755,7 @@ function checkAnswer() {
     document.getElementById("clue").style.pointerEvents = "none";
 
   } else {
-    showTemporaryMessage(getLocalizedText("incorrect"));
+    showTemporaryMessage(getLocalizedText("incorrect"), false, true);
 
     const slots = [...document.querySelectorAll(".slot")]
       .filter(slot => slot.dataset.filled === "true");
