@@ -1394,7 +1394,7 @@ button:disabled {
   transition: opacity 0.8s ease-in-out;
   gap: 8px;
   pointer-events: none;
-  filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.35));
+  filter: none;
   box-sizing: border-box;
 }
 
@@ -1416,12 +1416,32 @@ button:disabled {
   align-items: center;
   justify-content: center;
   gap: 4px;
-  direction: ltr;
-  color: #ffd700;
-  font-size: 1.7rem;
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  text-shadow: 0 0 5px rgba(255, 215, 0, 0.45);
+
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+
+  /* Gold gradient */
+  background: linear-gradient(
+    180deg,
+    #fff7bf 0%,
+    #ffe58a 20%,
+    #ffd54a 45%,
+    #ffbf00 65%,
+    #f4a300 100%
+  );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  /* Premium glow */
+  text-shadow:
+    0 0 4px rgba(255, 213, 74, 0.8),
+    0 0 12px rgba(255, 191, 0, 0.5),
+    0 0 24px rgba(255, 191, 0, 0.3);
+
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
 }
 
 .success-message-he .success-text {
