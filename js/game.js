@@ -587,6 +587,7 @@ function checkAnswer() {
   const factBox = document.getElementById("clue");
   const hintBtn = document.getElementById("hintBtn");
   const messageBox = document.getElementById("messageBox");
+  const playArea = document.getElementById("play-area");
 
   function showTemporaryMessage(text, isSuccess = false) {
     factBox.classList.add("hidden");
@@ -594,6 +595,7 @@ function checkAnswer() {
     const failColor = '#FF073A';
 
     if (isSuccess) {
+      playArea.classList.add("solved");
       const languageClass = GameState.language === "he" ? "success-message-he" : "success-message-en";
       const rewardLabel = GameState.language === "he"
         ? `הרווחת ${SOLVE_COIN_REWARD} מטבעות`

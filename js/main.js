@@ -5,27 +5,6 @@ window.addEventListener("DOMContentLoaded", async () => {
   document.addEventListener("gesturestart", (e) => e.preventDefault());
   document.addEventListener("gesturechange", (e) => e.preventDefault());
   document.addEventListener("gestureend", (e) => e.preventDefault());
-
-  // Prevent double-tap zoom on text areas without blocking tile taps
-let lastTouchEnd = 0;
-
-document.addEventListener("touchend", (e) => {
-  const target = e.target;
-
-  // Never interfere with game controls or letter placement
-  if (target.closest(".letter, .slot, button")) {
-    lastTouchEnd = 0;
-    return;
-  }
-
-  const now = Date.now();
-
-  if (now - lastTouchEnd <= 300) {
-    e.preventDefault();
-  }
-
-  lastTouchEnd = now;
-}, { passive: false });
   
   // Prevent context menu on long press
   document.addEventListener("contextmenu", (e) => e.preventDefault());
@@ -82,4 +61,3 @@ document.addEventListener("touchend", (e) => {
 
   updateResetButtonState();
 });
-

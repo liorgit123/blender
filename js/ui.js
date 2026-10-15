@@ -224,7 +224,9 @@ function renderQuestion(question) {
 
   messageBox.textContent = "";
   messageBox.classList.remove("show");
+  messageBox.classList.remove("success-breath");
   messageBox.style.visibility = "hidden";
+  document.getElementById("play-area").classList.remove("solved");
 
   // Ensure clue is visible
   if (clueContainer) {
