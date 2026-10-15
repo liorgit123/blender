@@ -1460,18 +1460,15 @@ button:disabled {
    ========================================== */
 
 .success-text {
-  font-size: 2.15rem;
-  font-weight: 500;
+  color: #ffe082;
+  font-size: 2.1rem;
+  font-weight: 600;
   line-height: 1.15;
-  letter-spacing: 0.02em;
-
-  color: #ffd54a;
+  letter-spacing: 0.01em;
 
   text-shadow:
-    0 0 4px rgba(255, 230, 140, 0.95),
-    0 0 10px rgba(255, 213, 74, 0.85),
-    0 0 22px rgba(255, 193, 7, 0.60),
-    0 0 40px rgba(255, 193, 7, 0.35);
+    0 1px 0 rgba(255,255,255,0.2),
+    0 0 3px rgba(255,215,0,0.15);
 
   animation:
     successTextPop 550ms cubic-bezier(0.2, 0.8, 0.25, 1) 0.3s both,
