@@ -709,12 +709,12 @@ body[dir="ltr"] .fact {
 }
 
 #play-area.solved .message {
-  transition-delay: 0.3s;
+  transition-delay: 0s;
   filter: none;
 }
 
 #play-area.solved .success-message {
-  animation: solvedMessageEnter 450ms cubic-bezier(0.2, 0.75, 0.3, 1) 0.3s both;
+  animation: solvedMessageEnter 450ms cubic-bezier(0.2, 0.75, 0.3, 1) 0s both;
 }
 
 @keyframes solvedMessageEnter {
