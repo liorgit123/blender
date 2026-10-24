@@ -1411,14 +1411,14 @@ button:disabled {
 
 .success-message {
   display: inline-flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 6px;
 }
 
 .success-message-he {
-  direction: rtl;
+  direction: ltr;
 }
 
 .success-message-he .success-text {
