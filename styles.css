@@ -1411,14 +1411,27 @@ button:disabled {
 
 .success-message {
   display: inline-flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: 6px;
 }
 
+.success-message-he {
+  direction: rtl;
+}
+
 .success-message-he .success-text {
   direction: rtl;
+}
+
+.success-message-en {
+  direction: ltr;
+}
+
+.success-reward-amount {
+  direction: ltr;
+  unicode-bidi: isolate;
 }
 
 .incorrect-mark {
