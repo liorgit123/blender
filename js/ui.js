@@ -224,13 +224,9 @@ function renderQuestion(question) {
 
   messageBox.textContent = "";
   messageBox.classList.remove("show");
-  messageBox.classList.remove("incorrect-message");
   messageBox.classList.remove("success-breath");
-  messageBox.style.removeProperty("--incorrect-message-top");
-  messageBox.style.removeProperty("--incorrect-message-height");
   messageBox.style.visibility = "hidden";
-  document.getElementById("play-area").classList.remove("solved", "incorrect-mark-visible");
-  document.querySelector(".app").classList.remove("interaction-locked");
+  document.getElementById("play-area").classList.remove("solved");
 
   // Ensure clue is visible
   if (clueContainer) {
@@ -630,10 +626,6 @@ function isGameWon() {
 function onSlotClick(e) {
   const slot = e.currentTarget;
 
-  if (document.querySelector(".app").classList.contains("interaction-locked")) {
-    return;
-  }
-
   scheduleIdleTileBreathing();
 
   if (
@@ -680,10 +672,11 @@ function onSlotClick(e) {
     slot.textContent = "";
     slot.dataset.filled = "false";
     slot.removeAttribute("data-letter");
+    delete slot.dataset.lastPlaced;
 
-  updateResetButtonState();
+    updateResetButtonState();
     updateActiveSlot();
-}
+  }
 }
 
 
@@ -811,6 +804,10 @@ function onLetterClick(e) {
     targetSlot,
     letterToMove
   );
+  document.querySelectorAll(".slot[data-last-placed]").forEach(slot => {
+    delete slot.dataset.lastPlaced;
+  });
+  targetSlot.dataset.lastPlaced = "true";
 
   const letterSpan =
     targetSlot.querySelector(".slot-text");

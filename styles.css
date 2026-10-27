@@ -692,20 +692,8 @@ body[dir="ltr"] .fact {
   transition-delay: 0s, 0.3s;
 }
 
-.app.interaction-locked #pattern {
-  pointer-events: none;
-}
-
 #play-area.solved #scramble {
   transition-duration: 0.3s;
-}
-
-#play-area.incorrect-mark-visible #scramble {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition-duration: 0.3s;
-  transition-delay: 0s, 0.3s;
 }
 
 #play-area.solved .message {
@@ -1403,12 +1391,6 @@ button:disabled {
   visibility: visible;
 }
 
-.message.incorrect-message {
-  top: var(--incorrect-message-top);
-  bottom: auto;
-  height: var(--incorrect-message-height);
-}
-
 .success-message {
   display: inline-flex;
   flex-direction: column;
@@ -1434,38 +1416,13 @@ button:disabled {
   unicode-bidi: isolate;
 }
 
-.incorrect-mark {
-  position: relative;
-  display: block;
-  width: 64px;
-  height: 64px;
-  flex: 0 0 64px;
+.slot-text {
+  transition: color 120ms ease-out, text-shadow 120ms ease-out;
+}
+
+.slot-text.incorrect-letter {
   color: #ff5368;
-  filter: drop-shadow(0 0 8px rgba(255, 83, 104, 0.3));
-}
-
-.incorrect-mark::before,
-.incorrect-mark::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  border-radius: 999px;
-  background: currentColor;
-  transform: translate(-50%, -50%) rotate(-45deg);
-}
-
-.incorrect-mark::before {
-  width: 48px;
-  height: 48px;
-  box-sizing: border-box;
-  border: 5px solid currentColor;
-  background: transparent;
-}
-
-.incorrect-mark::after {
-  width: 37px;
-  height: 6px;
+  text-shadow: 0 0 8px rgba(255, 83, 104, 0.55);
 }
 
 /* ==========================================
