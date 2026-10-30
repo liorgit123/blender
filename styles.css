@@ -1417,12 +1417,11 @@ button:disabled {
 }
 
 .slot-text {
-  transition: color 120ms ease-out, text-shadow 120ms ease-out;
+  transition: color 120ms ease-out;
 }
 
 .slot-text.incorrect-letter {
   color: #ff5368;
-  text-shadow: 0 0 8px rgba(255, 83, 104, 0.55);
 }
 
 /* ==========================================
@@ -1686,5 +1685,107 @@ body[dir="ltr"] .win-content button {
 
   94% {
     transform: translateY(0) scale(1);
+  }
+}
+
+@media (min-width: 768px) {
+  body {
+    align-items: center;
+  }
+
+  .app {
+    width: min(760px, calc(100% - 48px));
+    margin: 0 auto;
+    padding: 30px 24px;
+    --slot-size: clamp(44px, 4vw, 52px);
+    border-radius: 24px;
+  }
+
+  .logo {
+    max-width: 220px;
+    margin-bottom: 22px;
+  }
+
+  .category {
+    margin-bottom: 24px;
+  }
+
+  .category-icon {
+    font-size: 3.2rem;
+  }
+
+  .category-value {
+    font-size: 2rem;
+  }
+
+  .pattern {
+    min-height: 74px;
+    margin-bottom: 24px;
+  }
+
+  .scramble {
+    min-height: 74px;
+  }
+
+  .scramble-row,
+  .slot-line {
+    gap: 2px;
+  }
+
+  .clue {
+    font-size: 1.15rem;
+  }
+
+  .counter {
+    top: 22px;
+    left: 22px;
+  }
+
+  [dir="rtl"] .counter {
+    left: 22px;
+  }
+
+  .counter-content {
+    width: 68px;
+    height: 68px;
+  }
+
+  .counter-total {
+    font-size: 0.82rem;
+  }
+
+  .counter-content strong {
+    font-size: 1rem;
+  }
+
+  .lang-toggle {
+    top: 18px;
+    right: 20px;
+  }
+
+  body[dir="rtl"] .lang-toggle {
+    right: 20px;
+  }
+
+  .lang-toggle img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .coin-balance {
+    top: 58px;
+    right: 22px;
+    font-size: 0.9rem;
+  }
+
+  button.icon-button {
+    width: 60px;
+    height: 60px;
+    min-width: 60px;
+  }
+
+  .controls {
+    gap: 14px;
+    margin-top: 12px;
   }
 }

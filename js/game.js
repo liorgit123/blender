@@ -728,11 +728,17 @@ function checkAnswer() {
 
   } else {
     const slots = [...document.querySelectorAll(".slot")]
-      .filter(slot => slot.dataset.filled === "true");
+      .filter(slot =>
+        slot.dataset.filled === "true" &&
+        slot.dataset.locked !== "true"
+      );
     const lastPlacedSlot = document.querySelector(".slot[data-last-placed='true']");
     const lastPlacedLetter = lastPlacedSlot?.querySelector(".slot-text");
+    const placedLetters = slots
+      .map(slot => slot.querySelector(".slot-text"))
+      .filter(Boolean);
 
-    lastPlacedLetter?.classList.add("incorrect-letter");
+    placedLetters.forEach(letter => letter.classList.add("incorrect-letter"));
 
     slots.forEach(slot => {
       slot.classList.remove("shake");
@@ -742,7 +748,7 @@ function checkAnswer() {
 
     setTimeout(() => {
       slots.forEach(slot => slot.classList.remove("shake"));
-      lastPlacedLetter?.classList.remove("incorrect-letter");
+      placedLetters.forEach(letter => letter.classList.remove("incorrect-letter"));
       if (
         lastPlacedSlot?.isConnected &&
         lastPlacedSlot.dataset.filled === "true" &&
